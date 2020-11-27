@@ -19,7 +19,7 @@ class _FeedState extends State<Feed> {
     // TODO: implement initState
     super.initState();
     setState(() {});
-    print(    auth.currentUser.uid );
+    print(auth.currentUser.uid);
   }
 
   @override
@@ -33,7 +33,7 @@ class _FeedState extends State<Feed> {
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 60),
+                padding: const EdgeInsets.only(left: 10, top: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
