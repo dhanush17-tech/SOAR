@@ -84,6 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
           .update({"dpurl": location}).then((value) {
         print("done");
       });
+      print(location);
       await _fetchUserinfoForSettingsPage();
       setState(() {});
       //returns the download url
@@ -345,7 +346,29 @@ class _SettingsPageState extends State<SettingsPage> {
                         "tagline": taglineChange.text,
                         "websiteurl": websiteUrlChnage.text,
                         "location": location
-                      });
+                      }).then((value) => print("done"));
+                      if (usertype == "investor") {
+                        FirebaseFirestore.instance
+                            .collection('Investor')
+                            .document(auth.currentUser.uid)
+                            .setData({
+                          "name": nameChange.text,
+                          "tagline": taglineChange.text,
+                          "websiteurl": websiteUrlChnage.text,
+                          "location": location,
+                        });
+                      }
+                      if (usertype == "entrepreneur") {
+                        FirebaseFirestore.instance
+                            .collection('Entrepreneur')
+                            .document(auth.currentUser.uid)
+                            .setData({
+                          "name": nameChange.text,
+                          "tagline": taglineChange.text,
+                          "websiteurl": websiteUrlChnage.text,
+                          "location": location,
+                        });
+                      }
                     },
                     child: Container(
                       width: 160,

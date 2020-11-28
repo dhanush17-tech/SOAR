@@ -10,6 +10,7 @@ import 'signinmeatods.dart';
 import 'record.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:SOAR/auth/signup.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginscreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   int _radioValue1;
-  String usertype;
   @override
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -201,9 +201,9 @@ class _LoginscreenState extends State<Loginscreen> {
                               .updateuserdata(
                             _auth.currentUser.displayName,
                             _taglineforgooglesignin.text,
-                            usertype,
                             _websiteforgooglesignin.text,
                             _auth.currentUser.uid,
+                            usertype,
                           )
                               .then((value) async {
                             if (usertype == "investor") {
@@ -530,8 +530,301 @@ class _LoginscreenState extends State<Loginscreen> {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         GestureDetector(
-                                            onTap: () {
-                                              print('hello');
+                                            onTap: () async {
+                                              FacebookLogin _facebookLogin =
+                                                  FacebookLogin();
+                                              final FacebookLoginResult
+                                                  facebookLoginResult =
+                                                  await _facebookLogin.logIn([
+                                                'email',
+                                                'public_profile'
+                                              ]);
+                                              FacebookAccessToken
+                                                  facebookAccessToken =
+                                                  facebookLoginResult
+                                                      .accessToken;
+                                              AuthCredential authCredential =
+                                                  FacebookAuthProvider
+                                                      .getCredential(
+                                                          facebookAccessToken
+                                                              .token);
+                                              UserCredential authResult =
+                                                  await _auth
+                                                      .signInWithCredential(
+                                                          authCredential);
+                                              if (authResult.additionalUserInfo
+                                                  .isNewUser) {
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        backgroundColor:
+                                                            Color(4278190106),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                        ),
+                                                        title: Text(
+                                                            'Tell us a bit about yourself',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white)),
+                                                        content: StatefulBuilder(
+                                                            builder: (BuildContext
+                                                                    ctx,
+                                                                StateSetter
+                                                                    setState) {
+                                                          return SingleChildScrollView(
+                                                            scrollDirection:
+                                                                Axis.vertical,
+                                                            child: Container(
+                                                              height: 250,
+                                                              child: Column(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Form(
+                                                                      key:
+                                                                          _googlesigninKey,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: 20,
+                                                                                ),
+                                                                                Theme(
+                                                                                  data: ThemeData.dark(),
+                                                                                  child: new Radio<int>(
+                                                                                    value: 1,
+                                                                                    groupValue: _radioValue1,
+                                                                                    onChanged: (val) {
+                                                                                      print(val);
+                                                                                      usertype = "entrepreneur";
+                                                                                      setState(() {
+                                                                                        _radioValue1 = val;
+                                                                                      });
+                                                                                    },
+                                                                                  ),
+                                                                                ),
+                                                                                Text('Entrepreneur', style: GoogleFonts.poppins(color: Color(4278228470), fontSize: 20, fontWeight: FontWeight.w600)),
+                                                                              ]),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.start,
+                                                                            children: [
+                                                                              SizedBox(
+                                                                                width: 20,
+                                                                              ),
+                                                                              Theme(
+                                                                                data: ThemeData.dark(),
+                                                                                child: new Radio<int>(
+                                                                                  hoverColor: Colors.pink,
+                                                                                  value: 2,
+                                                                                  groupValue: _radioValue1,
+                                                                                  onChanged: (val) {
+                                                                                    print(val);
+                                                                                    usertype = "investor";
+                                                                                    setState(() {
+                                                                                      _radioValue1 = val;
+                                                                                    });
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                              Text('Investor', style: GoogleFonts.poppins(color: Color(4278228470), fontSize: 20, fontWeight: FontWeight.w600)),
+                                                                            ],
+                                                                          ),
+                                                                          Container(
+                                                                            height:
+                                                                                50,
+                                                                            width:
+                                                                                double.infinity,
+                                                                            child:
+                                                                                TextFormField(
+                                                                              style: TextStyle(color: Colors.white),
+                                                                              decoration: InputDecoration(
+                                                                                hintText: "Link to your website ",
+                                                                                hintStyle: TextStyle(color: Color(4278228470)),
+                                                                                enabledBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Color(4278228470)),
+                                                                                ),
+                                                                                focusedBorder: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Color(4278228470)),
+                                                                                ),
+                                                                                border: UnderlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Color(4278228470)),
+                                                                                ),
+                                                                              ),
+                                                                              validator: (val) => val.length == 0 ? "Please Enter A Valid Text" : null,
+                                                                              controller: _websiteforgooglesignin,
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                30,
+                                                                          ),
+                                                                          Container(
+                                                                              height: 50,
+                                                                              width: double.infinity,
+                                                                              child: TextFormField(
+                                                                                style: TextStyle(color: Colors.white),
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: "Your Profession",
+                                                                                  hintStyle: TextStyle(color: Color(4278228470)),
+                                                                                  enabledBorder: UnderlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Color(4278228470)),
+                                                                                  ),
+                                                                                  focusedBorder: UnderlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Color(4278228470)),
+                                                                                  ),
+                                                                                  border: UnderlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Color(4278228470)),
+                                                                                  ),
+                                                                                ),
+                                                                                validator: (val) => val.length == 0 ? "Please Enter A Valid Text" : null,
+                                                                                controller: _taglineforgooglesignin,
+                                                                                textCapitalization: TextCapitalization.words,
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              await _auth
+                                                                  .currentUser
+                                                                  .delete()
+                                                                  .then((value) =>
+                                                                      print(
+                                                                          "deleted"));
+                                                            },
+                                                            child:
+                                                                Text('Cancel'),
+                                                          ),
+                                                          FlatButton(
+                                                            onPressed:
+                                                                () async {
+                                                              if (_googlesigninKey
+                                                                  .currentState
+                                                                  .validate()) {
+                                                                UserCredential
+                                                                    authResult =
+                                                                    await _auth
+                                                                        .signInWithCredential(
+                                                                            authCredential)
+                                                                        .then(
+                                                                            (value) {
+                                                                  DbService(
+                                                                          uid: _auth
+                                                                              .currentUser
+                                                                              .uid)
+                                                                      .updateuserdata(
+                                                                    _auth
+                                                                        .currentUser
+                                                                        .displayName,
+                                                                    _taglineforgooglesignin
+                                                                        .text,
+                                                                    _websiteforgooglesignin
+                                                                        .text,
+                                                                    _auth
+                                                                        .currentUser
+                                                                        .uid,
+                                                                    usertype,
+                                                                  )
+                                                                      .then(
+                                                                          (value) async {
+                                                                    if (usertype ==
+                                                                        "investor") {
+                                                                      FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'Investor')
+                                                                          .document(auth
+                                                                              .currentUser
+                                                                              .uid)
+                                                                          .setData({
+                                                                        "name": _auth
+                                                                            .currentUser
+                                                                            .displayName,
+                                                                        "tagline":
+                                                                            _taglineforgooglesignin.text,
+                                                                        "websiteurl":
+                                                                            _websiteforgooglesignin.text,
+                                                                        "usertype":
+                                                                            usertype,
+                                                                      });
+                                                                    }
+                                                                    if (usertype ==
+                                                                        "entrepreneur") {
+                                                                      FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'Entrepreneur')
+                                                                          .document(auth
+                                                                              .currentUser
+                                                                              .uid)
+                                                                          .setData({
+                                                                        "name": _auth
+                                                                            .currentUser
+                                                                            .displayName,
+                                                                        "tagline":
+                                                                            _taglineforgooglesignin.text,
+                                                                        "websiteurl":
+                                                                            _websiteforgooglesignin.text,
+                                                                        "usertype":
+                                                                            usertype,
+                                                                      });
+                                                                    }
+                                                                  });
+
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pushReplacement(MaterialPageRoute(
+                                                                          builder:
+                                                                              (_) {
+                                                                    return Feed();
+                                                                  }));
+                                                                });
+                                                                _ensureLoggedIn(
+                                                                    _auth
+                                                                        .currentUser
+                                                                        .email);
+                                                              }
+                                                            },
+                                                            child: Text(
+                                                              'Login',
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                              } else {
+                                                _ensureLoggedIn(
+                                                    _auth.currentUser.email);
+
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (_) {
+                                                  return Feed();
+                                                }));
+                                              }
                                             },
                                             child: Image(
                                                 image: AssetImage(
@@ -628,3 +921,5 @@ class _LoginscreenState extends State<Loginscreen> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }
+
+String usertype;
