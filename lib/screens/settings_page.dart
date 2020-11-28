@@ -78,14 +78,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
       // Waits till the file is uploaded then stores the download url
       location = await reference.getDownloadURL();
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('Users')
           .doc(auth.currentUser.uid)
           .update({"dpurl": location}).then((value) {
         print("done");
-      });
+      }).then((value) => _fetchUserinfoForSettingsPage());
       print(location);
-      await _fetchUserinfoForSettingsPage();
       setState(() {});
       //returns the download url
       print(location);

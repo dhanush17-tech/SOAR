@@ -828,7 +828,9 @@ class _LoginscreenState extends State<Loginscreen> {
                                             },
                                             child: Image(
                                                 image: AssetImage(
-                                                    'assets/linkedin.png'))),
+                                                  'assets/facebook.png',
+                                                ),
+                                                height: 40)),
                                         GestureDetector(
                                             onTap: () async {
                                               _googleSignIn();
@@ -840,7 +842,8 @@ class _LoginscreenState extends State<Loginscreen> {
                                             },
                                             child: Image(
                                                 image: AssetImage(
-                                                    'assets/google.png')))
+                                                    'assets/google.png'),
+                                                height: 40))
                                       ],
                                     ),
                                   ),
