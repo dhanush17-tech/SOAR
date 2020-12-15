@@ -892,7 +892,8 @@ class _LoginscreenState extends State<Loginscreen> {
     try {
       await _auth
           .signInWithEmailAndPassword(
-              email: _emailController.text, password: _passwordController.text)
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim())
           .then((res) {
         _displaySnackBar(context, 'success');
 
@@ -923,6 +924,7 @@ class _LoginscreenState extends State<Loginscreen> {
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
+  String usertype;
+
 }
 
-String usertype;

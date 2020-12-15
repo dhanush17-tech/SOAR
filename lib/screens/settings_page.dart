@@ -48,12 +48,14 @@ class _SettingsPageState extends State<SettingsPage> {
             websiteUrlChnage.text = value.data()["websiteurl"];
             taglineChange.text = value.data()["tagline"];
             location = value.data()["dpurl"];
+            usertype = value.data()["usertype"];
           });
         }
       });
     } catch (e) {}
   }
 
+  String usertype;
   @override
   void initState() {
     // TODO: implement initState
@@ -61,37 +63,31 @@ class _SettingsPageState extends State<SettingsPage> {
     _fetchUserinfoForSettingsPage();
   }
 
-  FirebaseStorage _storage = FirebaseStorage.instance;
   String location;
 
-  Future uploadPic() async {
-    try {
-      print(auth.currentUser.uid);
-      //Get the file from the image picker and store it
-      File image = await ImagePicker.pickImage(source: ImageSource.camera);
+  Future uploadProfilePicture() async {
+    DateTime _time = DateTime.now();
+    var postImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-      //Create a reference to the location you want to upload to in firebase
-      Reference reference = _storage.ref().child("${auth.currentUser.uid}");
+    final Reference storageRef = FirebaseStorage.instance.ref();
 
-      //Upload the file to firebase
-      UploadTask uploadTask = reference.putFile(image);
+    UploadTask uploadTask = await storageRef
+        .child("post_${auth.currentUser.uid + _time.toString()}.jpg")
+        .putFile(postImage)
+        .then((val) {
+      val.ref.getDownloadURL().then((val) async {
+        setState(() {
+          location = val;
+        });
+        await Firestore.instance
+            .collection("Users")
+            .document(auth.currentUser.uid)
+            .set({"dpurl": location}, SetOptions(merge: true));
+        await _fetchUserinfoForSettingsPage();
 
-      // Waits till the file is uploaded then stores the download url
-      location = await reference.getDownloadURL();
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(auth.currentUser.uid)
-          .update({"dpurl": location}).then((value) {
-        print("done");
-      }).then((value) => _fetchUserinfoForSettingsPage());
-      print(location);
-      setState(() {});
-      //returns the download url
-      print(location);
-      return location;
-    } catch (e) {
-      print(e);
-    }
+        print(location);
+      });
+    });
   }
 
   @override
@@ -119,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
               location == null
                   ? GestureDetector(
                       onTap: () async {
-                        await uploadPic();
+                        await uploadProfilePicture();
                       },
                       child: Center(
                         child: Container(
@@ -179,7 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   : GestureDetector(
                       onTap: () async {
-                        await uploadPic();
+                        await uploadProfilePicture();
                       },
                       child: Center(
                         child: Container(
@@ -316,15 +312,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: GoogleFonts.poppins(
                             height: 1.02, color: Colors.white, fontSize: 20),
                         decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
-                          ),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                         )),
                   ),
                 ),

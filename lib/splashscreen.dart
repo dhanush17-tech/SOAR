@@ -1,4 +1,5 @@
 import 'package:SOAR/auth/login.dart';
+import 'package:SOAR/start.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SOAR/screens/feed.dart';
@@ -37,7 +38,7 @@ class _RootState extends State<Root> {
     return Timer(Duration(seconds: 4), () {
       (isAuth)
           ? Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) => Feed()), (route) => false)
+              MaterialPageRoute(builder: (context) => Start()), (route) => false)
           : Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => Loginscreen(),

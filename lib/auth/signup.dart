@@ -138,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ? "Password strength should be more than 6 characters"
                                   : null,
                               controller: _passwordController,
-                              obscureText: false,
+                              obscureText: true,
                               cursorColor: Colors.white,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -478,15 +478,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     UserCredential result;
     await _auth
         .createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text)
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim())
         .then((reslt) {
       DbService(uid: _auth.currentUser.uid)
           .updateuserdata(
         _nameController.text,
         _taglineforgooglesignin.text,
-        usertype,
         _websiteforgooglesignin.text,
         _auth.currentUser.uid,
+        usertype, 
       )
           .then((value) async {
         if (usertype == "investor") {

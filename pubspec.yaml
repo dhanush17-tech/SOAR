@@ -42,8 +42,12 @@ dependencies:
   provider: ^4.3.2+2
   shared_preferences:
   percent_indicator: "^2.1.5"
-  rxdart: ^0.21.0
+  fade: ^1.0.0  
+  lottie: ^0.7.0+1
   flutter_facebook_login:
+  flutter_svg: 0.18.0
+  image_size_getter: ^0.2.1
+
 
   
 

@@ -3,19 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:SOAR/screens/feed.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_size_getter/file_input.dart';
+import 'package:image_size_getter/image_size_getter.dart';
+import 'dart:io';
 
 class PostImage extends StatefulWidget {
   @override
   _PostImageState createState() => _PostImageState();
 }
 
-class _PostImageState extends State<PostImage> {
+class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
+  TabController _nestedTabController;
+  Size size;
   File image;
   Future uploadImage() async {
+    DateTime _time = DateTime.now();
     var postImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       image = postImage;
+    });
+    final Reference storageRef = FirebaseStorage.instance.ref();
+
+    UploadTask uploadTask = await storageRef
+        .child("post_${auth.currentUser.uid + _time.toString()}.jpg")
+        .putFile(image)
+        .then((val) {
+      val.ref.getDownloadURL().then((val) {
+        downloadUrl = val;
+        print(downloadUrl);
+      });
+      size = ImageSizeGetter.getSize(FileInput(image));
+      print(size);
     });
   }
 
@@ -64,6 +85,7 @@ class _PostImageState extends State<PostImage> {
                   child: Container(
                     width: 360,
                     child: new TextFormField(
+                        controller: pitchname,
                         style: GoogleFonts.poppins(
                             height: 1.02,
                             color: Color(4284376682),
@@ -152,7 +174,27 @@ class _PostImageState extends State<PostImage> {
                                     child: Align(
                                         alignment: Alignment.center,
                                         child: Image.asset(
-                                            "assets/uploadsign.png")),
+                                          "assets/uploadsign.png",
+                                          height: 200,
+                                          width: 200,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 0),
+                                      child: Text(
+                                        "Make sure you uplaod a\n poster of size 960 x  1280",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               )
@@ -164,7 +206,9 @@ class _PostImageState extends State<PostImage> {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         image: FileImage(
-                                          image,
+                                          size == Size(960, 1280)
+                                              ? image
+                                              : Text(""),
                                         ),
                                         fit: BoxFit.fill)),
                               ),
@@ -173,50 +217,47 @@ class _PostImageState extends State<PostImage> {
                   ),
                 ),
               ),
-              Hero(
-                tag: "next",
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: Duration(milliseconds: 500),
-                        pageBuilder: (_, __, ___) => PostDetails(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (_, __, ___) => PostDetails(),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(right: 10, bottom: 10, top: 20),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    );
-                  },
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(right: 10, bottom: 10, top: 20),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(4278228470)),
-                              ),
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Color(4278228470)),
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(4278190106),
-                              ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(4278190106),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -229,3 +270,5 @@ class _PostImageState extends State<PostImage> {
     );
   }
 }
+
+String downloadUrl;

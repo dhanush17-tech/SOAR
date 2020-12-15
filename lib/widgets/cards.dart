@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileCard extends StatefulWidget {
+  String title;
+  String poster;
+  String date;
+
+  ProfileCard({this.title, this.date, this.poster});
   @override
   ProfileCardState createState() => ProfileCardState();
 }
@@ -12,93 +17,82 @@ class ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        Opacity(
-          opacity: 1,
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 350,
-              width: 350,
-              decoration: BoxDecoration(
-                color: Color(4280099132),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              alignment: Alignment.center, // where to position the child
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 0),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              width: 350,
-              height: 320,
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 500),
-                          pageBuilder: (_, __, ___) => FeedDetails(),
+        backgroundColor: Color(4278190106).withOpacity(0.9),
+        body: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, ),
+            child: Align(
+              alignment: Alignment.center,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(26),
+                child: Container(
+                    height: 203,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      color: Color(4280099132),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center, // where to p
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(widget.poster),
+                                  fit: BoxFit.fill)),
                         ),
-                      );
-                    },
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Hero(
-                          tag: "mannna",
-                          child: Container(
-                            width: 350,
-                            height: 200,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/upload.jpg"),
-                                    fit: BoxFit.fill)),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10, bottom: 13),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.title,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "good",
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  widget.date,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(4278228470)),
+                                ),
+                              ],
+                            ),
                           ),
-                        )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: GradientText("ScanIn",
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Color(4278224383),
-                              Color(4278251775),
-                            ],
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 2, left: 17, bottom: 5, right: 5),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "It is a light weight document scaning app that ensures the privacy of the user by usign only local databases for stoarge",
-                          style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, right: 10),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                                width: 80,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    color: Color(4278190106),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Proceed",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          color: Color(4278228470),
+                                          fontWeight: FontWeight.bold),
+                                    ))),
+                          ),
+                        )
+                      ],
+                    )),
               ),
-            ),
-          ),
-        ),
-      ],
-    ));
+            )));
   }
 }
