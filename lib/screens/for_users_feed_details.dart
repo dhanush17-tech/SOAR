@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'feed.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class FeedDetilsForEntrepreneurs extends StatefulWidget {
   String documnetid;
-  FeedDetilsForEntrepreneurs({this.documnetid});
+  String id;
+  FeedDetilsForEntrepreneurs({this.documnetid, this.id});
   @override
   _FeedDetilsForEntrepreneursState createState() =>
       _FeedDetilsForEntrepreneursState();
@@ -17,7 +19,7 @@ class _FeedDetilsForEntrepreneursState
   final double _initFabHeight = 130.0;
   double _fabHeight;
   double _panelHeightOpen;
-  double _panelHeightClosed = 100.0;
+  double _panelHeightClosed = 130.0;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,13 +32,15 @@ class _FeedDetilsForEntrepreneursState
   @override
   Widget build(BuildContext context) {
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
+ SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
       backgroundColor: Color(4278190106),
       body: StreamBuilder(
           stream: Firestore.instance
               .collection("Users")
-              .document(auth.currentUser.uid)
+              .document(widget.id)
               .collection("posts")
               .document(widget.documnetid)
               .snapshots(),
@@ -75,7 +79,7 @@ class _FeedDetilsForEntrepreneursState
                                 children: [
                                   Container(
                                       padding:
-                                          EdgeInsets.only(left: 15, top: 10),
+                                          EdgeInsets.only(left: 15, top: 20),
                                       child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -92,73 +96,94 @@ class _FeedDetilsForEntrepreneursState
                                               ),
                                             ),
                                             (SizedBox(height: 40)),
-                                            Row(
-                                              children: [
-                                                GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: course["dpurl"] !=
-                                                            null
-                                                        ? Hero(
-                                                            tag: "good",
-                                                            child: CircleAvatar(
-                                                              backgroundColor:
-                                                                  Color(
-                                                                      4278272638),
-                                                              radius: 40,
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      course[
-                                                                          "dpurl"]),
-                                                            ),
-                                                          )
-                                                        : Hero(
-                                                            tag: "good",
-                                                            child: CircleAvatar(
-                                                              backgroundColor:
-                                                                  Color(
-                                                                      4278272638),
-                                                              radius: 40,
-                                                              backgroundImage:
-                                                                  AssetImage(
-                                                                      "assets/unknown.png"),
-                                                            ),
-                                                          )),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                top: 16,
-                                                                right: 10),
-                                                        child: Text(
-                                                            course["owener"],
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 25,
-                                                              color:
-                                                                  Colors.white,
-                                                            ))),
-                                                  ),
-                                                ),
-                                              ],
+                                            StreamBuilder(
+                                              stream: Firestore.instance
+                                                  .collection("Users")
+                                                  .document(course["uid"])
+                                                  .snapshots(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot snapshot) {
+                                                var snp = snapshot.data;
+                                                return Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child:
+                                                            snp["location"] !=
+                                                                    null
+                                                                ? Hero(
+                                                                    tag: "good",
+                                                                    child:
+                                                                        CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Color(
+                                                                              4278272638),
+                                                                      radius:
+                                                                          40,
+                                                                      backgroundImage:
+                                                                          NetworkImage(
+                                                                              snp["location"]),
+                                                                    ),
+                                                                  )
+                                                                : Hero(
+                                                                    tag: "good",
+                                                                    child:
+                                                                        CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Color(
+                                                                              4278272638),
+                                                                      radius:
+                                                                          40,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/unknown.png"),
+                                                                    ),
+                                                                  )),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Expanded(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 16,
+                                                                    right: 10),
+                                                            child: Container(
+                                                              width: 250,
+                                                              child: Text(
+                                                                  snp[
+                                                                      "name"],
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        25,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                            )),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             ),
                                             SizedBox(
                                               height: 20,
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 10),
+                                                  left: 10, right: 10),
                                               child: Opacity(
                                                   opacity: 0.6,
                                                   child: Text(
@@ -205,8 +230,7 @@ class _FeedDetilsForEntrepreneursState
                                             StreamBuilder(
                                                 stream: Firestore.instance
                                                     .collection("Users")
-                                                    .document(
-                                                        auth.currentUser.uid)
+                                                    .document(widget.id)
                                                     .collection("posts")
                                                     .document(widget.documnetid)
                                                     .snapshots(),

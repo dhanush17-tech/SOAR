@@ -1,5 +1,6 @@
 import 'package:SOAR/screens/post/post_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -41,33 +42,43 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
     return Scaffold(
       backgroundColor: Color(4278190106),
-      body: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+      body: Container(
+          height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/backpng.png"), fit: BoxFit.fill)),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  height: 150,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(25),
+                   Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(25),),
+                        gradient: LinearGradient(
+                            colors: [Color(4278857608), Color(4278256230)],
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft),
+                      
+                      color: Color(4278228470),
                     ),
-                    color: Color(4278228470),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30, left: 10),
-                    child: Text("Post A Pitch",
-                        style: TextStyle(
-                            fontFamily: "good",
-                            fontSize: 80,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white)),
-                  )),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30, left: 10),
+                      child: Text("Post A Pitch",
+                          style: TextStyle(
+                              fontFamily: "good",
+                              fontSize: 80,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white)),
+                    )),
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10),
                 child: Text(
@@ -198,7 +209,7 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                                   ),
                                 ],
                               )
-                            : Container(
+                            :  Container(
                                 alignment: Alignment.center,
                                 width: 250,
                                 height: 350,
@@ -206,12 +217,10 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         image: FileImage(
-                                          size == Size(960, 1280)
-                                              ? image
-                                              : Text(""),
+                                         image
                                         ),
                                         fit: BoxFit.fill)),
-                              ),
+                              )
                       ],
                     ),
                   ),

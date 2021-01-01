@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +13,9 @@ class Movivation extends StatefulWidget {
 class _MovivationState extends State<Movivation> {
   @override
   Widget build(BuildContext context) {
+     SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
     return Scaffold(
       backgroundColor: Color(4278190106),
       body: Stack(

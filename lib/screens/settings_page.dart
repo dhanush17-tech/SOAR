@@ -1,16 +1,15 @@
-import 'package:SOAR/auth/signinmeatods.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
-import 'profile.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:SOAR/auth/login.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -47,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
             nameChange.text = value.data()["name"];
             websiteUrlChnage.text = value.data()["websiteurl"];
             taglineChange.text = value.data()["tagline"];
-            location = value.data()["dpurl"];
+            location = value.data()["location"];
             usertype = value.data()["usertype"];
           });
         }
@@ -82,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await Firestore.instance
             .collection("Users")
             .document(auth.currentUser.uid)
-            .set({"dpurl": location}, SetOptions(merge: true));
+            .set({"location": location}, SetOptions(merge: true));
         await _fetchUserinfoForSettingsPage();
 
         print(location);
@@ -93,6 +92,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+ SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
         backgroundColor: Color(4278190106),
@@ -336,7 +337,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         "name": nameChange.text,
                         "tagline": taglineChange.text,
                         "websiteurl": websiteUrlChnage.text,
-                        "location": location
+                        "location": location,
+                        "uid": auth.currentUser.uid,
+                        "usertype": usertype
                       }).then((value) => print("done"));
                       if (usertype == "investor") {
                         FirebaseFirestore.instance
@@ -347,6 +350,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           "tagline": taglineChange.text,
                           "websiteurl": websiteUrlChnage.text,
                           "location": location,
+                          "uid": auth.currentUser.uid,
+                          "usertype": usertype
                         });
                       }
                       if (usertype == "entrepreneur") {
@@ -358,6 +363,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           "tagline": taglineChange.text,
                           "websiteurl": websiteUrlChnage.text,
                           "location": location,
+                          "uid": auth.currentUser.uid,
+                          "usertype": usertype
                         });
                       }
                     },
@@ -383,36 +390,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10, left: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    _signOut();
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.exit_to_app_outlined,
-                          color: Colors.redAccent,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Sign Out",
-                          style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ));
@@ -421,15 +398,21 @@ class _SettingsPageState extends State<SettingsPage> {
   SharedPreferences prefs;
 
   Future<Null> _logoutUser() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final FacebookLogin facebookLogIn = FacebookLogin();
+    await facebookLogIn.logOut();
+    await googleSignIn.signOut();
+
     prefs = await SharedPreferences.getInstance();
     prefs.clear();
     prefs.commit();
   }
 
   Future _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    _logoutUser();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Loginscreen()));
+    _logoutUser().then((value) {
+      print("done");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Loginscreen()));
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:SOAR/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'feed.dart';
 
 class SeeMore extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SeeMoreState extends State<SeeMore> {
           .then((value) {
         if (value.exists) {
           setState(() {
-            dpurl = value.data()["dpurl"];
+            dpurl = value.data()["location"];
             name = value.data()["name"];
             tagline = value.data()["tagline"];
           });
@@ -50,6 +51,9 @@ class _SeeMoreState extends State<SeeMore> {
 
   @override
   Widget build(BuildContext context) {
+     SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
     return Scaffold(
         backgroundColor: Color(4278190106),
         body: Stack(children: [
@@ -67,53 +71,63 @@ class _SeeMoreState extends State<SeeMore> {
                     itemCount: 1,
                     itemBuilder: (BuildContext context, int i) {
                       var snap = snapshot.data;
-                      return Row(
-                        children: [
-                          snap["dpurl"] == null
-                              ? Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                        "assets/unknown.png",
-                                      ),
-                                      backgroundColor: Color(4278272638),
-                                      radius: 45,
-                                    ),
-                                  ],
-                                )
-                              : Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(snap["dpurl"]),
-                                      backgroundColor: Colors.white,
-                                      radius: 55,
-                                    ),
-                                  ],
-                                ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      return StreamBuilder(
+                        stream: Firestore.instance
+                            .collection("Users")
+                            .document(snap["uid"])
+                            .snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          var cool = snapshot.data;
+                          return Row(
                             children: [
-                              Text(
-                                snap["title"],
-                                style: TextStyle(
-                                    fontSize: 75,
-                                    fontFamily: "good",
-                                    color: Color(4278228470)),
+                              cool["location"] == null
+                                  ? Stack(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                            "assets/unknown.png",
+                                          ),
+                                          backgroundColor: Color(4278272638),
+                                          radius: 45,
+                                        ),
+                                      ],
+                                    )
+                                  : Stack(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage(cool["location"]),
+                                          backgroundColor: Colors.white,
+                                          radius: 55,
+                                        ),
+                                      ],
+                                    ),
+                              SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                snap["owener"],
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    fontFamily: "good",
-                                    color: Colors.white.withOpacity(0.5)),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snap["title"],
+                                    style: TextStyle(
+                                        fontSize: 75,
+                                        fontFamily: "good",
+                                        color: Color(4278228470)),
+                                  ),
+                                  Text(
+                                    cool["name"],
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontFamily: "good",
+                                        color: Colors.white.withOpacity(0.5)),
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-                        ],
+                          );
+                        },
                       );
                     },
                   );
@@ -124,7 +138,6 @@ class _SeeMoreState extends State<SeeMore> {
             Container(
               height: MediaQuery.of(context).size.height * 0.72,
               child: SingleChildScrollView(
-                reverse: true,
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
@@ -149,13 +162,20 @@ class _SeeMoreState extends State<SeeMore> {
                                         itemBuilder: (ctx, i) {
                                           DocumentSnapshot comment =
                                               snapshot.data.documents[i];
-                                          return Padding(
+                                          return StreamBuilder(
+                                            stream: Firestore.instance
+                                                .collection("Users")
+                                                .document(comment["uid"])
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot snapshot) {
+                                                  var man=snapshot.data;
+                                              return Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               children: [
-                                                comment["dpurl"] == null
-                                                    ? Stack(
-                                                        children: [
+                                                man["location"] == null
+                                                    ? 
                                                           GestureDetector(
                                                             onTap: () {
                                                               Navigator.push(
@@ -163,7 +183,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                                   MaterialPageRoute(
                                                                       builder: (_) =>
                                                                           Profile(
-                                                                              uidforprofile: comment["uid"])));
+                                                                              uidforprofile: man["uid"])));
                                                             },
                                                             child: CircleAvatar(
                                                               backgroundImage:
@@ -175,42 +195,33 @@ class _SeeMoreState extends State<SeeMore> {
                                                                       4278272638),
                                                               radius: 25,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Stack(
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (_) =>
-                                                                          Profile(
-                                                                              uidforprofile: comment["uid"])));
-                                                            },
-                                                            child: GestureDetector(
-                                                              onTap: (){
-                                                                 Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (_) =>
-                                                                          Profile(
-                                                                              uidforprofile: comment["uid"])));
+                                                          )
+                                                        
+                                                    : 
+                                                     
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (_) =>
+                                                                                Profile(uidforprofile: man["uid"])));
                                                               },
-                                                                                                                          child: CircleAvatar(
+                                                              child:
+                                                                  CircleAvatar(
                                                                 backgroundImage:
                                                                     NetworkImage(
-                                                                        comment[
-                                                                            "dpurl"]),
+                                                                        man[
+                                                                            "location"]),
                                                                 backgroundColor:
-                                                                    Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 radius: 25,
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          
+                                                       
                                                 SizedBox(
                                                   width: 10,
                                                 ),
@@ -224,7 +235,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          comment["name"],
+                                                          man["name"],
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -241,12 +252,13 @@ class _SeeMoreState extends State<SeeMore> {
                                                                 fontFamily:
                                                                     "good",
                                                                 fontSize: 20)),
-                                                        Text(
-                                                            comment["comment"]),
+                                                       
                                                       ]),
                                                 ),
                                               ],
                                             ),
+                                          );
+                                            },
                                           );
                                         }),
                                     SizedBox(
@@ -264,7 +276,7 @@ class _SeeMoreState extends State<SeeMore> {
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 80,
+                height:80,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -316,15 +328,15 @@ class _SeeMoreState extends State<SeeMore> {
                                   "comment": _comment.text,
                                   "uid": auth.currentUser.uid,
                                   "date": DateTime.now().toString(),
-                                  "dpurl": dpurl,
+                                  "location": dpurl,
                                   "name": name,
                                   "tagline": tagline
                                 }).then((value) => _comment.clear());
                               }
                             },
                             child: Container(
-                              height: 33,
-                              width: 33,
+                              height: 29,
+                              width: 29,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(4278228470),

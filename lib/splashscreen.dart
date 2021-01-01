@@ -1,6 +1,9 @@
 import 'package:SOAR/auth/login.dart';
+import 'package:SOAR/screens/start_entrepreneur.dart';
 import 'package:SOAR/start.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -26,29 +29,67 @@ class _RootState extends State<Root> {
   SharedPreferences prefs;
   bool isAuth = false;
 
+  String usertype;
+
+  Future<void> _usertype() async {
+    try {
+      await Firestore.instance
+          .collection("Users")
+          .document(auth.currentUser.uid)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          setState(() {
+            usertype = value.data()["usertype"];
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     this._function();
     super.initState();
     getTimerWid();
+    _usertype();
+  }
+
+  gotostart() {
+    if (usertype == "investor") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => Start()), (route) => false);
+    }
+
+    if (usertype == "entrepreneur") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
+    }
+
+    if (usertype == null) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => Loginscreen()), (route) => false);
+    }
   }
 
   Timer getTimerWid() {
     return Timer(Duration(seconds: 4), () {
       (isAuth)
-          ? Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) => Start()), (route) => false)
+          ? gotostart()
           : Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => Loginscreen(),
               ),
             );
+      
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

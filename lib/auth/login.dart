@@ -1,7 +1,10 @@
 import 'dart:ui';
 import 'package:SOAR/auth/forgetpassword.dart';
 import 'package:SOAR/screens/feed.dart';
+import 'package:SOAR/screens/start_entrepreneur.dart';
+import 'package:SOAR/start.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fade/fade.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,6 +15,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:SOAR/auth/signup.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:supercharged/supercharged.dart';
+
+enum AniProps { offset }
 
 class Loginscreen extends StatefulWidget {
   @override
@@ -20,8 +27,54 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   int _radioValue1;
-  @override
+  String usertype_db;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  gotostart() {
+    if (usertype == "investor") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => Start()), (route) => false);
+    }
+
+    if (usertype == "entrepreneur") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
+    }
+  }
+
+  Future<void> _usertype() async {
+    try {
+      await Firestore.instance
+          .collection("Users")
+          .document(auth.currentUser.uid.toString())
+          .get()
+          .then((value) {
+        if (value.exists) {
+          setState(() {
+            usertype_db = value.data()["usertype"];
+            print(usertype_db);
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
+  gotostartwithdb() {
+    if (usertype_db == "investor") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => Start()), (route) => false);
+    }
+
+    if (usertype_db == "entrepreneur") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future<FirebaseUser> _googleSignIn() async {
     try {
@@ -73,9 +126,9 @@ class _LoginscreenState extends State<Loginscreen> {
                                             groupValue: _radioValue1,
                                             onChanged: (val) {
                                               print(val);
-                                              usertype = "entrepreneur";
                                               setState(() {
                                                 _radioValue1 = val;
+                                                usertype = "entrepreneur";
                                               });
                                             },
                                           ),
@@ -100,9 +153,9 @@ class _LoginscreenState extends State<Loginscreen> {
                                           groupValue: _radioValue1,
                                           onChanged: (val) {
                                             print(val);
-                                            usertype = "investor";
                                             setState(() {
                                               _radioValue1 = val;
+                                              usertype = "investor";
                                             });
                                           },
                                         ),
@@ -199,12 +252,12 @@ class _LoginscreenState extends State<Loginscreen> {
                         await _googleSignIn().then((value) {
                           DbService(uid: _auth.currentUser.uid)
                               .updateuserdata(
-                            _auth.currentUser.displayName,
-                            _taglineforgooglesignin.text,
-                            _websiteforgooglesignin.text,
-                            _auth.currentUser.uid,
-                            usertype,
-                          )
+                                  _auth.currentUser.displayName,
+                                  _taglineforgooglesignin.text,
+                                  _websiteforgooglesignin.text,
+                                  _auth.currentUser.uid,
+                                  usertype,
+                                  null)
                               .then((value) async {
                             if (usertype == "investor") {
                               FirebaseFirestore.instance
@@ -231,10 +284,9 @@ class _LoginscreenState extends State<Loginscreen> {
                           });
 
                           Navigator.pop(context);
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(builder: (_) {
-                            return Feed();
-                          }));
+                          _usertype();
+
+                          gotostart();
                         });
                         _ensureLoggedIn(_auth.currentUser.email);
                       }
@@ -247,14 +299,245 @@ class _LoginscreenState extends State<Loginscreen> {
               );
             });
       } else {
-        _ensureLoggedIn(_auth.currentUser.email);
-
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-          return Feed();
-        }));
+        _ensureLoggedIn(_auth.currentUser.email).then((value) async {
+          await _usertype();
+          gotostartwithdb();
+        });
       }
     } catch (e) {
       print(e.message);
+    }
+  }
+
+  Future<FirebaseUser> facebooksignin() async {
+    FacebookLogin _facebookLogin = FacebookLogin();
+    final FacebookLoginResult facebookLoginResult =
+        await _facebookLogin.logIn(['email', 'public_profile']);
+    FacebookAccessToken facebookAccessToken = facebookLoginResult.accessToken;
+    AuthCredential authCredential =
+        FacebookAuthProvider.getCredential(facebookAccessToken.token);
+    UserCredential authResult =
+        await _auth.signInWithCredential(authCredential);
+    if (authResult.additionalUserInfo.isNewUser) {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Color(4278190106),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              title: Text('Tell us a bit about yourself',
+                  style: TextStyle(color: Colors.white)),
+              content: StatefulBuilder(
+                  builder: (BuildContext ctx, StateSetter setState) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Container(
+                    height: 250,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Form(
+                            key: _googlesigninKey,
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Theme(
+                                        data: ThemeData.dark(),
+                                        child: new Radio<int>(
+                                          value: 1,
+                                          groupValue: _radioValue1,
+                                          onChanged: (val) {
+                                            print(val);
+                                            setState(() {
+                                              _radioValue1 = val;
+                                              usertype = "entrepreneur";
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Text('Entrepreneur',
+                                          style: GoogleFonts.poppins(
+                                              color: Color(4278228470),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600)),
+                                    ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Theme(
+                                      data: ThemeData.dark(),
+                                      child: new Radio<int>(
+                                        hoverColor: Colors.pink,
+                                        value: 2,
+                                        groupValue: _radioValue1,
+                                        onChanged: (val) {
+                                          print(val);
+                                          setState(() {
+                                            _radioValue1 = val;
+                                            usertype = "investor";
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Text('Investor',
+                                        style: GoogleFonts.poppins(
+                                            color: Color(4278228470),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                  ],
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: double.infinity,
+                                  child: TextFormField(
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      hintText: "Link to your website ",
+                                      hintStyle:
+                                          TextStyle(color: Color(4278228470)),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(4278228470)),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(4278228470)),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(4278228470)),
+                                      ),
+                                    ),
+                                    validator: (val) => val.length == 0
+                                        ? "Please Enter A Valid Text"
+                                        : null,
+                                    controller: _websiteforgooglesignin,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                    height: 50,
+                                    width: double.infinity,
+                                    child: TextFormField(
+                                      style: TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        hintText: "Your Profession",
+                                        hintStyle:
+                                            TextStyle(color: Color(4278228470)),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(4278228470)),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(4278228470)),
+                                        ),
+                                        border: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(4278228470)),
+                                        ),
+                                      ),
+                                      validator: (val) => val.length == 0
+                                          ? "Please Enter A Valid Text"
+                                          : null,
+                                      controller: _taglineforgooglesignin,
+                                      textCapitalization:
+                                          TextCapitalization.words,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await _auth.currentUser
+                        .delete()
+                        .then((value) => print("deleted"));
+                  },
+                  child: Text('Cancel'),
+                ),
+                FlatButton(
+                  onPressed: () async {
+                    if (_googlesigninKey.currentState.validate()) {
+                      UserCredential authResult = await _auth
+                          .signInWithCredential(authCredential)
+                          .then((value) {
+                        DbService(uid: _auth.currentUser.uid)
+                            .updateuserdata(
+                                _auth.currentUser.displayName,
+                                _taglineforgooglesignin.text,
+                                _websiteforgooglesignin.text,
+                                _auth.currentUser.uid,
+                                usertype,
+                                null)
+                            .then((value) async {
+                          if (usertype == "investor") {
+                            FirebaseFirestore.instance
+                                .collection('Investor')
+                                .document(auth.currentUser.uid)
+                                .setData({
+                              "name": _auth.currentUser.displayName,
+                              "tagline": _taglineforgooglesignin.text,
+                              "websiteurl": _websiteforgooglesignin.text,
+                              "usertype": usertype,
+                            });
+                          }
+                          if (usertype == "entrepreneur") {
+                            FirebaseFirestore.instance
+                                .collection('Entrepreneur')
+                                .document(auth.currentUser.uid)
+                                .setData({
+                              "name": _auth.currentUser.displayName,
+                              "tagline": _taglineforgooglesignin.text,
+                              "websiteurl": _websiteforgooglesignin.text,
+                              "usertype": usertype,
+                            });
+                          }
+                        });
+                        _ensureLoggedIn(_auth.currentUser.email).then((value) {
+                          _usertype();
+                          gotostart();
+                          Navigator.pop(context);
+                        });
+                      });
+                    }
+                  },
+                  child: Text(
+                    'Login',
+                  ),
+                ),
+              ],
+            );
+          });
+    } else {
+      _ensureLoggedIn(_auth.currentUser.email).then((value) async {
+        await _usertype();
+        gotostartwithdb();
+        setState(() {});
+        print("mdddddan");
+      });
     }
   }
 
@@ -278,8 +561,6 @@ class _LoginscreenState extends State<Loginscreen> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/1.png'), fit: BoxFit.cover),
                 gradient: LinearGradient(
                     colors: [Color(4278857608), Color(4278256230)],
                     begin: Alignment.topRight,
@@ -287,18 +568,42 @@ class _LoginscreenState extends State<Loginscreen> {
               ),
               child: Stack(
                 children: [
+                  TweenAnimationBuilder<double>(
+                      tween: Tween(
+                        begin: 400,
+                        end: 0,
+                      ),
+                      duration: Duration(milliseconds: 600),
+                      builder: (ctx, value, d) {
+                        return TweenAnimationBuilder(
+                            tween: Tween<double>(begin: 0, end: 1),
+                            duration: Duration(milliseconds: 1500),
+                            builder: (ctx, va, _) {
+                              return Opacity(
+                                opacity: va,
+                                child: Padding(
+                                    padding: EdgeInsets.only(top: value),
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Image.asset(
+                                        "assets/1.png",
+                                        height: 350,
+                                      ),
+                                    )),
+                              );
+                            });
+                      }),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.25),
+                        top: MediaQuery.of(context).size.height * 0.2),
                     child: Column(children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(
-                            width: 35,
+                            width: 40,
                           ),
                           Text(
-                            'Hey there!',
+                            'Sign In',
                             style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -306,35 +611,222 @@ class _LoginscreenState extends State<Loginscreen> {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 40),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                'Sign in with your account or ',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white, fontSize: 14),
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignUpScreen()));
-                                  },
-                                  child: Text(
-                                    'Create one',
-                                    style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline),
-                                  ))
-                            ],
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
                           ),
-                        ),
+                          Text(
+                            "Signin here or ",
+                            style: GoogleFonts.poppins(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => SignUpScreen()));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 3.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "create a account  ",
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                    
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        width: 3,
+                                        height: 3,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(4278228470)),
+                                      ),
+
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.width * 0.04,
@@ -531,306 +1023,12 @@ class _LoginscreenState extends State<Loginscreen> {
                                       children: <Widget>[
                                         GestureDetector(
                                             onTap: () async {
-                                              FacebookLogin _facebookLogin =
-                                                  FacebookLogin();
-                                              final FacebookLoginResult
-                                                  facebookLoginResult =
-                                                  await _facebookLogin.logIn([
-                                                'email',
-                                                'public_profile'
-                                              ]);
-                                              FacebookAccessToken
-                                                  facebookAccessToken =
-                                                  facebookLoginResult
-                                                      .accessToken;
-                                              AuthCredential authCredential =
-                                                  FacebookAuthProvider
-                                                      .getCredential(
-                                                          facebookAccessToken
-                                                              .token);
-                                              UserCredential authResult =
-                                                  await _auth
-                                                      .signInWithCredential(
-                                                          authCredential);
-                                              if (authResult.additionalUserInfo
-                                                  .isNewUser) {
-                                                showDialog(
-                                                    barrierDismissible: false,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        backgroundColor:
-                                                            Color(4278190106),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(10),
-                                                          ),
-                                                        ),
-                                                        title: Text(
-                                                            'Tell us a bit about yourself',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white)),
-                                                        content: StatefulBuilder(
-                                                            builder: (BuildContext
-                                                                    ctx,
-                                                                StateSetter
-                                                                    setState) {
-                                                          return SingleChildScrollView(
-                                                            scrollDirection:
-                                                                Axis.vertical,
-                                                            child: Container(
-                                                              height: 250,
-                                                              child: Column(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: Form(
-                                                                      key:
-                                                                          _googlesigninKey,
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                                              children: [
-                                                                                SizedBox(
-                                                                                  width: 20,
-                                                                                ),
-                                                                                Theme(
-                                                                                  data: ThemeData.dark(),
-                                                                                  child: new Radio<int>(
-                                                                                    value: 1,
-                                                                                    groupValue: _radioValue1,
-                                                                                    onChanged: (val) {
-                                                                                      print(val);
-                                                                                      usertype = "entrepreneur";
-                                                                                      setState(() {
-                                                                                        _radioValue1 = val;
-                                                                                      });
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                Text('Entrepreneur', style: GoogleFonts.poppins(color: Color(4278228470), fontSize: 20, fontWeight: FontWeight.w600)),
-                                                                              ]),
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              SizedBox(
-                                                                                width: 20,
-                                                                              ),
-                                                                              Theme(
-                                                                                data: ThemeData.dark(),
-                                                                                child: new Radio<int>(
-                                                                                  hoverColor: Colors.pink,
-                                                                                  value: 2,
-                                                                                  groupValue: _radioValue1,
-                                                                                  onChanged: (val) {
-                                                                                    print(val);
-                                                                                    usertype = "investor";
-                                                                                    setState(() {
-                                                                                      _radioValue1 = val;
-                                                                                    });
-                                                                                  },
-                                                                                ),
-                                                                              ),
-                                                                              Text('Investor', style: GoogleFonts.poppins(color: Color(4278228470), fontSize: 20, fontWeight: FontWeight.w600)),
-                                                                            ],
-                                                                          ),
-                                                                          Container(
-                                                                            height:
-                                                                                50,
-                                                                            width:
-                                                                                double.infinity,
-                                                                            child:
-                                                                                TextFormField(
-                                                                              style: TextStyle(color: Colors.white),
-                                                                              decoration: InputDecoration(
-                                                                                hintText: "Link to your website ",
-                                                                                hintStyle: TextStyle(color: Color(4278228470)),
-                                                                                enabledBorder: UnderlineInputBorder(
-                                                                                  borderSide: BorderSide(color: Color(4278228470)),
-                                                                                ),
-                                                                                focusedBorder: UnderlineInputBorder(
-                                                                                  borderSide: BorderSide(color: Color(4278228470)),
-                                                                                ),
-                                                                                border: UnderlineInputBorder(
-                                                                                  borderSide: BorderSide(color: Color(4278228470)),
-                                                                                ),
-                                                                              ),
-                                                                              validator: (val) => val.length == 0 ? "Please Enter A Valid Text" : null,
-                                                                              controller: _websiteforgooglesignin,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                30,
-                                                                          ),
-                                                                          Container(
-                                                                              height: 50,
-                                                                              width: double.infinity,
-                                                                              child: TextFormField(
-                                                                                style: TextStyle(color: Colors.white),
-                                                                                decoration: InputDecoration(
-                                                                                  hintText: "Your Profession",
-                                                                                  hintStyle: TextStyle(color: Color(4278228470)),
-                                                                                  enabledBorder: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Color(4278228470)),
-                                                                                  ),
-                                                                                  focusedBorder: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Color(4278228470)),
-                                                                                  ),
-                                                                                  border: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Color(4278228470)),
-                                                                                  ),
-                                                                                ),
-                                                                                validator: (val) => val.length == 0 ? "Please Enter A Valid Text" : null,
-                                                                                controller: _taglineforgooglesignin,
-                                                                                textCapitalization: TextCapitalization.words,
-                                                                              )),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            onPressed:
-                                                                () async {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              await _auth
-                                                                  .currentUser
-                                                                  .delete()
-                                                                  .then((value) =>
-                                                                      print(
-                                                                          "deleted"));
-                                                            },
-                                                            child:
-                                                                Text('Cancel'),
-                                                          ),
-                                                          FlatButton(
-                                                            onPressed:
-                                                                () async {
-                                                              if (_googlesigninKey
-                                                                  .currentState
-                                                                  .validate()) {
-                                                                UserCredential
-                                                                    authResult =
-                                                                    await _auth
-                                                                        .signInWithCredential(
-                                                                            authCredential)
-                                                                        .then(
-                                                                            (value) {
-                                                                  DbService(
-                                                                          uid: _auth
-                                                                              .currentUser
-                                                                              .uid)
-                                                                      .updateuserdata(
-                                                                    _auth
-                                                                        .currentUser
-                                                                        .displayName,
-                                                                    _taglineforgooglesignin
-                                                                        .text,
-                                                                    _websiteforgooglesignin
-                                                                        .text,
-                                                                    _auth
-                                                                        .currentUser
-                                                                        .uid,
-                                                                    usertype,
-                                                                  )
-                                                                      .then(
-                                                                          (value) async {
-                                                                    if (usertype ==
-                                                                        "investor") {
-                                                                      FirebaseFirestore
-                                                                          .instance
-                                                                          .collection(
-                                                                              'Investor')
-                                                                          .document(auth
-                                                                              .currentUser
-                                                                              .uid)
-                                                                          .setData({
-                                                                        "name": _auth
-                                                                            .currentUser
-                                                                            .displayName,
-                                                                        "tagline":
-                                                                            _taglineforgooglesignin.text,
-                                                                        "websiteurl":
-                                                                            _websiteforgooglesignin.text,
-                                                                        "usertype":
-                                                                            usertype,
-                                                                      });
-                                                                    }
-                                                                    if (usertype ==
-                                                                        "entrepreneur") {
-                                                                      FirebaseFirestore
-                                                                          .instance
-                                                                          .collection(
-                                                                              'Entrepreneur')
-                                                                          .document(auth
-                                                                              .currentUser
-                                                                              .uid)
-                                                                          .setData({
-                                                                        "name": _auth
-                                                                            .currentUser
-                                                                            .displayName,
-                                                                        "tagline":
-                                                                            _taglineforgooglesignin.text,
-                                                                        "websiteurl":
-                                                                            _websiteforgooglesignin.text,
-                                                                        "usertype":
-                                                                            usertype,
-                                                                      });
-                                                                    }
-                                                                  });
-
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pushReplacement(MaterialPageRoute(
-                                                                          builder:
-                                                                              (_) {
-                                                                    return Feed();
-                                                                  }));
-                                                                });
-                                                                _ensureLoggedIn(
-                                                                    _auth
-                                                                        .currentUser
-                                                                        .email);
-                                                              }
-                                                            },
-                                                            child: Text(
-                                                              'Login',
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    });
-                                              } else {
-                                                _ensureLoggedIn(
-                                                    _auth.currentUser.email);
-
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder: (_) {
-                                                  return Feed();
-                                                }));
-                                              }
+                                              facebooksignin();
                                             },
-                                            child: Image(
-                                                image: AssetImage(
-                                                  'assets/facebook.png',
-                                                ),
-                                                height: 40)),
+                                            child: Image.asset(
+                                              'assets/facebook.png',
+                                              height: 40,
+                                            )),
                                         GestureDetector(
                                             onTap: () async {
                                               _googleSignIn();
@@ -840,10 +1038,10 @@ class _LoginscreenState extends State<Loginscreen> {
                                               preferences.setString("email",
                                                   _auth.currentUser.email);
                                             },
-                                            child: Image(
-                                                image: AssetImage(
-                                                    'assets/google.png'),
-                                                height: 40))
+                                            child: Image.asset(
+                                              'assets/google.png',
+                                              height: 40,
+                                            ))
                                       ],
                                     ),
                                   ),
@@ -897,9 +1095,10 @@ class _LoginscreenState extends State<Loginscreen> {
           .then((res) {
         _displaySnackBar(context, 'success');
 
-        _ensureLoggedIn(_emailController.text);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Feed()));
+        _ensureLoggedIn(_emailController.text).then((value) async {
+          await _usertype();
+          gotostartwithdb();
+        });
       }).catchError((err) {
         _displaySnackBar(context, err.code);
         setState(() {
@@ -924,7 +1123,6 @@ class _LoginscreenState extends State<Loginscreen> {
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
+
   String usertype;
-
 }
-

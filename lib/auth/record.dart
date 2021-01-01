@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:SOAR/model/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class DbService {
@@ -12,12 +11,13 @@ class DbService {
   );
 
   Future updateuserdata(String name, String tagline, String websiteurl,
-      String uid, String usertype) async {
+      String uid, String usertype,String location) async {
     return await users.document(uid).setData({
       "name": name,
       "tagline": tagline,
       "websiteurl": websiteurl,
       "usertype": usertype,
+      "location":location,
       "uid": uid
     }).then((value) => print("donee!"));
   }

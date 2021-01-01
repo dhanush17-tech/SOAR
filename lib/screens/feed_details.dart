@@ -1,6 +1,7 @@
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -19,7 +20,7 @@ class _FeedDetailsState extends State<FeedDetails> {
   final double _initFabHeight = 120.0;
   double _fabHeight;
   double _panelHeightOpen;
-  double _panelHeightClosed = 120.0;
+  double _panelHeightClosed = 130.0;
   @override
   void initState() {
     // TODO: implement initState
@@ -43,7 +44,9 @@ class _FeedDetailsState extends State<FeedDetails> {
 
   ScrollController sc;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     return Scaffold(
       backgroundColor: Color(4278190106),
@@ -104,90 +107,103 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                   ),
                                                 ),
                                                 (SizedBox(height: 40)),
-                                                Row(
-                                                  children: [
-                                                    GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            PageRouteBuilder(
-                                                              transitionDuration:
-                                                                  Duration(
-                                                                      milliseconds:
-                                                                          500),
-                                                              pageBuilder: (_,
-                                                                      __,
-                                                                      ___) =>
-                                                                  Profile(
-                                                                uidforprofile:
-                                                                    course[
-                                                                        "uid"],
-                                                                name: name,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child:
-                                                            course["dpurl"] !=
-                                                                    null
-                                                                ? Hero(
-                                                                    tag: "good",
-                                                                    child:
-                                                                        CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              4278272638),
-                                                                      radius:
-                                                                          40,
-                                                                      backgroundImage:
-                                                                          NetworkImage(
-                                                                              course["dpurl"]),
-                                                                    ),
-                                                                  )
-                                                                : Hero(
-                                                                    tag: "good",
-                                                                    child:
-                                                                        CircleAvatar(
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              4278272638),
-                                                                      radius:
-                                                                          40,
-                                                                      backgroundImage:
-                                                                          AssetImage(
-                                                                              "assets/unknown.png"),
-                                                                    ),
-                                                                  )),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Expanded(
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 16,
-                                                                    right: 15),
-                                                            child: Text(
-                                                                course[
-                                                                    "owener"],
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .poppins(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 25,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ))),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                StreamBuilder(
+                                                  stream: Firestore.instance
+                                                      .collection("Users")
+                                                      .document(course["uid"])
+                                                      .snapshots(),
+                                                  builder: (BuildContext
+                                                          context,
+                                                      AsyncSnapshot snapshot) {
+                                                    var snap = snapshot.data;
+                                                    return Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                context,
+                                                                PageRouteBuilder(
+                                                                  transitionDuration:
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              500),
+                                                                  pageBuilder: (_,
+                                                                          __,
+                                                                          ___) =>
+                                                                      Profile(
+                                                                    uidforprofile:
+                                                                        course[
+                                                                            "uid"],
+                                                                    name: name,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                            child:
+                                                                snap["location"] !=
+                                                                        null
+                                                                    ? Hero(
+                                                                        tag:
+                                                                            "good",
+                                                                        child:
+                                                                            CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(4278272638),
+                                                                          radius:
+                                                                              40,
+                                                                          backgroundImage:
+                                                                              NetworkImage(snap["location"]),
+                                                                        ),
+                                                                      )
+                                                                    : Hero(
+                                                                        tag:
+                                                                            "good",
+                                                                        child:
+                                                                            CircleAvatar(
+                                                                          backgroundColor:
+                                                                              Color(4278272638),
+                                                                          radius:
+                                                                              40,
+                                                                          backgroundImage:
+                                                                              AssetImage("assets/unknown.png"),
+                                                                        ),
+                                                                      )),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Expanded(
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top: 16,
+                                                                        right:
+                                                                            15),
+                                                                child:
+                                                                    Container(
+                                                                  width: 250,
+                                                                  child: Text(
+                                                                      snap[
+                                                                          "name"],
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            25,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      )),
+                                                                )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
                                                 ),
                                                 SizedBox(
                                                   height: 20,
@@ -370,10 +386,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
-                                            image: NetworkImage(
-                                                course["postimage"]),
-                                      
-                                          ))),
+                                                  image: NetworkImage(
+                                                      course["postimage"]),
+                                                  fit: BoxFit.fill))),
                                     ),
                                     Column(
                                       children: [
@@ -436,11 +451,12 @@ class _FeedDetailsState extends State<FeedDetails> {
                         Positioned(
                           bottom: 20,
                           right: 0,
-                  
                           child: Align(
                             alignment: Alignment.bottomRight,
                             child: Container(
-                              padding: EdgeInsets.only(left: 15,),
+                              padding: EdgeInsets.only(
+                                left: 15,
+                              ),
                               height: 69,
                               width: 180,
                               alignment: Alignment.center,
@@ -450,7 +466,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                   color: Color(4278228470)),
                               child: Text(course["owener"],
                                   style: GoogleFonts.poppins(
-                                    height: 1.2,
+                                      height: 1.2,
                                       fontSize: 20,
                                       color: Color(4278190106),
                                       fontWeight: FontWeight.bold)),

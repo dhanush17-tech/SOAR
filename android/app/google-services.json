@@ -1,21 +1,20 @@
 {
   "project_info": {
-    "project_number": "92400541843",
-    "firebase_url": "https://soar-280b5.firebaseio.com",
-    "project_id": "soar-280b5",
-    "storage_bucket": "soar-280b5.appspot.com"
+    "project_number": "466912315257",
+    "project_id": "the-final-soar",
+    "storage_bucket": "the-final-soar.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:92400541843:android:45e578d127b423de816d66",
+        "mobilesdk_app_id": "1:466912315257:android:5537b7763d1fecc25991a8",
         "android_client_info": {
           "package_name": "com.example.SOAR"
         }
       },
       "oauth_client": [
         {
-          "client_id": "92400541843-37cqqpts63gnkbrhg1bjv6uj50tunk1b.apps.googleusercontent.com",
+          "client_id": "466912315257-ln0ance7986i9vsjot8kb0r80c7oe3to.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.SOAR",
@@ -23,20 +22,20 @@
           }
         },
         {
-          "client_id": "92400541843-rvenbcu5a8luma0pe9mu82pjdpgs1n05.apps.googleusercontent.com",
+          "client_id": "466912315257-vov0bes4v219ku7gcqgtjtqlosupmplb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
-      "api_key": [
+      "api_key": [                                        
         {
-          "current_key": "AIzaSyAG9PW4evUu5L3Fs_HaA6ejx2ZcAnF0aQ0"
+          "current_key": "AIzaSyD1yEnO7y-UZui0uu9kE8H5X-VHqUwzY1c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "92400541843-rvenbcu5a8luma0pe9mu82pjdpgs1n05.apps.googleusercontent.com",
+              "client_id": "466912315257-vov0bes4v219ku7gcqgtjtqlosupmplb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
