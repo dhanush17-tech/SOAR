@@ -1,9 +1,9 @@
 import 'package:SOAR/auth/login.dart';
+import 'package:SOAR/onboarding/onboarding.dart';
 import 'package:SOAR/screens/start_entrepreneur.dart';
 import 'package:SOAR/start.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -29,6 +29,15 @@ class _RootState extends State<Root> {
   SharedPreferences prefs;
   bool isAuth = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    this._function();
+    super.initState();
+    getFlagInfo();
+    getTimerWid();
+  }
+
   String usertype;
 
   Future<void> _usertype() async {
@@ -47,49 +56,68 @@ class _RootState extends State<Root> {
     } catch (e) {}
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    this._function();
-    super.initState();
-    getTimerWid();
-    _usertype();
+  bool visitingFlag = false;
+
+  Future<void> getFlag() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.getBool("alreadyVisited") == null) {
+      visitingFlag = false;
+    } else {
+      visitingFlag = true;
+    }
+    await preferences.setBool('alreadyVisited', true);
   }
 
-  gotostart() {
-    if (usertype == "investor") {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => Start()), (route) => false);
-    }
-
-    if (usertype == "entrepreneur") {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
-    }
-
-    if (usertype == null) {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => Loginscreen()), (route) => false);
-    }
+  getFlagInfo() async {
+    await getFlag();
   }
 
   Timer getTimerWid() {
-    return Timer(Duration(seconds: 4), () {
-      (isAuth)
-          ? gotostart()
-          : Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => Loginscreen(),
+    return Timer(Duration(seconds: 4), () async {
+      if (visitingFlag == true) {
+        if (isAuth == true) {
+          await _usertype();    
+          if (usertype == "investor") {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => MyHomePage()),
+                (route) => false);
+          }
+
+          if (usertype == "entrepreneur") {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => StartEnt()),
+                (route) => false);
+          }
+
+          if (usertype == null) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => Loginscreen()),
+                (route) => false);
+          }
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => Loginscreen(),
+            ),
+          );
+        }
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => Onboarding(
+                screenHeight: MediaQuery.of(context).size.height,
               ),
-            );
-      
+            ),
+            ((route) => false));
+      }
     });
   }
 
   @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -117,7 +145,11 @@ class _RootState extends State<Root> {
               ),
               Container(
                   height: 260,
-                  child: Image(image: AssetImage('assets/soar.png'))),
+                  child: Image(
+                    image: AssetImage('assets/soar.png'),
+                    width: 300,
+                    height: 300,
+                  )),
               SizedBox(
                 height: 15,
               ),

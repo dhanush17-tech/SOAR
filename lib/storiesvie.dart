@@ -29,6 +29,7 @@ class _MoreStoriesState extends State<MoreStories> {
 
   @override
   void dispose() {
+    storyController.dispose();
     super.dispose();
   }
 
@@ -73,36 +74,37 @@ class _MoreStoriesState extends State<MoreStories> {
   StoryController storyController = StoryController();
 
   @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
       backgroundColor: Color(4278190106),
       body: imgList.length != 0
           ? StoryView(
-                storyItems: imgList.map((e) {
-          var index = imgList.indexOf(e);
-          print(duration[index].round());
+              storyItems: imgList.map((e) {
+                    var index = imgList.indexOf(e);
+                    print(duration[index].round());
 
-          return StoryItem.pageVideo(e,
-              duration:
-                  Duration(milliseconds: duration[index].round()),
-              controller: storyController);
-                    }).toList() ??
-                    Container(),
-                onStoryShow: (s) {
-                  print("Showing a story");
-                },
-                onComplete: () {
-                  Navigator.pop(context);
-                },
-                onVerticalSwipeComplete: (DirectionalFocusAction) {
-                  Navigator.pop(context);
-                },
-                progressPosition: ProgressPosition.top,
-                repeat: false,
-                controller: storyController,
-              )
+                    return StoryItem.pageVideo(e,
+                        duration:
+                            Duration(milliseconds: duration[index].round()),
+                        controller: storyController);
+                  }).toList() ??
+                  Container(),
+              onStoryShow: (s) {
+                print("Showing a story");
+              },
+              onComplete: () {
+                Navigator.pop(context);
+              },
+              onVerticalSwipeComplete: (DirectionalFocusAction) {
+                Navigator.pop(context);
+              },
+              progressPosition: ProgressPosition.top,
+              repeat: false,
+              controller: storyController,
+            )
           : Center(
               child: CircularProgressIndicator(
               backgroundColor: Colors.blue[900],

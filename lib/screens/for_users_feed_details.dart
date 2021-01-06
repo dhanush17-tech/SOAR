@@ -341,15 +341,15 @@ class _FeedDetilsForEntrepreneursState
                             Stack(
                               children: [
                                 Hero(
-                                  tag: "flyin+${i++}",
+                                    tag:
+                                                                            "dssd+$i",
                                   child: Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         image:
                                             NetworkImage(course["postimage"]),
-                                        colorFilter:
-                                            ColorFilter.linearToSrgbGamma(),
+                                     
                                         fit: BoxFit.fill,
                                       ))),
                                 ),
@@ -395,7 +395,7 @@ class _FeedDetilsForEntrepreneursState
                                               style: GoogleFonts.poppins(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 40,
-                                                  color: Color(4278190106),
+                                                  color: Color(4278228470),
                                                   height: 1.02),
                                             ),
                                           ),

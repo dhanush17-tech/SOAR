@@ -118,9 +118,8 @@ class _TextScreenState extends State<TextScreen>
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/backpng.png"), fit: BoxFit.fill)),
+          color: Color(4278190106),
+
         child: Stack(
           children: [
             Align(

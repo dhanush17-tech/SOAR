@@ -3,6 +3,8 @@ import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/feed_details.dart';
 import 'package:SOAR/screens/post/post_details.dart';
 import 'package:SOAR/screens/settings_page.dart';
+import 'package:SOAR/splashscreen.dart';
+import 'package:SOAR/start.dart';
 import 'package:flutter/material.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:flutter/foundation.dart';
@@ -38,15 +40,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SOAR',
-      home: Builder(
-        builder: (BuildContext context) {
-          var screenHeight = MediaQuery.of(context).size.height;
-
-          return Onboarding(
-            screenHeight: screenHeight,
-          );
-        },
-      ),
+      home: Man()
     );
   }
 }

@@ -51,8 +51,8 @@ class _SeeMoreState extends State<SeeMore> {
 
   @override
   Widget build(BuildContext context) {
-     SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
         backgroundColor: Color(4278190106),
@@ -98,7 +98,7 @@ class _SeeMoreState extends State<SeeMore> {
                                         CircleAvatar(
                                           backgroundImage:
                                               NetworkImage(cool["location"]),
-                                          backgroundColor: Colors.white,
+                                                                                  backgroundColor: Color(4278272638),
                                           radius: 55,
                                         ),
                                       ],
@@ -169,95 +169,91 @@ class _SeeMoreState extends State<SeeMore> {
                                                 .snapshots(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot snapshot) {
-                                                  var man=snapshot.data;
-                                              return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                man["location"] == null
-                                                    ? 
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (_) =>
-                                                                          Profile(
-                                                                              uidforprofile: man["uid"])));
-                                                            },
-                                                            child: CircleAvatar(
-                                                              backgroundImage:
-                                                                  AssetImage(
-                                                                "assets/unknown.png",
-                                                              ),
-                                                              backgroundColor:
-                                                                  Color(
-                                                                      4278272638),
-                                                              radius: 25,
-                                                            ),
-                                                          )
-                                                        
-                                                    : 
-                                                     
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (_) =>
+                                              var man = snapshot.data;
+                                              return snapshot.data == null
+                                                  ? Container()
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Row(
+                                                        children: [
+                                                          man["location"] ==
+                                                                  null
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (_) =>
                                                                                 Profile(uidforprofile: man["uid"])));
-                                                              },
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundImage:
-                                                                    NetworkImage(
-                                                                        man[
-                                                                            "location"]),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                radius: 25,
-                                                              ),
-                                                            ),
-                                                          
-                                                       
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 25),
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          man["name"],
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        Text(comment["comment"],
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                fontFamily:
-                                                                    "good",
-                                                                fontSize: 20)),
-                                                       
-                                                      ]),
-                                                ),
-                                              ],
-                                            ),
-                                          );
+                                                                  },
+                                                                  child:
+                                                                      CircleAvatar(
+                                                                    backgroundImage:
+                                                                        AssetImage(
+                                                                      "assets/unknown.png",
+                                                                    ),
+                                                                    backgroundColor:
+                                                                        Color(
+                                                                            4278272638),
+                                                                    radius: 25,
+                                                                  ),
+                                                                )
+                                                              : GestureDetector(
+                                                                  onTap: () {
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (_) =>
+                                                                                Profile(uidforprofile: man["uid"])));
+                                                                  },
+                                                                  child:
+                                                                      CircleAvatar(
+                                                                    backgroundImage:
+                                                                        NetworkImage(
+                                                                            man["location"]),
+                                                                                                                                                    backgroundColor: Color(4278272638),
+
+                                                                    radius: 25,
+                                                                  ),
+                                                                ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 25),
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    man["name"],
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                  Text(
+                                                                      comment[
+                                                                          "comment"],
+                                                                      style: TextStyle(
+                                                                          color: Colors.white.withOpacity(
+                                                                              0.7),
+                                                                          fontFamily:
+                                                                              "good",
+                                                                          fontSize:
+                                                                              20)),
+                                                                ]),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
                                             },
                                           );
                                         }),
@@ -268,6 +264,7 @@ class _SeeMoreState extends State<SeeMore> {
                                 )
                               : Container();
                         }),
+                        SizedBox(height: 20,),
                   ],
                 ),
               ),
@@ -276,7 +273,7 @@ class _SeeMoreState extends State<SeeMore> {
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height:80,
+                height: 80,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(

@@ -6,6 +6,8 @@ import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/post/post_image.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/settings_page.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -30,241 +32,231 @@ class StartEntrepreneur extends StatefulWidget {
   _StartEntrepreneurState createState() => _StartEntrepreneurState();
 }
 
-class _StartEntrepreneurState extends State<StartEntrepreneur> {
-  Future _signOut() async {
-    _logoutUser().then((value) {
-      print("done");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Loginscreen()));
-    });
-  }
+class _StartEntrepreneurState extends State<StartEntrepreneur>
+    with SingleTickerProviderStateMixin {
+  var _bottomNavIndex = 0; //default index of first screen
 
-  String usertype;
-
-  SharedPreferences prefs;
-
-  Future<Null> _logoutUser() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final FacebookLogin facebookLogIn = FacebookLogin();
-    await facebookLogIn.logOut();
-    await googleSignIn.signOut();
-
-    prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    prefs.commit();
-  }
-
-  Future<void> _usertype() async {
-    try {
-      await Firestore.instance
-          .collection("Users")
-          .document(auth.currentUser.uid)
-          .get()
-          .then((value) {
-        if (value.exists) {
-          setState(() {
-            usertype = value.data()["usertype"];
-          });
-        }
-      });
-    } catch (e) {}
-  }
-
-  String dpurl;
-
-  fetchcurrentuserdetails() {
-    Firestore.instance
-        .collection("Users")
-        .document(auth.currentUser.uid)
-        .get()
-        .then((value) {
-      setState(() {
-        dpurl = value.data()["location"];
-      });
-    });
-  }
-
+  AnimationController _animationController;
+  Animation<double> animation;
+  CurvedAnimation curve;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _usertype();
-    fetchcurrentuserdetails();
-  }
+    final systemTheme = SystemUiOverlayStyle.light.copyWith(
+      systemNavigationBarColor: HexColor('#373A36'),
+      systemNavigationBarIconBrightness: Brightness.light,
+    );
+    SystemChrome.setSystemUIOverlayStyle(systemTheme);
 
-  @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-
-    return Scaffold(
-      backgroundColor: Color(4278190106),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * .93,
-                child: alloptions[selectedOption],
-              ),
-              buildsidenavigationabar(),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10, left: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    _signOut();
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.exit_to_app_outlined,
-                          color: Colors.redAccent,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Sign Out",
-                          style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+    _animationController = AnimationController(
+      duration: Duration(seconds: 0),
+      vsync: this,
+    );
+    curve = CurvedAnimation(
+      parent: _animationController,
+      curve: Interval(
+        0.5,
+        1.0,
+        curve: Curves.fastOutSlowIn,
       ),
     );
-  }
+    animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(curve);
 
-  buildsidenavigationabar() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-          color: Color(4279899448),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(
-                20,
-              ),
-              topRight: Radius.circular(20))),
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildOption(
-                      Icon(
-                        Icons.settings,
-                      ),
-                      0),
-                  buildOption(
-                      Icon(
-                        Icons.add,
-                      ),
-                      1),
-                  buildOption(
-                      Icon(
-                        Icons.message,
-                      ),
-                      2),
-                  buildOption(
-                      Icon(
-                        Icons.person,
-                      ),
-                      3),
-                  buildOption(
-                      Icon(
-                        Icons.near_me,
-                      ),
-                      4),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    Future.delayed(
+      Duration(seconds: 0),
+      () => _animationController.forward(),
     );
   }
 
-  buildOption(Icon man, int index) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedOption = index;
-                isSelectedOption(index);
-              });
-            },
-            child: Icon(
-              man.icon,
-              color: Colors.blue,
-              size: 27,
-            )),
-        SizedBox(
-          height: 10,
-        ),
-        isselected[index]
-            ? Container(
-                height: 2,
-                width: 2,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blue,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.blue,
-                          blurRadius: 6.0,
-                          spreadRadius: 10.0,
-                          offset: Offset(
-                            0.0,
-                            3.0,
-                          ),
-                        ),
-                    ]),
-              )
-            : Container(
-                height: 8,
-                width: 8,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.transparent)),
-      ],
-    );
-  }
-
-  isSelectedOption(index) {
-    var previousIndex = isselected.indexOf(true);
-    isselected[index] = true;
-    isselected[previousIndex] = false;
-  }
-
-  var selectedOption = 2;
-  List alloptions = [
+  final iconList = <IconData>[
+    Icons.settings,
+    Icons.add,
+    Icons.message,
+    Icons.person,
+  ];
+  final screen = [
     SettingsPage(),
     PostImage(),
     ChatScreen(),
     Profile(
       uidforprofile: auth.currentUser.uid,
     ),
-    Stories()
+   
   ];
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
-  List isselected = [false, false, true, false, false];
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      extendBody: true,
+      backgroundColor: Color(4278190106),
+      body: NavigationforentrepreneurScreen(
+        screen[_bottomNavIndex],
+      ),
+      floatingActionButton: ScaleTransition(
+        scale: animation,
+        child: FloatingActionButton(
+          heroTag: "add",
+          elevation: 8,
+          backgroundColor: Colors.blue[800],
+          child: Icon(
+            Icons.explore,
+            color: Color(4278190106),
+          ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => Stories()));
+          },
+        ),
+      ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+        itemCount: iconList.length,
+        tabBuilder: (int index, bool isActive) {
+          final color = isActive ? Colors.white : Color(4278190106);
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15, left: 15),
+                child: Icon(
+                  iconList[index],
+                  size: 24,
+                  color: color,
+                ),
+              ),
+              isActive
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 50, left: 25),
+                      child: Container(
+                        height: 2,
+                        width: 2,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white,
+                                blurRadius: 6.0,
+                                spreadRadius: 10.0,
+                                offset: Offset(
+                                  0.0,
+                                  3.0,
+                                ),
+                              ),
+                            ]),
+                      ),
+                    )
+                  : Container(
+                      height: 8,
+                      width: 8,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.transparent)),
+            ],
+          );
+        },
+        backgroundColor: Colors.blue[900],
+        activeIndex: _bottomNavIndex,
+        notchAndCornersAnimation: animation,
+        splashSpeedInMilliseconds: 00,
+        notchSmoothness: NotchSmoothness.defaultEdge,
+        gapLocation: GapLocation.center,
+        leftCornerRadius: 17,
+        rightCornerRadius: 17,
+        onTap: (index) => setState(() => _bottomNavIndex = index),
+      ),
+    );
+  }
+}
+
+class NavigationforentrepreneurScreen extends StatefulWidget {
+  final Widget iconData;
+
+  NavigationforentrepreneurScreen(this.iconData) : super();
+
+  @override
+  _NavigationforentrepreneurScreenState createState() =>
+      _NavigationforentrepreneurScreenState();
+}
+
+class _NavigationforentrepreneurScreenState
+    extends State<NavigationforentrepreneurScreen>
+    with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> animation;
+
+  @override
+  void didUpdateWidget(NavigationforentrepreneurScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.iconData != widget.iconData) {
+      _startAnimation();
+    }
+  }
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 0),
+    );
+    animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+    _controller.forward();
+    super.initState();
+  }
+
+  _startAnimation() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 0),
+    );
+    animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.white,
+      child: Center(
+        child: CircularRevealAnimation(
+            animation: animation,
+            centerOffset: Offset(80, 80),
+            maxRadius: MediaQuery.of(context).size.longestSide * 1.1,
+            child: Container(
+              child: widget.iconData,
+            )),
+      ),
+    );
+  }
+}
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
 }

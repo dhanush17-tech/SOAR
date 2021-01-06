@@ -1,5 +1,6 @@
 import 'package:SOAR/auth/record.dart';
 import 'package:SOAR/screens/feed.dart';
+import 'package:SOAR/screens/start_entrepreneur.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:SOAR/start.dart';
+
+import 'login.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -547,16 +550,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
             "usertype": usertype,
           });
         }
-        _ensureLoggedIn(_auth.currentUser.email);
-
-        Navigator.pop(context);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-          return Start();
-        }));
+        _ensureLoggedIn(_auth.currentUser.email).then((value) async {
+          await _usertype();
+          gotostartwithdb();
+        });
       });
     }).catchError((err) {});
 
     //print(result);
+  }
+
+  Future<void> _usertype() async {
+    try {
+      await Firestore.instance
+          .collection("Users")
+          .document(auth.currentUser.uid)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          setState(() {
+            usertype_db = value.data()["usertype"];
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
+  String usertype_db;
+
+  gotostartwithdb() {
+    if (usertype_db == "investor") {
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (_) => Home()), (route) => false);
+    }
+
+    if (usertype_db == "entrepreneur") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
+    }
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

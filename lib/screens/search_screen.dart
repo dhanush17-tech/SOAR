@@ -77,8 +77,9 @@ class _SearchState extends State<Search> {
   }
 
   @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return new Scaffold(
         backgroundColor: Color(4278190106),
@@ -165,143 +166,16 @@ class _SearchState extends State<Search> {
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         return snapshot.data != null
                             ? ListView(
+                                scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 children: snapshot.data.documents
                                     .map<Widget>((DocumentSnapshot document) {
                                   return Column(
                                     children: [
-                                      new GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                      milliseconds: 500),
-                                                  pageBuilder: (ctx, ani, i) =>
-                                                      TextScreen(
-                                                        id: document[
-                                                            "uid_entrepreneur"],
-                                                        dpurl: document[
-                                                            "location"],
-                                                        uid: document["uid"],
-                                                        name: document["name"],
-                                                      )));
-                                        },
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 30,
-                                            ),
-                                            Material(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                elevation: 20,
-                                                child: Container(
-                                                  height: 70,
-                                                  width: 70,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      color: Color(4278272638),
-                                                      image: document[
-                                                                  "location"] ==
-                                                              null
-                                                          ? DecorationImage(
-                                                              image: AssetImage(
-                                                                  "assets/unknown.png"),
-                                                              fit: BoxFit.fill)
-                                                          : DecorationImage(
-                                                              image: NetworkImage(
-                                                                  document[
-                                                                      "location"]),
-                                                              fit:
-                                                                  BoxFit.fill)),
-                                                )),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  height: 50,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          top: 16,
-                                                        ),
-                                                        child: Text(
-                                                            document["name"],
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 23,
-                                                              color:
-                                                                  Colors.white,
-                                                            ))),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  document["tagline"],
-                                                  style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 15,
-                                                    color: Color(
-                                                      4278228470,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      )
-                                    ],
-                                  );
-                                }).toList())
-                            : Container();
-                      }),
-                )
-              : Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: (searchString == null ||
-                              searchString.trim() == "")
-                          ? Firestore.instance
-                              .collection("Users")
-                              .document(auth.currentUser.uid)
-                              .collection("followers")
-                              .snapshots()
-                          : Firestore.instance
-                              .collection("Users")
-                              .document(auth.currentUser.uid)
-                              .collection("followers")
-                              .where("searchkey", arrayContains: searchString)
-                              .snapshots(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        return snapshot.data != null
-                            ? Column(
-                                children: [
-                                  ListView(
-                                      shrinkWrap: true,
-                                      children: snapshot.data.documents
-                                          .map<Widget>(
-                                              (DocumentSnapshot document) {
-                                        return new GestureDetector(
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: new GestureDetector(
                                           onTap: () {
                                             Navigator.push(
                                                 context,
@@ -313,10 +187,10 @@ class _SearchState extends State<Search> {
                                                             i) =>
                                                         TextScreen(
                                                           id: document[
-                                                              "uid"],
+                                                              "uid_entrepreneur"],
                                                           dpurl: document[
                                                               "location"],
-                                                          uid: document["investor_uid"],
+                                                          uid: document["uid"],
                                                           name:
                                                               document["name"],
                                                         )));
@@ -406,12 +280,168 @@ class _SearchState extends State<Search> {
                                               )
                                             ],
                                           ),
-                                        );
-                                      }).toList()),
-                                  SizedBox(
-                                    height: 20,
-                                  )
-                                ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  );
+                                }).toList())
+                            : Container();
+                      }),
+                )
+              : Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: (searchString == null ||
+                              searchString.trim() == "")
+                          ? Firestore.instance
+                              .collection("Users")
+                              .document(auth.currentUser.uid)
+                              .collection("followers")
+                              .snapshots()
+                          : Firestore.instance
+                              .collection("Users")
+                              .document(auth.currentUser.uid)
+                              .collection("followers")
+                              .where("searchkey", arrayContains: searchString)
+                              .snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return snapshot.data != null
+                            ? Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Column(
+                                  children: [
+                                    ListView(
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        children: snapshot.data.documents
+                                            .map<Widget>(
+                                                (DocumentSnapshot document) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: new GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                        transitionDuration:
+                                                            Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        pageBuilder:
+                                                            (ctx, ani, i) =>
+                                                                TextScreen(
+                                                                  id: document[
+                                                                      "uid"],
+                                                                  dpurl: document[
+                                                                      "location"],
+                                                                  uid: document[
+                                                                      "investor_uid"],
+                                                                  name: document[
+                                                                      "name"],
+                                                                )));
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Material(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      elevation: 20,
+                                                      child: Container(
+                                                        height: 70,
+                                                        width: 70,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            color: Color(
+                                                                4278272638),
+                                                            image: document[
+                                                                        "location"] ==
+                                                                    null
+                                                                ? DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "assets/unknown.png"),
+                                                                    fit: BoxFit
+                                                                        .fill)
+                                                                : DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        document[
+                                                                            "location"]),
+                                                                    fit: BoxFit
+                                                                        .fill)),
+                                                      )),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        height: 50,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.55,
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                top: 16,
+                                                              ),
+                                                              child: Text(
+                                                                  document[
+                                                                      "name"],
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        23,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ))),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        document["tagline"],
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 15,
+                                                          color: Color(
+                                                            4278228470,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }).toList()),
+                                    SizedBox(
+                                      height: 30,
+                                    )
+                                  ],
+                                ),
                               )
                             : Container();
                       }),

@@ -25,12 +25,15 @@ class _StoriesState extends State<Stories> {
 
     man();
 
+    setState(() {});
+
     print(imgList);
   }
 
   @override
   void dispose() {
     super.dispose();
+    storyController.dispose();
   }
 
   List imgList = [];
@@ -60,7 +63,7 @@ class _StoriesState extends State<Stories> {
       uidList.map((e) {
         Firestore.instance.collection("Users").document(e).get().then((value) {
           dpurl.addAll(value.data()["location"]);
-        }); 
+        });
       });
       print(uidList);
       print(dpurl);
@@ -91,9 +94,7 @@ class _StoriesState extends State<Stories> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/backpng.png"), fit: BoxFit.fill)),
+        color: Color(4278190106),
         child: Column(
           children: [
             Padding(
@@ -123,16 +124,19 @@ class _StoriesState extends State<Stories> {
                                   MaterialPageRoute(
                                       builder: (_) => StoriesAdd()));
                             },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                                child: Icon(
-                                  Icons.add_rounded,
-                                  color: Color(4278190106),
-                                  size: 30,
-                                )),
+                            child: Hero(
+                              tag: "add",
+                                                          child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    color: Color(4278190106),
+                                    size: 30,
+                                  )),
+                            ),
                           )
                         ],
                       ))),
@@ -283,7 +287,8 @@ class _StoriesState extends State<Stories> {
                                                                                               uidforprofile: snapshot.data["uid"],
                                                                                             )));
                                                                               },
-                                                                              child: CircleAvatar(
+                                                                              child: CircleAvatar(                                                                                  backgroundColor: Color(4278272638),
+
                                                                                 backgroundImage: NetworkImage(snapshot.data["location"]),
                                                                               ),
                                                                             )
@@ -296,7 +301,8 @@ class _StoriesState extends State<Stories> {
                                                                                               uidforprofile: snapshot.data["uid"],
                                                                                             )));
                                                                               },
-                                                                              child: CircleAvatar(
+                                                                              child: CircleAvatar(                                                                                  backgroundColor: Color(4278272638),
+
                                                                                 backgroundImage: AssetImage("assets/unknown.png"),
                                                                               ),
                                                                             ),

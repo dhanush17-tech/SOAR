@@ -33,52 +33,157 @@ class _StoriesAddState extends State<StoriesAdd> {
   bool show;
   bool man = false;
   imagepic() async {
-    File image = await ImagePicker.pickVideo(
-      source: ImageSource.gallery,
-    );
-    if (image.path.isEmpty != null) {
-      setState(() {
-        man = true;
-      });
-    }
-    final info = await VideoCompress.compressVideo(
-      image.path,
-      quality: VideoQuality.LowQuality,
+    File image;
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Container(
+              height: 170,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: LinearGradient(
+                    colors: [Color(4278857608), Color(4278256230)],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      image = await ImagePicker.pickVideo(
+                        source: ImageSource.camera,
+                      );
+                      Navigator.of(context, rootNavigator: true).pop();
+                      if (image.path.isEmpty != null) {
+                        setState(() {
+                          issubmitted = true;
+                          man = true;
+                        });
+                      }
+                      final info = await VideoCompress.compressVideo(
+                        image.path,
+                        quality: VideoQuality.LowQuality,
 
-      deleteOrigin: false,
-      includeAudio: true, // It's false by default
-    );
-    setState(() {
-      image = info.file;
-    });
+                        deleteOrigin: false,
+                        includeAudio: true, // It's false by default
+                      );
+                      setState(() {
+                        image = info.file;
+                      });
 
-    if (image != null) {
-      imageList.add(image);
-      final uint8list = await VideoThumbnail.thumbnailFile(
-        video: image.path,
-        imageFormat: ImageFormat.PNG,
-        maxWidth:
-            128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-        quality: 25,
-      );
-      thumbnail.add(uint8list);
-      print(thumbnail);
-    }
-    show = true;
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        man = false;
-      });
-      setState(() {
-        show = false;
-      });
-    });
-    if (info.duration != null) duration.add(info.duration);
-    print("ddfdff");
-    print(info.duration);
-    print(man);
-    print(show);
-    setStateIfMounted();
+                      if (image != null) {
+                        imageList.add(image);
+                        final uint8list = await VideoThumbnail.thumbnailFile(
+                          video: image.path,
+                          imageFormat: ImageFormat.PNG,
+                          maxWidth:
+                              128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+                          quality: 25,
+                        );
+                        thumbnail.add(uint8list);
+                        print(thumbnail);
+                      }
+                      show = true;
+                      Future.delayed(Duration(seconds: 3), () {
+                        setState(() {
+                          man = false;
+                        });
+                        setState(() {
+                          show = false;
+                          issubmitted = false;
+                        });
+                      });
+                      if (info.duration != null) duration.add(info.duration);
+                      print("ddfdff");
+                      print(info.duration);
+                      print(man);
+                      print(show);
+                      setStateIfMounted();
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Color(4278190106)),
+                      child: Icon(
+                        Icons.camera,
+                        color: Color(4278228470),
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      image = await ImagePicker.pickVideo(
+                        source: ImageSource.gallery,
+                      );
+                      Navigator.of(context, rootNavigator: true).pop();
+                      if (image.path.isEmpty != null) {
+                        setState(() {
+                          issubmitted = true;
+                          man = true;
+                        });
+                      }
+                      final info = await VideoCompress.compressVideo(
+                        image.path,
+                        quality: VideoQuality.LowQuality,
+
+                        deleteOrigin: false,
+                        includeAudio: true, // It's false by default
+                      );
+                      setState(() {
+                        image = info.file;
+                      });
+
+                      if (image != null) {
+                        imageList.add(image);
+                        final uint8list = await VideoThumbnail.thumbnailFile(
+                          video: image.path,
+                          imageFormat: ImageFormat.PNG,
+                          maxWidth:
+                              128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+                          quality: 25,
+                        );
+                        thumbnail.add(uint8list);
+                        print(thumbnail);
+                      }
+                      show = true;
+                      Future.delayed(Duration(seconds: 3), () {
+                        setState(() {
+                          man = false;
+                        });
+                        setState(() {
+                          show = false;
+                          issubmitted = false;
+                        });
+                      });
+                      if (info.duration != null) duration.add(info.duration);
+                      print("ddfdff");
+                      print(info.duration);
+                      print(man);
+                      print(show);
+                      setStateIfMounted();
+                    },
+                    child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Color(4278190106)),
+                        child: Image.asset(
+                          "assets/gall.png",
+                          color: Color(4278228470),
+                        )),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   _nowuserdetails() async {
@@ -124,7 +229,6 @@ class _StoriesAddState extends State<StoriesAdd> {
     }
   }
 
-  VideoPlayerController _controller;
   @override
   void initState() {
     // TODO: implement initState
@@ -133,15 +237,11 @@ class _StoriesAddState extends State<StoriesAdd> {
     _nowuserdetails();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   void setStateIfMounted() {
     if (mounted) setState(() {});
   }
+
+  bool issubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +253,7 @@ class _StoriesAddState extends State<StoriesAdd> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/backpng.png"), fit: BoxFit.fill)),
+        color: Color(4278190106),
         child: SafeArea(
           child: Stack(
             children: [
@@ -169,7 +267,7 @@ class _StoriesAddState extends State<StoriesAdd> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 40, top: 10),
+                        padding: const EdgeInsets.only(left: 20, top: 10),
                         child: Text(
                           "Upload Your Story",
                           style: TextStyle(
@@ -181,89 +279,101 @@ class _StoriesAddState extends State<StoriesAdd> {
                     ),
                     thumbnail.length == 0
                         ? Container()
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: ((thumbnail.length) / 2).round(),
-                            itemBuilder: (ctx, i) {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 30),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(children: [
-                                      TweenAnimationBuilder(
-                                          tween:
-                                              Tween<double>(begin: 0, end: 1),
-                                          duration: Duration(seconds: 1),
-                                          builder: (ctx, value, _) {
-                                            return Opacity(
-                                              opacity: value,
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                          color:
-                                                              Color(4278228470),
-                                                        )),
-                                                    height: 200,
-                                                    width: 150,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: Image.file(
-                                                          File(
-                                                              thumbnail[i * 2]),
-                                                          fit: BoxFit.fill),
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 150),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height*0.78,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: ((thumbnail.length) / 2).round(),
+                                  itemBuilder: (ctx, i) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(top: 30),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(children: [
+                                            TweenAnimationBuilder(
+                                                tween: Tween<double>(
+                                                    begin: 0, end: 1),
+                                                duration: Duration(seconds: 1),
+                                                builder: (ctx, value, _) {
+                                                  return Opacity(
+                                                    opacity: value,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  border:
+                                                                      Border.all(
+                                                                    color: Color(
+                                                                        4278228470),
+                                                                  )),
+                                                          height: 200,
+                                                          width: 150,
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(10),
+                                                            child: Image.file(
+                                                                File(thumbnail[
+                                                                    i * 2]),
+                                                                fit: BoxFit.fill),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 20,
+                                                        )
+                                                      ],
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 20,
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          })
-                                    ]),
-                                    if (i * 2 + 1 < thumbnail.length)
-                                      TweenAnimationBuilder(
-                                          tween:
-                                              Tween<double>(begin: 0, end: 1),
-                                          duration: Duration(seconds: 1),
-                                          builder: (ctx, value, _) {
-                                            return Opacity(
-                                              opacity: value,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                      color: Color(4278228470),
-                                                    )),
-                                                height: 200,
-                                                width: 150,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: Image.file(
-                                                      File(
-                                                          thumbnail[i * 2 + 1]),
-                                                      fit: BoxFit.fill),
-                                                ),
-                                              ),
-                                            );
-                                          })
-                                  ],
-                                ),
-                              );
-                            }),
+                                                  );
+                                                })
+                                          ]),
+                                          if (i * 2 + 1 < thumbnail.length)
+                                            TweenAnimationBuilder(
+                                                tween: Tween<double>(
+                                                    begin: 0, end: 1),
+                                                duration: Duration(seconds: 1),
+                                                builder: (ctx, value, _) {
+                                                  return Opacity(
+                                                    opacity: value,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          border: Border.all(
+                                                            color:
+                                                                Color(4278228470),
+                                                          )),
+                                                      height: 200,
+                                                      width: 150,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        child: Image.file(
+                                                            File(thumbnail[
+                                                                i * 2 + 1]),
+                                                            fit: BoxFit.fill),
+                                                      ),
+                                                    ),
+                                                  );
+                                                })
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -317,9 +427,11 @@ class _StoriesAddState extends State<StoriesAdd> {
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
                     backgroundColor: Color(4278228470),
-                    onPressed: () async {
-                      await imagepic();
-                    },
+                    onPressed: issubmitted == true
+                        ? null
+                        : () async {
+                            await imagepic();
+                          },
                     child: Icon(
                       Icons.add,
                       color: Color(4278190106),
@@ -339,37 +451,43 @@ class _StoriesAddState extends State<StoriesAdd> {
                       color: Colors.white.withOpacity(0.23),
                       elevation: 50,
                       child: RaisedButton(
-                        onPressed: () async {
-                          setState(() {
-                            man = true;
-                          });
-                          await uploadProfilePicture().then((value) async {
-                            await Firestore.instance.collection("stories").add({
-                              "storie_images": imgeurls,
-                              "usertype": usertype,
-                              "name": name,
-                              "location": location,
-                              "uid": auth.currentUser.uid,
-                              "duration": duration
-                            }).then((value) {
-                              print("done");
+                        onPressed: issubmitted == false
+                            ? () async {
+                                setState(() {
+                                  issubmitted = true;
+                                  man = true;
+                                });
+                                await uploadProfilePicture()
+                                    .then((value) async {
+                                  await Firestore.instance
+                                      .collection("stories")
+                                      .add({
+                                    "storie_images": imgeurls,
+                                    "usertype": usertype,
+                                    "name": name,
+                                    "location": location,
+                                    "uid": auth.currentUser.uid,
+                                    "duration": duration
+                                  }).then((value) {
+                                    print("done");
 
-                              setState(() {
-                                show = true;
-                              });
-                              Future.delayed(Duration(seconds: 3), () {
-                                setState(() {
-                                  show = false;
+                                    setState(() {
+                                      show = true;
+                                    });
+                                    Future.delayed(Duration(seconds: 3), () {
+                                      setState(() {
+                                        show = false;
+                                      });
+                                      setState(() {
+                                        man = false;
+                                      });
+                                    }).then((value) {
+                                      Navigator.pop(context);
+                                    });
+                                  });
                                 });
-                                setState(() {
-                                  man = false;
-                                });
-                              }).then((value) {
-                                Navigator.pop(context);
-                              });
-                            });
-                          });
-                        },
+                              }
+                            : null,
                         color: Colors.white.withOpacity(0.23),
                         textColor: Color(4278228470),
                         child: Container(

@@ -134,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   elevation: 8.0,
                                   shape: CircleBorder(),
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.grey,
+                                                                                  backgroundColor: Color(4278272638),
                                     backgroundImage: AssetImage(
                                       "assets/unknown.png",
                                     ),
@@ -194,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   elevation: 8.0,
                                   shape: CircleBorder(),
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.grey,
+                                                                                  backgroundColor: Color(4278272638),
                                     backgroundImage: NetworkImage(location),
                                     radius: 70.0,
                                   ),

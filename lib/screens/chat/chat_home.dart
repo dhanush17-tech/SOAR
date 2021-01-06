@@ -97,9 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/backpng.png"), fit: BoxFit.fill)),
+        color: Color(4278190106),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -132,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: CircleAvatar(
                                     backgroundImage:
                                         NetworkImage(snapshot.data["location"]),
-                                    backgroundColor: Colors.grey,
+                                    backgroundColor: Color(4278272638),
                                     radius: 20,
                                   ),
                                 )
@@ -152,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: CircleAvatar(
                                     backgroundImage:
                                         AssetImage("assets/unknown.png"),
-                                    backgroundColor: Colors.grey,
+                                    backgroundColor: Color(4278272638),
                                     radius: 20,
                                   ),
                                 )
@@ -171,7 +169,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: CircleAvatar(
                                 backgroundImage:
                                     AssetImage("assets/unknown.png"),
-                                backgroundColor: Colors.grey,
+                                backgroundColor: Color(4278272638),
                                 radius: 20,
                               ),
                             );
@@ -269,122 +267,128 @@ class _ChatScreenState extends State<ChatScreen> {
                                           AsyncSnapshot snapshot) {
                                         var man = snapshot.data;
                                         return snapshot.data != null
-                                            ? Container(
-                                                padding: EdgeInsets.all(10),
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(0.27),
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        PageRouteBuilder(
-                                                            transitionDuration:
-                                                                Duration(
-                                                                    milliseconds:
-                                                                        500),
-                                                            pageBuilder: (ctx,
-                                                                    ani,
-                                                                    inde) =>
-                                                                TextScreen(
-                                                                  widgeti: i,
-                                                                  id: course[
-                                                                      "uid_entrepreneur"],
-                                                                  dpurl: man[
-                                                                      "location"],
-                                                                  uid: course[
-                                                                      "uid"],
-                                                                  name: man[
-                                                                      "name"],
-                                                                )));
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Hero(
-                                                        tag: "good+$i",
-                                                        child: Container(
-                                                          height: 80,
-                                                          width: 80,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15),
-                                                              color: Color(
-                                                                  4278272638),
-                                                              image: man["location"] ==
-                                                                      null
-                                                                  ? DecorationImage(
-                                                                      image: AssetImage(
-                                                                          "assets/unknown.png"),
-                                                                      fit: BoxFit
-                                                                          .fill)
-                                                                  : DecorationImage(
-                                                                      image: NetworkImage(man[
-                                                                          "location"]),
-                                                                      fit: BoxFit
-                                                                          .fill)),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            height: 50,
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                .60,
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              scrollDirection:
-                                                                  Axis.horizontal,
-                                                              child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                    top: 16,
-                                                                  ),
-                                                                  child: Text(
-                                                                      man[
-                                                                          "name"],
-                                                                      style: GoogleFonts
-                                                                          .poppins(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                        fontSize:
-                                                                            25,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ))),
-                                                            ),
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: 10, left: 10),
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: 10, left: 10),
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(0.27),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                              transitionDuration:
+                                                                  Duration(
+                                                                      milliseconds:
+                                                                          500),
+                                                              pageBuilder: (ctx,
+                                                                      ani,
+                                                                      inde) =>
+                                                                  TextScreen(
+                                                                    widgeti: i,
+                                                                    id: course[
+                                                                        "uid_entrepreneur"],
+                                                                    dpurl: man[
+                                                                        "location"],
+                                                                    uid: course[
+                                                                        "uid"],
+                                                                    name: man[
+                                                                        "name"],
+                                                                  )));
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Hero(
+                                                          tag: "good+$i",
+                                                          child: Container(
+                                                            height: 80,
+                                                            width: 80,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                                color: Color(
+                                                                    4278272638),
+                                                                image: man["location"] ==
+                                                                        null
+                                                                    ? DecorationImage(
+                                                                        image: AssetImage(
+                                                                            "assets/unknown.png"),
+                                                                        fit: BoxFit
+                                                                            .fill)
+                                                                    : DecorationImage(
+                                                                        image: NetworkImage(man[
+                                                                            "location"]),
+                                                                        fit: BoxFit
+                                                                            .fill)),
                                                           ),
-                                                          Text(
-                                                            man["tagline"],
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 15,
-                                                              color: Color(
-                                                                4278228470,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 15,
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              height: 50,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  .57,
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                child: Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .only(
+                                                                      top: 16,
+                                                                    ),
+                                                                    child: Text(
+                                                                        man[
+                                                                            "name"],
+                                                                        style: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              25,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ))),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                            Text(
+                                                              man["tagline"],
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 15,
+                                                                color: Color(
+                                                                  4278228470,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               )
@@ -428,118 +432,134 @@ class _ChatScreenState extends State<ChatScreen> {
                                           AsyncSnapshot snapshot) {
                                         var cool = snapshot.data;
                                         return snapshot.data != null
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      PageRouteBuilder(
-                                                          transitionDuration:
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          pageBuilder: (ctx,
-                                                                  ani, inde) =>
-                                                              TextScreen(
-                                                                widgeti: i,
-                                                                id: auth
-                                                                    .currentUser
-                                                                    .uid,
-                                                                uid: course[
-                                                                    "investor_uid"],
-                                                                name: cool[
-                                                                    "name"],
-                                                                dpurl: cool[
-                                                                    "location"],
-                                                              )));
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Material(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        elevation: 20,
-                                                        child: Hero(
-                                                          tag: "good+$i",
-                                                          child: Container(
-                                                            height: 80,
-                                                            width: 80,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            15),
-                                                                color: Color(
-                                                                    4278272638),
-                                                                image: cool["location"] ==
-                                                                        null
-                                                                    ? DecorationImage(
-                                                                        image: AssetImage(
-                                                                            "assets/unknown.png"),
-                                                                        fit: BoxFit
-                                                                            .fill)
-                                                                    : DecorationImage(
-                                                                        image: NetworkImage(cool[
-                                                                            "location"]),
-                                                                        fit: BoxFit
-                                                                            .fill)),
-                                                          ),
-                                                        )),
-                                                    SizedBox(
-                                                      width: 15,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          height: 50,
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              .65,
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                  top: 16,
-                                                                ),
-                                                                child: Text(
-                                                                    cool[
+                                            ? Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: 10, left: 10),
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: 10, left: 10),
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(0.27),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                              transitionDuration:
+                                                                  Duration(
+                                                                      milliseconds:
+                                                                          500),
+                                                              pageBuilder: (ctx,
+                                                                      ani,
+                                                                      inde) =>
+                                                                  TextScreen(
+                                                                    widgeti: i,
+                                                                    id: auth
+                                                                        .currentUser
+                                                                        .uid,
+                                                                    uid: course[
+                                                                        "investor_uid"],
+                                                                    name: cool[
                                                                         "name"],
-                                                                    style: GoogleFonts
-                                                                        .poppins(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          25,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ))),
-                                                          ),
+                                                                    dpurl: cool[
+                                                                        "location"],
+                                                                  )));
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Material(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            elevation: 20,
+                                                            child: Hero(
+                                                              tag: "good+$i",
+                                                              child: Container(
+                                                                height: 80,
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                    color: Color(
+                                                                        4278272638),
+                                                                    image: cool["location"] ==
+                                                                            null
+                                                                        ? DecorationImage(
+                                                                            image: AssetImage(
+                                                                                "assets/unknown.png"),
+                                                                            fit: BoxFit
+                                                                                .fill)
+                                                                        : DecorationImage(
+                                                                            image:
+                                                                                NetworkImage(cool["location"]),
+                                                                            fit: BoxFit.fill)),
+                                                              ),
+                                                            )),
+                                                        SizedBox(
+                                                          width: 15,
                                                         ),
-                                                        Text(
-                                                          cool["tagline"],
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 15,
-                                                            color: Color(
-                                                              4278228470,
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              height: 56,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  .50,
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                child: Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .only(
+                                                                      top: 16,
+                                                                    ),
+                                                                    child: Text(
+                                                                        cool[
+                                                                            "name"],
+                                                                        style: GoogleFonts
+                                                                            .poppins(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              25,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ))),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
+                                                            Text(
+                                                              cool["tagline"],
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 15,
+                                                                color: Color(
+                                                                  4278228470,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
                                                       ],
-                                                    )
-                                                  ],
+                                                    ),
+                                                  ),
                                                 ),
                                               )
                                             : Container();

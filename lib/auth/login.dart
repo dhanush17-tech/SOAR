@@ -32,8 +32,8 @@ class _LoginscreenState extends State<Loginscreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   gotostart() {
     if (usertype == "investor") {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => Start()), (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (_) => Home()), (route) => false);
     }
 
     if (usertype == "entrepreneur") {
@@ -61,8 +61,8 @@ class _LoginscreenState extends State<Loginscreen> {
 
   gotostartwithdb() {
     if (usertype_db == "investor") {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => Start()), (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (_) => Home()), (route) => false);
     }
 
     if (usertype_db == "entrepreneur") {
@@ -577,7 +577,7 @@ class _LoginscreenState extends State<Loginscreen> {
                       builder: (ctx, value, d) {
                         return TweenAnimationBuilder(
                             tween: Tween<double>(begin: 0, end: 1),
-                            duration: Duration(milliseconds: 1500),
+                            duration: Duration(milliseconds: 1000),
                             builder: (ctx, va, _) {
                               return Opacity(
                                 opacity: va,
@@ -651,7 +651,6 @@ class _LoginscreenState extends State<Loginscreen> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                    
                                       Container(
                                         width: 3,
                                         height: 3,
@@ -819,7 +818,6 @@ class _LoginscreenState extends State<Loginscreen> {
                                             shape: BoxShape.circle,
                                             color: Color(4278228470)),
                                       ),
-
                                     ],
                                   )
                                 ],
