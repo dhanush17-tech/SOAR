@@ -66,71 +66,77 @@ class _SeeMoreState extends State<SeeMore> {
                     .document(widget.seemore)
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (BuildContext context, int i) {
-                      var snap = snapshot.data;
-                      return StreamBuilder(
-                        stream: Firestore.instance
-                            .collection("Users")
-                            .document(snap["uid"])
-                            .snapshots(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          var cool = snapshot.data;
-                          return Row(
-                            children: [
-                              cool["location"] == null
-                                  ? Stack(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                            "assets/unknown.png",
+                  return snapshot.data == null
+                      ? Container()
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 1,
+                          itemBuilder: (BuildContext context, int i) {
+                            var snap = snapshot.data;
+                            return StreamBuilder(
+                              stream: Firestore.instance
+                                  .collection("Users")
+                                  .document(snap["uid"])
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                var cool = snapshot.data;
+                                return cool==null?Container(): Row(
+                                  children: [
+                                    cool["location"] == null
+                                        ? Stack(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: AssetImage(
+                                                  "assets/unknown.png",
+                                                ),
+                                                backgroundColor:
+                                                    Color(4278272638),
+                                                radius: 45,
+                                              ),
+                                            ],
+                                          )
+                                        : Stack(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    cool["location"]),
+                                                backgroundColor:
+                                                    Color(4278272638),
+                                                radius: 55,
+                                              ),
+                                            ],
                                           ),
-                                          backgroundColor: Color(4278272638),
-                                          radius: 45,
-                                        ),
-                                      ],
-                                    )
-                                  : Stack(
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(cool["location"]),
-                                                                                  backgroundColor: Color(4278272638),
-                                          radius: 55,
+                                        Text(
+                                          snap["title"],
+                                          style: TextStyle(
+                                              fontSize: 75,
+                                              fontFamily: "good",
+                                              color: Color(4278228470)),
+                                        ),
+                                        Text(
+                                          cool["name"],
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              fontFamily: "good",
+                                              color: Colors.white
+                                                  .withOpacity(0.5)),
                                         ),
                                       ],
                                     ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    snap["title"],
-                                    style: TextStyle(
-                                        fontSize: 75,
-                                        fontFamily: "good",
-                                        color: Color(4278228470)),
-                                  ),
-                                  Text(
-                                    cool["name"],
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontFamily: "good",
-                                        color: Colors.white.withOpacity(0.5)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  );
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
                 },
               ),
             ),
@@ -213,8 +219,9 @@ class _SeeMoreState extends State<SeeMore> {
                                                                     backgroundImage:
                                                                         NetworkImage(
                                                                             man["location"]),
-                                                                                                                                                    backgroundColor: Color(4278272638),
-
+                                                                    backgroundColor:
+                                                                        Color(
+                                                                            4278272638),
                                                                     radius: 25,
                                                                   ),
                                                                 ),
@@ -264,7 +271,9 @@ class _SeeMoreState extends State<SeeMore> {
                                 )
                               : Container();
                         }),
-                        SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
               ),

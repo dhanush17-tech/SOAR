@@ -138,15 +138,13 @@ class _ProfileState extends State<Profile> {
           .document(widget.uidforprofile)
           .get()
           .then((value) {
-        if (value.exists) {
-          setState(() {
-            nameChange.text = value.data()["name"];
-            websiteUrlChnage.text = value.data()["websiteurl"];
-            taglineChange.text = value.data()["tagline"];
-            usertype = value.data()["usertype"];
-            location = value.data()["location"];
-          });
-        }
+        setState(() {
+          nameChange.text = value.data()["name"];
+          websiteUrlChnage.text = value.data()["websiteurl"];
+          taglineChange.text = value.data()["tagline"];
+          usertype = value.data()["usertype"];
+          location = value.data()["location"];
+        });
       });
     } catch (e) {}
   }
@@ -251,9 +249,11 @@ class _ProfileState extends State<Profile> {
                     padding: EdgeInsets.only(top: 50, left: 20),
                     child: location == null
                         ? GestureDetector(
-                            onTap: () async {
-                              await uploadProfilePicture();
-                            },
+                            onTap: widget.uidforprofile != auth.currentUser.uid
+                                ? null
+                                : () async {
+                                    await uploadProfilePicture();
+                                  },
                             child: Container(
                               width: 200,
                               height: 200,
@@ -269,42 +269,48 @@ class _ProfileState extends State<Profile> {
                                       radius: 85.0,
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 120,
-                                    child: FittedBox(
-                                      child: Container(
-                                        width: 45,
-                                        height: 45,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blue,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              spreadRadius: 10,
-                                              blurRadius: 20,
-                                              offset: Offset(0,
-                                                  3), // changes position of shadow
+                                  widget.uidforprofile == auth.currentUser.uid
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                            top: 130,
+                                            left: 120,
+                                          ),
+                                          child: FittedBox(
+                                            child: Container(
+                                              width: 45,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.blue,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 10,
+                                                    blurRadius: 20,
+                                                    offset: Offset(0,
+                                                        3), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 30,
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        child: Icon(
-                                          Icons.edit,
-                                          size: 30,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),
                           )
                         : GestureDetector(
-                            onTap: () async {
-                              await uploadProfilePicture();
-                            },
+                            onTap: widget.uidforprofile == auth.currentUser.uid
+                                ? () async {
+                                    await uploadProfilePicture();
+                                  }
+                                : null,
                             child: Container(
                               width: 200,
                               height: 200,
@@ -318,34 +324,38 @@ class _ProfileState extends State<Profile> {
                                       radius: 85.0,
                                     ),
                                   ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 120,
-                                    child: FittedBox(
-                                      child: Container(
-                                        width: 45,
-                                        height: 45,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blue,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              spreadRadius: 10,
-                                              blurRadius: 20,
-                                              offset: Offset(0,
-                                                  3), // changes position of shadow
+                                  widget.uidforprofile == auth.currentUser.uid
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                            top: 130,
+                                            left: 120,
+                                          ),
+                                          child: FittedBox(
+                                            child: Container(
+                                              width: 45,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.blue,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 10,
+                                                    blurRadius: 20,
+                                                    offset: Offset(0,
+                                                        3), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 30,
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        child: Icon(
-                                          Icons.edit,
-                                          size: 30,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),
@@ -360,77 +370,82 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 100,
+                      height: 90,
                       child: Stack(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Positioned(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 0, right: 10),
-                                        child: auth.currentUser.uid !=
-                                                widget.uidforprofile
-                                            ? StreamBuilder(
-                                                stream: Firestore.instance
-                                                    .collection('Users')
-                                                    .document(
-                                                        "${widget.uidforprofile}")
-                                                    .snapshots(),
-                                                builder: (context, snapshot) {
-                                                  var userDocument =
-                                                      snapshot.data;
-                                                  return snapshot.data != null
-                                                      ? Text(
-                                                          userDocument[
-                                                                  "name"] ??
-                                                              "It may take some time....",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 55,
-                                                              fontFamily:
-                                                                  "good"),
-                                                        )
-                                                      : Container();
-                                                })
-                                            : Row(
-                                                children: [
-                                                  Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.75,
-                                                    child: TextFormField(
-                                                      controller: nameChange,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none),
-                                                      onChanged: (val) async {
-                                                        print(auth
-                                                            .currentUser.uid);
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('Users')
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 0, right: 10),
+                                      child: auth.currentUser.uid !=
+                                              widget.uidforprofile
+                                          ? StreamBuilder(
+                                              stream: Firestore.instance
+                                                  .collection('Users')
+                                                  .document(
+                                                      "${widget.uidforprofile}")
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                var userDocument = snapshot.data;
+                                                return snapshot.data != null
+                                                    ? Text(
+                                                        userDocument["name"] ??
+                                                            "It may take some time....",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 55,
+                                                            fontFamily: "good"),
+                                                      )
+                                                    : Container();
+                                              })
+                                          : Row(
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.75,
+                                                  child: TextFormField(
+                                                    controller: nameChange,
+                                                    decoration: InputDecoration(
+                                                        border: InputBorder.none),
+                                                    onChanged: (val) async {
+                                                      print(auth.currentUser.uid);
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('Users')
+                                                          .document(auth
+                                                              .currentUser.uid)
+                                                          .setData({
+                                                        "name": nameChange.text,
+                                                        "tagline":
+                                                            taglineChange.text,
+                                                        "websiteurl":
+                                                            websiteUrlChnage.text,
+                                                        "uid":
+                                                            auth.currentUser.uid,
+                                                        "location": location,
+                                                        "usertype": usertype
+                                                      }).then((value) =>
+                                                              print("done"));
+                                                      if (usertype ==
+                                                          "investor") {
+                                                        FirebaseFirestore.instance
+                                                            .collection(
+                                                                'Investor')
                                                             .document(auth
-                                                                .currentUser
-                                                                .uid)
+                                                                .currentUser.uid)
                                                             .setData({
-                                                          "name":
-                                                              nameChange.text,
+                                                          "name": nameChange.text,
                                                           "tagline":
-                                                              taglineChange
-                                                                  .text,
+                                                              taglineChange.text,
                                                           "websiteurl":
                                                               websiteUrlChnage
                                                                   .text,
@@ -438,361 +453,320 @@ class _ProfileState extends State<Profile> {
                                                               .currentUser.uid,
                                                           "location": location,
                                                           "usertype": usertype
-                                                        }).then((value) =>
-                                                                print("done"));
-                                                        if (usertype ==
-                                                            "investor") {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Investor')
-                                                              .document(auth
-                                                                  .currentUser
-                                                                  .uid)
-                                                              .setData({
-                                                            "name":
-                                                                nameChange.text,
-                                                            "tagline":
-                                                                taglineChange
-                                                                    .text,
-                                                            "websiteurl":
-                                                                websiteUrlChnage
-                                                                    .text,
-                                                            "uid": auth
-                                                                .currentUser
-                                                                .uid,
-                                                            "location":
-                                                                location,
-                                                            "usertype": usertype
-                                                          });
-                                                        }
-                                                        if (usertype ==
-                                                            "entrepreneur") {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Entrepreneur')
-                                                              .document(auth
-                                                                  .currentUser
-                                                                  .uid)
-                                                              .setData({
-                                                            "name":
-                                                                nameChange.text,
-                                                            "tagline":
-                                                                taglineChange
-                                                                    .text,
-                                                            "websiteurl":
-                                                                websiteUrlChnage
-                                                                    .text,
-                                                            "uid": auth
-                                                                .currentUser
-                                                                .uid,
-                                                            "location":
-                                                                location,
-                                                            "usertype": usertype
-                                                          });
-                                                        }
-                                                      },
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 55,
-                                                          fontFamily: "good"),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.09,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5),
-                                                    child: Icon(
-                                                      Icons.edit,
-                                                      color: Color(4278228470),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  currentusertype != "entrepreneur"
-                                      ? auth.currentUser.uid !=
-                                              widget.uidforprofile
-                                          ? isfollower == "no"
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 35, right: 10),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        List<String> spiltList =
-                                                            name.split(" ");
-                                                        List<String> indexList =
-                                                            [];
-                                                        for (int i = 0;
-                                                            i <
-                                                                spiltList
-                                                                    .length;
-                                                            i++) {
-                                                          for (int j = 0;
-                                                              j <
-                                                                  spiltList[i]
-                                                                          .length +
-                                                                      i;
-                                                              j++) {
-                                                            indexList.add(
-                                                                spiltList[i]
-                                                                    .substring(
-                                                                        0, j)
-                                                                    .toLowerCase());
-                                                          }
-                                                        }
-                                                        Firestore.instance
-                                                            .collection("Users")
-                                                            .document(auth
-                                                                .currentUser
-                                                                .uid)
+                                                        });
+                                                      }
+                                                      if (usertype ==
+                                                          "entrepreneur") {
+                                                        FirebaseFirestore.instance
                                                             .collection(
-                                                                "following")
-                                                            .document(widget
-                                                                .uidforprofile)
+                                                                'Entrepreneur')
+                                                            .document(auth
+                                                                .currentUser.uid)
                                                             .setData({
-                                                          "location": location,
-                                                          "name": name,
-                                                          "tagline": tagline,
-                                                          "usertype": usertype,
+                                                          "name": nameChange.text,
+                                                          "tagline":
+                                                              taglineChange.text,
                                                           "websiteurl":
-                                                              websiteurl,
+                                                              websiteUrlChnage
+                                                                  .text,
                                                           "uid": auth
                                                               .currentUser.uid,
-                                                          "uid_entrepreneur":
-                                                              widget
-                                                                  .uidforprofile,
-                                                          "searchkey": indexList
-                                                        }).then((value) {
-                                                          print("done");
-                                                          setState(() {
-                                                            _nowuserdetails();
-                                                            _fetchUserinfoForSettingsPage();
-                                                            checkfollowerexists();
-                                                            checkfor_rentrepreneur();
-                                                          });
+                                                          "location": location,
+                                                          "usertype": usertype
                                                         });
-
-                                                        List<String> otherList =
-                                                            nowuser_name
-                                                                .split(" ");
-                                                        List<String> ndexList =
-                                                            [];
-                                                        for (int m = 0;
-                                                            m <
-                                                                otherList
-                                                                    .length;
-                                                            m++) {
-                                                          for (int f = 0;
-                                                              f <
-                                                                  otherList[m]
-                                                                          .length +
-                                                                      m;
-                                                              f++) {
-                                                            ndexList.add(otherList[
-                                                                    m]
-                                                                .substring(0, f)
-                                                                .toLowerCase());
-                                                          }
+                                                      }
+                                                    },
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 55,
+                                                        fontFamily: "good"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.085,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      top: 5),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    color: Color(4278228470),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                currentusertype != "entrepreneur"
+                                    ? auth.currentUser.uid !=
+                                            widget.uidforprofile
+                                        ? isfollower == "no"
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 35, right: 10),
+                                                child: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      List<String> spiltList =
+                                                          name.split(" ");
+                                                      List<String> indexList =
+                                                          [];
+                                                      for (int i = 0;
+                                                          i < spiltList.length;
+                                                          i++) {
+                                                        for (int j = 0;
+                                                            j <
+                                                                spiltList[i]
+                                                                        .length +
+                                                                    i;
+                                                            j++) {
+                                                          indexList.add(
+                                                              spiltList[i]
+                                                                  .substring(
+                                                                      0, j)
+                                                                  .toLowerCase());
                                                         }
-                                                        Firestore.instance
-                                                            .collection("Users")
-                                                            .document(widget
-                                                                .uidforprofile)
-                                                            .collection(
-                                                                "followers")
-                                                            .add({
-                                                          "location":
-                                                              nowuser_dpurl,
-                                                          "name": nowuser_name,
-                                                          "tagline":
-                                                              nowuser_tagline,
-                                                          "usertype":
-                                                              nowuser_usertype,
-                                                          "websiteurl":
-                                                              nowuser_websiteurl,
-                                                          "uid": widget
-                                                              .uidforprofile,
-                                                          "investor_uid":
-                                                              nowuser_uid,
-                                                          "searchkey": ndexList
-                                                        }).then((value) {
-                                                          print("done");
-                                                          setState(() {
-                                                            _nowuserdetails();
-                                                            _fetchUserinfoForSettingsPage();
-                                                            checkfollowerexists();
-                                                            checkfor_rentrepreneur();
-                                                          });
+                                                      }
+                                                      Firestore.instance
+                                                          .collection("Users")
+                                                          .document(auth
+                                                              .currentUser.uid)
+                                                          .collection(
+                                                              "following")
+                                                          .document(widget
+                                                              .uidforprofile)
+                                                          .setData({
+                                                        "location": location,
+                                                        "name": name,
+                                                        "tagline": tagline,
+                                                        "usertype": usertype,
+                                                        "websiteurl":
+                                                            websiteurl,
+                                                        "uid": auth
+                                                            .currentUser.uid,
+                                                        "uid_entrepreneur":
+                                                            widget
+                                                                .uidforprofile,
+                                                        "searchkey": indexList
+                                                      }).then((value) {
+                                                        print("done");
+                                                        setState(() {
+                                                          _nowuserdetails();
+                                                          _fetchUserinfoForSettingsPage();
+                                                          checkfollowerexists();
+                                                          checkfor_rentrepreneur();
                                                         });
-                                                      },
-                                                      child: Container(
-                                                        width: 120,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                            color: Color(
-                                                                4278228470),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                        child: Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "Follow",
-                                                            style: TextStyle(
-                                                                fontSize: 20,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 35, right: 10),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        print("jj");
-                                                        Firestore.instance
-                                                            .collection("Users")
-                                                            .document(auth
-                                                                .currentUser
-                                                                .uid)
-                                                            .collection(
-                                                                "following")
-                                                            .where(
-                                                                'uid_entrepreneur',
-                                                                isEqualTo: widget
-                                                                    .uidforprofile)
-                                                            .get()
-                                                            .then((value) {
-                                                          value.docs.forEach(
-                                                              (element) {
-                                                            Firestore.instance
-                                                                .collection(
-                                                                    "Users")
-                                                                .document(auth
-                                                                    .currentUser
-                                                                    .uid)
-                                                                .collection(
-                                                                    "following")
-                                                                .doc(element.id)
-                                                                .delete()
-                                                                .then((value) =>
-                                                                    print(
-                                                                        "complete"));
-                                                          });
-                                                        }).then((value) {
-                                                          setState(() {
-                                                            _nowuserdetails();
-                                                            _fetchUserinfoForSettingsPage();
-                                                            checkfollowerexists();
-                                                            checkfor_rentrepreneur();
-                                                          });
-                                                        });
+                                                      });
 
-                                                        Firestore.instance
-                                                            .collection("Users")
-                                                            .document(widget
-                                                                .uidforprofile)
-                                                            .collection(
-                                                                "followers")
-                                                            .where(
-                                                                'investor_uid',
-                                                                isEqualTo: auth
-                                                                    .currentUser
-                                                                    .uid)
-                                                            .get()
-                                                            .then((value) {
-                                                          value.docs.forEach(
-                                                              (element) {
-                                                            Firestore.instance
-                                                                .collection(
-                                                                    "Users")
-                                                                .document(widget
-                                                                    .uidforprofile)
-                                                                .collection(
-                                                                    "followers")
-                                                                .doc(element.id)
-                                                                .delete()
-                                                                .then((value) =>
-                                                                    print(
-                                                                        "complete"));
-                                                          });
-                                                        }).then((value) {
-                                                          setState(() {
-                                                            _nowuserdetails();
-                                                            _fetchUserinfoForSettingsPage();
-                                                            checkfollowerexists();
-                                                            checkfor_rentrepreneur();
-                                                          });
+                                                      List<String> otherList =
+                                                          nowuser_name
+                                                              .split(" ");
+                                                      List<String> ndexList =
+                                                          [];
+                                                      for (int m = 0;
+                                                          m < otherList.length;
+                                                          m++) {
+                                                        for (int f = 0;
+                                                            f <
+                                                                otherList[m]
+                                                                        .length +
+                                                                    m;
+                                                            f++) {
+                                                          ndexList.add(otherList[
+                                                                  m]
+                                                              .substring(0, f)
+                                                              .toLowerCase());
+                                                        }
+                                                      }
+                                                      Firestore.instance
+                                                          .collection("Users")
+                                                          .document(widget
+                                                              .uidforprofile)
+                                                          .collection(
+                                                              "followers")
+                                                          .add({
+                                                        "location":
+                                                            nowuser_dpurl,
+                                                        "name": nowuser_name,
+                                                        "tagline":
+                                                            nowuser_tagline,
+                                                        "usertype":
+                                                            nowuser_usertype,
+                                                        "websiteurl":
+                                                            nowuser_websiteurl,
+                                                        "uid": widget
+                                                            .uidforprofile,
+                                                        "investor_uid":
+                                                            nowuser_uid,
+                                                        "searchkey": ndexList
+                                                      }).then((value) {
+                                                        print("done");
+                                                        setState(() {
+                                                          _nowuserdetails();
+                                                          _fetchUserinfoForSettingsPage();
+                                                          checkfollowerexists();
+                                                          checkfor_rentrepreneur();
                                                         });
-                                                      },
-                                                      child: Container(
-                                                        width: 120,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.grey,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                        child: Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "Unfollow",
-                                                            style: TextStyle(
-                                                                fontSize: 20,
-                                                                color: Color(
-                                                                    4278190106),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                          ),
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      width: 120,
+                                                      height: 30,
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Color(4278228470),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          "Follow",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                )
-                                          : Container()
-                                      : Container(),
-                                ],
-                              ),
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 35, right: 13),
+                                                child: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      print("jj");
+                                                      Firestore.instance
+                                                          .collection("Users")
+                                                          .document(auth
+                                                              .currentUser.uid)
+                                                          .collection(
+                                                              "following")
+                                                          .where(
+                                                              'uid_entrepreneur',
+                                                              isEqualTo: widget
+                                                                  .uidforprofile)
+                                                          .get()
+                                                          .then((value) {
+                                                        value.docs
+                                                            .forEach((element) {
+                                                          Firestore.instance
+                                                              .collection(
+                                                                  "Users")
+                                                              .document(auth
+                                                                  .currentUser
+                                                                  .uid)
+                                                              .collection(
+                                                                  "following")
+                                                              .doc(element.id)
+                                                              .delete()
+                                                              .then((value) =>
+                                                                  print(
+                                                                      "complete"));
+                                                        });
+                                                      }).then((value) {
+                                                        setState(() {
+                                                          _nowuserdetails();
+                                                          _fetchUserinfoForSettingsPage();
+                                                          checkfollowerexists();
+                                                          checkfor_rentrepreneur();
+                                                        });
+                                                      });
+
+                                                      Firestore.instance
+                                                          .collection("Users")
+                                                          .document(widget
+                                                              .uidforprofile)
+                                                          .collection(
+                                                              "followers")
+                                                          .where('investor_uid',
+                                                              isEqualTo: auth
+                                                                  .currentUser
+                                                                  .uid)
+                                                          .get()
+                                                          .then((value) {
+                                                        value.docs
+                                                            .forEach((element) {
+                                                          Firestore.instance
+                                                              .collection(
+                                                                  "Users")
+                                                              .document(widget
+                                                                  .uidforprofile)
+                                                              .collection(
+                                                                  "followers")
+                                                              .doc(element.id)
+                                                              .delete()
+                                                              .then((value) =>
+                                                                  print(
+                                                                      "complete"));
+                                                        });
+                                                      }).then((value) {
+                                                        setState(() {
+                                                          _nowuserdetails();
+                                                          _fetchUserinfoForSettingsPage();
+                                                          checkfollowerexists();
+                                                          checkfor_rentrepreneur();
+                                                        });
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      width: 120,
+                                                      height: 30,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          "Unfollow",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: Color(
+                                                                  4278190106),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                        : Container()
+                                    : Container(),
+                              ],
                             ),
                           ),
-                          Positioned(
-                            top: 68,
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 59,
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 11),
+                              padding: const EdgeInsets.only(left: 13, top: 10),
                               child: auth.currentUser.uid !=
                                       widget.uidforprofile
                                   ? StreamBuilder(
@@ -873,12 +847,14 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ],
-                      ),
+                      ),  
                     ),
-                    Positioned(
-                      top: 80,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10,
+                      ),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.only(left: 10, top: 0),
                         child: Row(
                           children: [
                             Image.asset("assets/web.png"),
@@ -961,89 +937,64 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 30),
-                      child: Expanded(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    connectionlenght ?? "0",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Opacity(
-                                      opacity: 0.9,
-                                      child: Text(
-                                        "Connections",
+                      padding: const EdgeInsets.only(top: 10, left: 40),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  connectionlenght ?? "0",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Opacity(
+                                    opacity: 0.9,
+                                    child: Text(
+                                      "Connections",
+                                      style: TextStyle(
+                                        color: Color(4286677377),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            Column(
+                              children: [
+                                no_ofposts == null
+                                    ? Text(
+                                        "0",
                                         style: TextStyle(
-                                          color: Color(4286677377),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Column(
-                                children: [
-                                  no_ofposts == null
-                                      ? Text(
-                                          "0",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.w500),
-                                        )
-                                      : Text(
-                                          "$no_ofposts",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                  Opacity(
-                                      opacity: 0.9,
-                                      child: Text(
-                                        "Pitches",
+                                            color: Colors.white,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    : Text(
+                                        "$no_ofposts",
                                         style: TextStyle(
-                                          color: Color(4286677377),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "30",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Opacity(
-                                      opacity: 0.9,
-                                      child: Text(
-                                        "Connections",
-                                        style: TextStyle(
-                                          color: Color(4286677377),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ]),
-                      ),
+                                            color: Colors.white,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                Opacity(
+                                    opacity: 0.9,
+                                    child: Text(
+                                      "Pitches",
+                                      style: TextStyle(
+                                        color: Color(4286677377),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ]),
                     ),
                     SizedBox(
                       height: 20,
@@ -1082,7 +1033,10 @@ class _ProfileState extends State<Profile> {
                                           snapshot.data.documents[i];
 
                                       return snapshot.data == null
-                                          ? Container()
+                                          ? Container(
+                                              width: 20,
+                                              height: 20,
+                                            )
                                           : Align(
                                               alignment: Alignment.center,
                                               child: Padding(
@@ -1138,7 +1092,7 @@ class _ProfileState extends State<Profile> {
                                                                                 Firestore.instance.collection("Users").document(course["uid"]).snapshots(),
                                                                             builder: (ctx, i) {
                                                                               return i.data == null
-                                                                                  ? Container()
+                                                                                  ? Container(width: 20, height: 20)
                                                                                   : Row(
                                                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                                                       children: [
@@ -1290,7 +1244,7 @@ class _ProfileState extends State<Profile> {
                                                                                     topRight: Radius.circular(20),
                                                                                     bottomLeft: Radius.circular(20),
                                                                                   ),
-                                                                                  image: DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill)),
+                                                                                  image: course["postimage"] != null ? DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill) : DecorationImage(image: AssetImage("assets/unknown.png"))),
                                                                             )),
                                                                       ),
                                                                     ],
@@ -1353,15 +1307,21 @@ class _ProfileState extends State<Profile> {
                                                                       ],
                                                                     ),
                                                                   ),
-                                                                 auth.currentUser
+                                                                  auth.currentUser
                                                                               .uid ==
                                                                           widget
                                                                               .uidforprofile
                                                                       ? IconButton(
-                                                                          icon: Icon(
-                                                                              Icons.delete_rounded,
-                                                                              color: Colors.white,size: 22,),
-                                                                          onPressed: () {
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.delete_rounded,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                22,
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
                                                                             setState(() {
                                                                               documentid = course.documentID.toString();
                                                                             });
@@ -1432,7 +1392,10 @@ class _ProfileState extends State<Profile> {
                                               ),
                                             );
                                     })
-                                : Container();
+                                : Container(
+                                    width: 20,
+                                    height: 30,
+                                  );
                           }),
                     ),
                     SizedBox(

@@ -126,7 +126,7 @@ class _StoriesState extends State<Stories> {
                             },
                             child: Hero(
                               tag: "add",
-                                                          child: Container(
+                              child: Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.white,
@@ -177,182 +177,184 @@ class _StoriesState extends State<Stories> {
                                 print(image);
                                 print("donelllllllllll");
                               });
-                              return Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 0, left: 10, right: 10),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          width: 290,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: Color(4278190106)),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: Stack(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: StoryView(
-                                                    storyItems: [
-                                                      StoryItem.pageVideo(
-                                                          imgUrl,
-                                                          ismute: true,
-                                                          shown: true,
-                                                          controller:
-                                                              storyController,
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  duration[0]
-                                                                      .round()))
-                                                    ],
-                                                    onStoryShow: (s) {
-                                                      print(
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height,
-                                                      );
-                                                    },
-                                                    inline: true,
-                                                    onComplete: () {},
-                                                    progressPosition:
-                                                        ProgressPosition.top,
-                                                    repeat: false,
-                                                    controller: storyController,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 25,
-                                                          left: 10,
-                                                          right: 10),
-                                                  child: FutureBuilder<
-                                                          DocumentSnapshot>(
-                                                        future: Firestore
-                                                            .instance
-                                                            .collection("Users")
-                                                            .document(
-                                                                uidList[index])
-                                                            .get(),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState !=
-                                                              ConnectionState
-                                                                  .done) {
-                                                            //print('project snapshot data is: ${snap.data}');
-                                                            return Text(
-                                                              "loading",
-                                                              style: TextStyle(
-                                                                  fontSize: 0),
-                                                            );
-                                                          } else {
-                                                            if (snapshot
-                                                                .hasError) {
-                                                              return Text(
-                                                                  "loading",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          0));
-                                                            } else {
-                                                              if (snapshot
-                                                                  .hasData) {
-                                                                return Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 25,
-                                                                      left: 0,
-                                                                      right:
-                                                                          10),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      snapshot.data["location"] !=
-                                                                              null
-                                                                          ? GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.push(
-                                                                                    context,
-                                                                                    MaterialPageRoute(
-                                                                                        builder: (_) => Profile(
-                                                                                              uidforprofile: snapshot.data["uid"],
-                                                                                            )));
-                                                                              },
-                                                                              child: CircleAvatar(                                                                                  backgroundColor: Color(4278272638),
-
-                                                                                backgroundImage: NetworkImage(snapshot.data["location"]),
-                                                                              ),
-                                                                            )
-                                                                          : GestureDetector(
-                                                                              onTap: () {
-                                                                                Navigator.push(
-                                                                                    context,
-                                                                                    MaterialPageRoute(
-                                                                                        builder: (_) => Profile(
-                                                                                              uidforprofile: snapshot.data["uid"],
-                                                                                            )));
-                                                                              },
-                                                                              child: CircleAvatar(                                                                                  backgroundColor: Color(4278272638),
-
-                                                                                backgroundImage: AssetImage("assets/unknown.png"),
-                                                                              ),
-                                                                            ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Expanded(
-                                                                          child: SingleChildScrollView(
-                                                                              scrollDirection: Axis.horizontal,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(right: 10),
-                                                                                child: Text(snapshot.data["name"], style: TextStyle(fontSize: 25, fontFamily: "good", color: Colors.white)),
-                                                                              )))
-                                                                    ],
-                                                                  ),
-                                                                );
-                                                              } else {
-                                                                return Text(
-                                                                    "No Data");
-                                                              }
-                                                            }
-                                                          }
-                                                        },
-                                                      ) ??
-                                                      Container(),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Container(
-                                                    width: 300,
-                                                    height: 400,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (_) => MoreStories(
-                                                                    documentidList[
-                                                                        index ??
-                                                                            0])));
-                                                      },
-                                                    ),
-                                                  ),
-                                                )
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 10, right: 10,bottom: 10),
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: 250,
+                                    decoration: BoxDecoration(
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: Colors.blue,
+                                              blurRadius: 15.0,
+                                              offset: Offset(0.0, 0.75))
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(20),
+                                        color: Color(4278190106)),
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(20),
+                                      child: Stack(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: StoryView(
+                                              storyItems: [
+                                                StoryItem.pageVideo(
+                                                    imgUrl,
+                                                    ismute: true,
+                                                    shown: true,
+                                                    controller:
+                                                        storyController,
+                                                    duration: Duration(
+                                                        milliseconds:
+                                                            duration[0]
+                                                                .round()))
                                               ],
+                                              onStoryShow: (s) {
+                                                print(
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      MediaQuery.of(
+                                                              context)
+                                                          .size
+                                                          .height,
+                                                );
+                                              },
+                                              inline: true,
+                                              onComplete: () {},
+                                              progressPosition:
+                                                  ProgressPosition.top,
+                                              repeat: false,
+                                              controller: storyController,
                                             ),
                                           ),
-                                        ),
-                                      )),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(
+                                                    top: 25,
+                                                    left: 10,
+                                                    right: 10),
+                                            child: FutureBuilder<
+                                                    DocumentSnapshot>(
+                                                  future: Firestore
+                                                      .instance
+                                                      .collection("Users")
+                                                      .document(
+                                                          uidList[index])
+                                                      .get(),
+                                                  builder: (context,
+                                                      snapshot) {
+                                                    if (snapshot
+                                                            .connectionState !=
+                                                        ConnectionState
+                                                            .done) {
+                                                      //print('project snapshot data is: ${snap.data}');
+                                                      return Text(
+                                                        "loading",
+                                                        style: TextStyle(
+                                                            fontSize: 0),
+                                                      );
+                                                    } else {
+                                                      if (snapshot
+                                                          .hasError) {
+                                                        return Text(
+                                                            "loading",
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    0));
+                                                      } else {
+                                                        if (snapshot
+                                                            .hasData) {
+                                                          return Padding(
+                                                            padding: const EdgeInsets
+                                                                    .only(
+                                                                top: 25,
+                                                                left: 0,
+                                                                right:
+                                                                    10),
+                                                            child: Row(
+                                                              children: [
+                                                                snapshot.data["location"] !=
+                                                                        null
+                                                                    ? GestureDetector(
+                                                                        onTap: () {
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                  builder: (_) => Profile(
+                                                                                        uidforprofile: snapshot.data["uid"],
+                                                                                      )));
+                                                                        },
+                                                                        child: CircleAvatar(
+                                                                          backgroundColor: Color(4278272638),
+                                                                          backgroundImage: NetworkImage(snapshot.data["location"]),
+                                                                        ),
+                                                                      )
+                                                                    : GestureDetector(
+                                                                        onTap: () {
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                  builder: (_) => Profile(
+                                                                                        uidforprofile: snapshot.data["uid"],
+                                                                                      )));
+                                                                        },
+                                                                        child: CircleAvatar(
+                                                                          backgroundColor: Color(4278272638),
+                                                                          backgroundImage: AssetImage("assets/unknown.png"),
+                                                                        ),
+                                                                      ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      5,
+                                                                ),
+                                                                Expanded(
+                                                                    child: SingleChildScrollView(
+                                                                        scrollDirection: Axis.horizontal,
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(right: 10),
+                                                                          child: Text(snapshot.data["name"], style: TextStyle(fontSize: 25, fontFamily: "good", color: Colors.white)),
+                                                                        )))
+                                                              ],
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Text(
+                                                              "No Data");
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                ) ??
+                                                Container(),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Container(
+                                              width: 300,
+                                              height: 410,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) => MoreStories(
+                                                              documentidList[
+                                                                  index ??
+                                                                      0])));
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             }).toList()),

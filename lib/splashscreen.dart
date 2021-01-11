@@ -76,7 +76,7 @@ class _RootState extends State<Root> {
     return Timer(Duration(seconds: 4), () async {
       if (visitingFlag == true) {
         if (isAuth == true) {
-          await _usertype();    
+          await _usertype();
           if (usertype == "investor") {
             Navigator.pushAndRemoveUntil(
                 context,
@@ -148,7 +148,7 @@ class _RootState extends State<Root> {
                   child: Image(
                     image: AssetImage('assets/soar.png'),
                     width: 300,
-                    height: 300,
+                    height: 200,
                   )),
               SizedBox(
                 height: 15,

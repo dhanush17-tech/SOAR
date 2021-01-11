@@ -1,6 +1,7 @@
 import 'package:SOAR/screens/post/post_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -17,67 +18,22 @@ class PostImage extends StatefulWidget {
 
 class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
   TabController _nestedTabController;
-  Size size;
-  File image;
-  Future uploadImage() async {
-    DateTime _time = DateTime.now();
-    var postImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      image = postImage;
-    });
-    final Reference storageRef = FirebaseStorage.instance.ref();
-
-    UploadTask uploadTask = await storageRef
-        .child("post_${auth.currentUser.uid + _time.toString()}.jpg")
-        .putFile(image)
-        .then((val) {
-      val.ref.getDownloadURL().then((val) {
-        downloadUrl = val;
-        print(downloadUrl);
-      });
-      size = ImageSizeGetter.getSize(FileInput(image));
-      print(size);
-    });
-  }
 
   @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
       backgroundColor: Color(4278190106),
       body: Container(
-          height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-               color: Color(4278190106),
-
+        color: Color(4278190106),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                   Container(
-                    height: 150,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(25),),
-                        gradient: LinearGradient(
-                            colors: [Color(4278857608), Color(4278256230)],
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft),
-                      
-                      color: Color(4278228470),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 10),
-                      child: Text("Post A Pitch",
-                          style: TextStyle(
-                              fontFamily: "good",
-                              fontSize: 80,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white)),
-                    )),
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10),
                 child: Text(
@@ -91,10 +47,14 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 100, left: 15),
-                child: Center(
+                child: Form(
+                  key: key1,
                   child: Container(
                     width: 360,
                     child: new TextFormField(
+                        validator: (e) {
+                           e.length == 0 ? "" : null;
+                        },
                         controller: pitchname,
                         style: GoogleFonts.poppins(
                             height: 1.02,
@@ -144,12 +104,12 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                 ),
               ),
               SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  uploadImage();
-                },
-                child: Align(
-                  alignment: Alignment.center,
+              Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () {
+                    manupload();
+                  },
                   child: Container(
                     width: 250,
                     height: 350,
@@ -208,16 +168,14 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                                   ),
                                 ],
                               )
-                            :  Container(
+                            : Container(
                                 alignment: Alignment.center,
                                 width: 250,
                                 height: 350,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                        image: FileImage(
-                                         image
-                                        ),
+                                        image: FileImage(image),
                                         fit: BoxFit.fill)),
                               )
                       ],
@@ -225,58 +183,23 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (_, __, ___) => PostDetails(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(right: 10, bottom: 10, top: 20),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(4278228470)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(4278190106),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),
       ),
     );
   }
+
+  manupload() async {
+    var postImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      image = postImage;
+    });
+  }
 }
 
+ GlobalKey<FormState> key1 = GlobalKey<FormState>();
+
 String downloadUrl;
+File image;

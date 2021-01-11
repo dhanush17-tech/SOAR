@@ -16,6 +16,7 @@ import 'package:SOAR/onboarding/widgets/header.dart';
 import 'package:SOAR/onboarding/widgets/next_page_button.dart';
 import 'package:SOAR/onboarding/widgets/onboarding_page_indicator.dart';
 import 'package:SOAR/onboarding/widgets/ripple.dart';
+import 'package:SOAR/showcaseScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

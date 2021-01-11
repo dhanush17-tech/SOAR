@@ -1,8 +1,10 @@
 import 'package:SOAR/screens/post/post_image.dart';
+import 'package:SOAR/screens/questionnaire/screen1.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:SOAR/screens/start_entrepreneur.dart';
 import 'package:fade/fade.dart';
@@ -14,11 +16,6 @@ class PostDetails extends StatefulWidget {
 }
 
 class _PostDetailsState extends State<PostDetails> {
-  GlobalKey<FormState> _addwidgetfromkey = GlobalKey<FormState>();
-  TextEditingController summaryController = TextEditingController();
-
-  String name;
-  String dpurl;
   Future<void> _username() async {
     try {
       await Firestore.instance
@@ -46,10 +43,6 @@ class _PostDetailsState extends State<PostDetails> {
 
   DateTime time = DateTime.now();
 
-  static List<String> friendsList = [null];
-  static List<String> titleList = [null];
-
-  GlobalKey<FormState> _content = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -59,33 +52,11 @@ class _PostDetailsState extends State<PostDetails> {
         resizeToAvoidBottomPadding: false,
         backgroundColor: Color(4278190106),
         body: Form(
-          key: _addwidgetfromkey,
+          key: addwidgetfromkey,
           child: SingleChildScrollView(
             reverse: true,
             child: Column(
               children: [
-                Container(
-                    height: 150,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(25),
-                      ),
-                      gradient: LinearGradient(
-                          colors: [Color(4278857608), Color(4278256230)],
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft),
-                      color: Color(4278228470),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 10),
-                      child: Text("Post A Pitch",
-                          style: TextStyle(
-                              fontFamily: "good",
-                              fontSize: 80,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white)),
-                    )),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 15, top: 10),
@@ -113,7 +84,7 @@ class _PostDetailsState extends State<PostDetails> {
                         child: Column(
                           children: [
                             Form(
-                              key: _content,
+                              key: content,
                               child: TextFormField(
                                 controller: summaryController,
                                 validator: (value) => value.length > 20
@@ -127,10 +98,10 @@ class _PostDetailsState extends State<PostDetails> {
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(9),
                                     hintText: "Content",
-                                    hintStyle: TextStyle(
+                                    hintStyle: GoogleFonts.poppins(
                                         color: Color(4278228470),
-                                        fontSize: 30,
-                                        fontFamily: "good"),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
                                     border: InputBorder.none),
                                 keyboardType: TextInputType.multiline,
                                 maxLines: null,
@@ -145,7 +116,7 @@ class _PostDetailsState extends State<PostDetails> {
                   Padding(
                     padding: const EdgeInsets.only(left: 11),
                     child: Text(
-                      'Features',
+                      'Value Proposition',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 50,
@@ -155,151 +126,10 @@ class _PostDetailsState extends State<PostDetails> {
                   ),
                   ..._getFriends(),
                   SizedBox(height: 20),
-                  Hero(
-                    tag: "uplaod",
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, bottom: 20),
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (_content.currentState.validate()) {
-                              if (_addwidgetfromkey.currentState.validate()) {
-                                final postsRef = Firestore.instance;
-                                await postsRef
-                                    .collection("Feed")
-                                    .document(time.toString())
-                                    .setData({
-                                  "owener": name,
-                                  "summury": summaryController.text,
-                                  "title": pitchname.text,
-                                  "uid": auth.currentUser.uid,
-                                  "date": DateTime.now().toString(),
-                                  "postimage": downloadUrl,
-                                  "features": friendsList.toList(),
-                                  "titles": titleList.toList(),
-                                  "likes": 0,
-                                  "location": dpurl,
-                                  "wow": 0,
-                                  "day": DateFormat('d')
-                                      .format(time), // prints Tuesday,
-                                  "month": formatter.format(time)
-                                });
-
-                                final addtouser = Firestore.instance;
-                                await addtouser
-                                    .collection("Users")
-                                    .document(auth.currentUser.uid)
-                                    .collection("posts")
-                                    .document(time.toString())
-                                    .set({
-                                  "owener": name,
-                                  "summury": summaryController.text,
-                                  "title": pitchname.text,
-                                  "uid": auth.currentUser.uid,
-                                  "date": DateTime.now().toString(),
-                                  "postimage": downloadUrl,
-                                  "features": friendsList.toList(),
-                                  "titles": titleList.toList(),
-                                  "likes": 0,
-                                  "location": dpurl,
-                                  "wow": 0,
-                                  "day": DateFormat('d').format(time),
-                                  "month": formatter.format(time)
-                                });
-                                print("done");
-
-                                print(friendsList);
-                                print(titleList);
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    Future.delayed(Duration(milliseconds: 3500),
-                                        () {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration:
-                                              Duration(seconds: 5),
-                                          pageBuilder: (_, __, ___) =>
-                                              StartEnt(),
-                                        ),
-                                        ModalRoute.withName('/'),
-                                      );
-                                    });
-                                    return Fade(
-                                      visible: true,
-                                      duration: Duration(seconds: 10),
-                                      child: Dialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: Container(
-                                          height: 250,
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: new BoxDecoration(
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Color(4278857608),
-                                                  Color(4278256230)
-                                                ],
-                                                begin: Alignment.topRight,
-                                                end: Alignment.bottomLeft),
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(20),
-                                            ),
-                                          ),
-                                          child: Column(children: [
-                                            Container(
-                                                height: 203,
-                                                width: 350,
-                                                child: Center(
-                                                  child: Lottie.asset(
-                                                    "assets/done.json",
-                                                    repeat: false,
-                                                  ),
-                                                ))
-                                          ]),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-                            }
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Container(
-                              width: 160,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(4278228470),
-                                  ),
-                                  borderRadius: BorderRadius.circular(11)),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Material(
-                                  type: MaterialType.transparency,
-                                  child: Text(
-                                    "Uplaod Post",
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(4278228470)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ]),
+                SizedBox(
+                  height: MediaQuery.of(context).viewInsets.bottom,
+                ),
               ],
             ),
           ),
@@ -406,7 +236,7 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _nameController.text = _PostDetailsState.friendsList[widget.index] ?? '';
+      _nameController.text = friendsList[widget.index] ?? '';
     });
 
     return Column(
@@ -417,7 +247,7 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
             if (v.trim().isEmpty) return 'Please enter something';
             return null;
           },
-          onChanged: (v) => _PostDetailsState.friendsList[widget.index] = v,
+          onChanged: (v) => friendsList[widget.index] = v,
           style: TextStyle(
               color: Color(4278228470),
               fontFamily: "good",
@@ -426,8 +256,10 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.all(5),
               hintText: "Content",
-              hintStyle: TextStyle(
-                  color: Color(4278228470), fontSize: 30, fontFamily: "good"),
+              hintStyle: GoogleFonts.poppins(
+                  color: Color(4278228470),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500),
               border: InputBorder.none),
           keyboardType: TextInputType.multiline,
           maxLines: null,
@@ -463,8 +295,7 @@ class _TitleTextListState extends State<TitleTextList> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      titleTextEditingController.text =
-          _PostDetailsState.titleList[widget.index] ?? '';
+      titleTextEditingController.text = titleList[widget.index] ?? '';
     });
     return Column(
       children: [
@@ -474,7 +305,7 @@ class _TitleTextListState extends State<TitleTextList> {
             if (v.trim().isEmpty) return '';
             return null;
           },
-          onChanged: (v) => _PostDetailsState.titleList[widget.index] = v,
+          onChanged: (v) => titleList[widget.index] = v,
           style: TextStyle(
               color: Colors.white,
               fontSize: 30,
@@ -483,10 +314,9 @@ class _TitleTextListState extends State<TitleTextList> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.all(10),
               hintText: "Title",
-              hintStyle: TextStyle(
-                fontSize: 40,
+              hintStyle: GoogleFonts.poppins(
+                fontSize: 25,
                 color: Colors.white,
-                fontFamily: "good",
                 fontWeight: FontWeight.w500,
               ),
               border: InputBorder.none),
@@ -497,3 +327,10 @@ class _TitleTextListState extends State<TitleTextList> {
 }
 
 TextEditingController pitchname = TextEditingController();
+List<String> friendsList = [null];
+List<String> titleList = [null];
+String name;
+String dpurl;
+TextEditingController summaryController = TextEditingController();
+GlobalKey<FormState> content = GlobalKey<FormState>();
+GlobalKey<FormState> addwidgetfromkey = GlobalKey<FormState>();

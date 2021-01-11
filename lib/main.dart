@@ -2,7 +2,7 @@ import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/feed_details.dart';
 import 'package:SOAR/screens/post/post_details.dart';
-import 'package:SOAR/screens/settings_page.dart';
+import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:SOAR/splashscreen.dart';
 import 'package:SOAR/start.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,6 @@ import 'package:SOAR/screens/post/post_image.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/services.dart';
 import 'onboarding/onboarding.dart';
-import 'screens/movivation.dart';
 import 'auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -38,10 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SOAR',
-      home: Man()
-    );
+        debugShowCheckedModeBanner: false, title: 'SOAR', home: Man());
   }
 }
 

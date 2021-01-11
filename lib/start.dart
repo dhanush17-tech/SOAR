@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
-import 'package:SOAR/screens/settings_page.dart';
+import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:SOAR/motivation_scrren/motivation_home.dart';
 
 void main() => runApp(Home());
 
@@ -55,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage>
   ];
   final screen = [
     Feed(),
+    //motivation and startuppedia
     Profile(
       uidforprofile: auth.currentUser.uid,
     ),
@@ -205,7 +207,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 0),
+      duration: Duration(milliseconds: 500),
     );
     animation = CurvedAnimation(
       parent: _controller,
@@ -218,7 +220,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   _startAnimation() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 0),
+      duration: Duration(milliseconds: 500),
     );
     animation = CurvedAnimation(
       parent: _controller,

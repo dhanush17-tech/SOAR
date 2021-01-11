@@ -1,11 +1,12 @@
 import 'package:SOAR/auth/login.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/chat/text_screen.dart';
+import 'package:SOAR/screens/post/mainpaost.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/post/post_image.dart';
 import 'package:SOAR/screens/profile.dart';
-import 'package:SOAR/screens/settings_page.dart';
+import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class StartEntrepreneur extends StatefulWidget {
 
 class _StartEntrepreneurState extends State<StartEntrepreneur>
     with SingleTickerProviderStateMixin {
-  var _bottomNavIndex = 0; //default index of first screen
+  var _bottomNavIndex = 2; //default index of first screen
 
   AnimationController _animationController;
   Animation<double> animation;
@@ -73,18 +74,17 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
 
   final iconList = <IconData>[
     Icons.settings,
-    Icons.add,
+    Icons.explore,
     Icons.message,
     Icons.person,
   ];
   final screen = [
     SettingsPage(),
-    PostImage(),
+    Stories(),
     ChatScreen(),
     Profile(
       uidforprofile: auth.currentUser.uid,
     ),
-   
   ];
   @override
   Widget build(BuildContext context) {
@@ -101,16 +101,15 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
       floatingActionButton: ScaleTransition(
         scale: animation,
         child: FloatingActionButton(
-          heroTag: "add",
           elevation: 8,
           backgroundColor: Colors.blue[800],
           child: Icon(
-            Icons.explore,
+            Icons.add_rounded,
             color: Color(4278190106),
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => Stories()));
+                context, MaterialPageRoute(builder: (_) => MainPost()));
           },
         ),
       ),

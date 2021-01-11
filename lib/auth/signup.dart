@@ -119,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             color: Colors.transparent),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      hintText: "Username",
+                                      hintText: "Email ",
                                       hintStyle: TextStyle(
                                           fontSize: 18,
                                           letterSpacing: 1.5,
