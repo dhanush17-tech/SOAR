@@ -379,7 +379,7 @@ class _ProfileState extends State<Profile> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                                                  child: SingleChildScrollView(
+                                  child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -393,7 +393,8 @@ class _ProfileState extends State<Profile> {
                                                       "${widget.uidforprofile}")
                                                   .snapshots(),
                                               builder: (context, snapshot) {
-                                                var userDocument = snapshot.data;
+                                                var userDocument =
+                                                    snapshot.data;
                                                 return snapshot.data != null
                                                     ? Text(
                                                         userDocument["name"] ??
@@ -415,9 +416,11 @@ class _ProfileState extends State<Profile> {
                                                   child: TextFormField(
                                                     controller: nameChange,
                                                     decoration: InputDecoration(
-                                                        border: InputBorder.none),
+                                                        border:
+                                                            InputBorder.none),
                                                     onChanged: (val) async {
-                                                      print(auth.currentUser.uid);
+                                                      print(
+                                                          auth.currentUser.uid);
                                                       await FirebaseFirestore
                                                           .instance
                                                           .collection('Users')
@@ -428,24 +431,29 @@ class _ProfileState extends State<Profile> {
                                                         "tagline":
                                                             taglineChange.text,
                                                         "websiteurl":
-                                                            websiteUrlChnage.text,
-                                                        "uid":
-                                                            auth.currentUser.uid,
+                                                            websiteUrlChnage
+                                                                .text,
+                                                        "uid": auth
+                                                            .currentUser.uid,
                                                         "location": location,
                                                         "usertype": usertype
                                                       }).then((value) =>
                                                               print("done"));
                                                       if (usertype ==
                                                           "investor") {
-                                                        FirebaseFirestore.instance
+                                                        FirebaseFirestore
+                                                            .instance
                                                             .collection(
                                                                 'Investor')
                                                             .document(auth
-                                                                .currentUser.uid)
+                                                                .currentUser
+                                                                .uid)
                                                             .setData({
-                                                          "name": nameChange.text,
+                                                          "name":
+                                                              nameChange.text,
                                                           "tagline":
-                                                              taglineChange.text,
+                                                              taglineChange
+                                                                  .text,
                                                           "websiteurl":
                                                               websiteUrlChnage
                                                                   .text,
@@ -457,15 +465,19 @@ class _ProfileState extends State<Profile> {
                                                       }
                                                       if (usertype ==
                                                           "entrepreneur") {
-                                                        FirebaseFirestore.instance
+                                                        FirebaseFirestore
+                                                            .instance
                                                             .collection(
                                                                 'Entrepreneur')
                                                             .document(auth
-                                                                .currentUser.uid)
+                                                                .currentUser
+                                                                .uid)
                                                             .setData({
-                                                          "name": nameChange.text,
+                                                          "name":
+                                                              nameChange.text,
                                                           "tagline":
-                                                              taglineChange.text,
+                                                              taglineChange
+                                                                  .text,
                                                           "websiteurl":
                                                               websiteUrlChnage
                                                                   .text,
@@ -489,8 +501,9 @@ class _ProfileState extends State<Profile> {
                                                       0.085,
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      top: 5),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5),
                                                   child: Icon(
                                                     Icons.edit,
                                                     color: Color(4278228470),
@@ -847,7 +860,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ],
-                      ),  
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -1349,10 +1362,7 @@ class _ProfileState extends State<Profile> {
                                                                           Navigator.push(
                                                                               context,
                                                                               MaterialPageRoute(
-                                                                                builder: (_) => FeedDetilsForEntrepreneurs(
-                                                                                  documnetid: course.documentID,
-                                                                                  id: widget.uidforprofile,
-                                                                                ),
+                                                                                builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"],d:i),
                                                                               ));
                                                                         },
                                                                         child: Container(

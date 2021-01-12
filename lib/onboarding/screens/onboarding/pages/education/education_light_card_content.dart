@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:SOAR/onboarding/constants.dart';
 import 'package:SOAR/onboarding/widgets/icon_container.dart';
-
 class EducationLightCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

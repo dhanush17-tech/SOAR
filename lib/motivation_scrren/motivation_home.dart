@@ -16,6 +16,8 @@ import 'package:SOAR/motivation_scrren/video_motivation.dart';
 import "dart:ui";
 import 'package:neuomorphic_container/neuomorphic_container.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:math' as math;
+import 'video_promotion.dart';
 import 'package:video_thumbnail_generator/video_thumbnail_generator.dart';
 
 void _enablePlatformOverrideForDesktop() {
@@ -101,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(4278190106),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
@@ -185,107 +187,72 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               StreamBuilder(
-                stream: Firestore.instance.collection("Motivation").snapshots(),
+                stream: Firestore.instance.collection("motivation").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: 5,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 40.0, right: 40, top: 40),
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => MotivationHome(
-                                            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4")));
-                              },
-                              child: Hero(
-                                  tag: "dd+$index",
-                                  child: Container(
-                                      height: 450,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                offset: Offset(10, 10),
-                                                color: Colors.black38,
-                                                blurRadius: 20),
-                                            BoxShadow(
-                                                offset: Offset(-10, -10),
-                                                color: Colors.grey
-                                                    .withOpacity(0.85),
-                                                blurRadius: 20)
-                                          ]),
-                                      child: Stack(
-                                        alignment: Alignment.topCenter,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: ThumbnailImage(
-                                              videoUrl:
-                                                  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                                              fit: BoxFit.cover,
-                                              width: 400,
+                  return snapshot.data == null
+                      ? Container()
+                      : ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            var moti = snapshot.data.documents[index];
+                            print(moti.documentID);
+                            return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0, right: 20, top: 40),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      if (moti["type"] == "promo") {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => PromoVideo(
+                                                      id: moti.documentID,
+                                                      url: moti["url"],
+                                                    )));
+                                      } else
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => MotivationHome(
+                                                      moti["url"],
+                                                      moti.documentID,
+                                                    )));
+                                    },
+                                    child: Hero(
+                                      tag: "dd+$index",
+                                      child: Container(
+                                        width: 360,
+                                        height: 350,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              width: 360,
                                               height: 350,
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Container(
-                                                  width: 210,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0,
-                                                            bottom: 10),
-                                                    child: Text(
-                                                      "How to find the perfect investor",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 23,
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
-                                                  ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                color: Colors.white,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                child: Image.network(
+                                                  moti["thumbnail"],
+                                                  fit: BoxFit.cover,
+                                                  width: 190,
+                                                  height: 250,
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 10.0,
-                                                          bottom: 10),
-                                                  child: Text(
-                                                    "12k likes",
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 23,
-                                                        color: Colors.black
-                                                            .withOpacity(0.6)),
-                                                  ),
-                                                )
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )))));
-                    },
-                  );
+                                          ],
+                                        ),
+                                      ),
+                                    )));
+                          },
+                        );
                 },
               ),
             ],

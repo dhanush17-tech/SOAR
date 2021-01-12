@@ -852,13 +852,13 @@ class _LoginscreenState extends State<Loginscreen> {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
-                                        hintText: "Username",
+                                        hintText: "Email",
                                         prefixIcon: Icon(
                                           Icons.person,
                                           size: 30,
                                         ),
                                         errorText: loginfail
-                                            ? "Username or Password dosen't Match"
+                                            ? "Email or Password dosen't Match"
                                             : null,
                                         hintStyle: TextStyle(
                                             fontSize: 18,
@@ -903,7 +903,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                         ),
                                         hintText: "Password",
                                         errorText: loginfail
-                                            ? "Username or Password dosen't Match"
+                                            ? "Email or Password dosen't Match"
                                             : null,
                                         prefixIcon: Icon(
                                           Icons.vpn_key_rounded,

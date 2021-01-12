@@ -207,7 +207,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 00),
     );
     animation = CurvedAnimation(
       parent: _controller,
@@ -220,7 +220,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   _startAnimation() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 00),
     );
     animation = CurvedAnimation(
       parent: _controller,

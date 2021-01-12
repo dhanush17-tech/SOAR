@@ -86,7 +86,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                                   borderSide: BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                hintText: "Username",
+                                hintText: "Email",
                                 prefixIcon: Icon(
                                   Icons.person,
                                   size: 30,

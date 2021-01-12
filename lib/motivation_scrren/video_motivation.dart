@@ -7,13 +7,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MotivationHome extends StatefulWidget {
   String url;
-
-  MotivationHome(this.url);
+  String id;
+  MotivationHome(this.url, this.id);
   @override
   _MotivationHomeState createState() => _MotivationHomeState();
 }
 
-class _MotivationHomeState extends State<MotivationHome> {
+class _MotivationHomeState extends State<MotivationHome> {  
   @override
   void initState() {
     // TODO: implement initState
@@ -28,7 +28,6 @@ class _MotivationHomeState extends State<MotivationHome> {
     });
   }
 
-  
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -47,11 +46,11 @@ class _MotivationHomeState extends State<MotivationHome> {
 
     if (_controller.value.position == _controller.value.duration) {
       print('video Ended');
-        setState(() {
-          isvideoended = true;
-        });
-      
+      setState(() {
+        isvideoended = true;
+      });
     }
+    print(isvideoended);
   }
 
   VideoPlayerController _controller;
@@ -59,108 +58,145 @@ class _MotivationHomeState extends State<MotivationHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: 1,
-          itemBuilder: (BuildContext context, int index) {
-            return Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                if (isvideoended == false)
-                  Hero(
-                    tag: "dd+$index",
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(),
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          child: VideoPlayer(_controller),
-                        ),
-                      ),
-                    ),
-                  ),
-                Material(
-                  type: MaterialType.transparency,
-                  child: Align(
+        body: StreamBuilder(
+            stream: Firestore.instance
+                .collection("motivation")
+                .document(widget.id)
+                .snapshots(),
+            builder: (context, snapshot) {
+              return ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index) {
+                  var moti = snapshot.data;
+
+                  return Stack(
                     alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0, bottom: 50),
-                      child: Text(
-                        "How to find the perfect investor",
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 30,
-                            color: Colors.blue),
-                      ),
-                    ),
-                  ),
-                ),
-                if (isvideoended == true)
-                  TweenAnimationBuilder<double>(
-                    duration: const Duration(milliseconds: 500),
-                    tween: Tween(end: 1, begin: 0),
-                    builder:
-                        (BuildContext context, dynamic value, Widget child) {
-                      return Opacity(
-                        opacity: value,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          color: Colors.black.withOpacity(0.8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Share your experience with us",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 50,
-                                    color: Colors.blue,
-                                    fontFamily: "good"),
+                    children: [
+                      if (isvideoended == false)
+                        Hero(
+                          tag: "dd+$index",
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(),
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: VideoPlayer(_controller),
                               ),
-                              SizedBox(
-                                height: 60,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 30.0),
-                                    child: Transform.rotate(
-                                      angle: 180 * math.pi / 180,
-                                      child: Image.asset(
-                                        "assets/thumbs_up.png",
-                                        scale: 4,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 40,
-                                  ),
-                                  Image.asset(
-                                    "assets/thumbs_up.png",
-                                    scale: 4,
-                                    color: Colors.blue,
-                                  )
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-              ],
-            );
-          },
-        ),
+                      Material(
+                        type: MaterialType.transparency,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 10.0, bottom: 50),
+                            child: Text(
+                              moti["title"],
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 30,
+                                  color: Colors.blue),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (isvideoended == true)
+                        TweenAnimationBuilder<double>(
+                          duration: const Duration(milliseconds: 500),
+                          tween: Tween(end: 1, begin: 0),
+                          builder: (BuildContext context, dynamic value,
+                              Widget child) {
+                            return Opacity(
+                              opacity: value,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                color: Colors.black.withOpacity(0.8),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 200.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Share your experience with us",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 50,
+                                            color: Colors.blue,
+                                            fontFamily: "good"),
+                                      ),
+                                      SizedBox(
+                                        height: 60,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 30.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Firestore.instance
+                                                    .collection("motivation")
+                                                    .document(widget.id)
+                                                    .updateData({
+                                                  "dislikes":
+                                                      FieldValue.increment(1)
+                                                }).then((value) =>
+                                                        Navigator.pop(context));
+                                              },
+                                              child: Transform.rotate(
+                                                angle: 180 * math.pi / 180,
+                                                child: Image.asset(
+                                                  "assets/thumbs_up.png",
+                                                  scale: 4,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 100,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Firestore.instance
+                                                  .collection("motivation")
+                                                  .document(widget.id)
+                                                  .updateData({
+                                                "likes": FieldValue.increment(1)
+                                              }).then((value) =>
+                                                      Navigator.pop(context));
+                                            },
+                                            child: Image.asset(
+                                              "assets/thumbs_up.png",
+                                              scale: 4,
+                                              color: Colors.blue,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  );
+                },
+              );
+            }),
       ),
     );
   }
