@@ -5,7 +5,6 @@ import '../screens/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
-import 'package:blur/blur.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:SOAR/auth/login.dart';
 import 'package:SOAR/motivation_scrren/video_motivation.dart';
 import "dart:ui";
-import 'package:neuomorphic_container/neuomorphic_container.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:math' as math;
 import 'video_promotion.dart';

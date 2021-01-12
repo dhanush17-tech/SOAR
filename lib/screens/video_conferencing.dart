@@ -65,6 +65,7 @@ class _VideoConState extends State<VideoCon> {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(
           child: Stack(

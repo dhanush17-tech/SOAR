@@ -118,8 +118,7 @@ class _TextScreenState extends State<TextScreen>
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-          color: Color(4278190106),
-
+        color: Color(4278190106),
         child: Stack(
           children: [
             Align(
@@ -276,7 +275,6 @@ class _TextScreenState extends State<TextScreen>
                                             builder: (ctx, snapshot) {
                                               return snapshot.data != null
                                                   ? ListView.separated(
-                                                      reverse: false,
                                                       physics:
                                                           NeverScrollableScrollPhysics(),
                                                       shrinkWrap: true,
@@ -332,7 +330,7 @@ class _TextScreenState extends State<TextScreen>
                                                                           style: GoogleFonts.poppins(
                                                                               fontWeight: FontWeight.bold,
                                                                               letterSpacing: 1,
-                                                                              color: Colors.black),
+                                                                              color: Colors.white),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -372,7 +370,7 @@ class _TextScreenState extends State<TextScreen>
                                                                           style: GoogleFonts.poppins(
                                                                               fontWeight: FontWeight.bold,
                                                                               letterSpacing: 1,
-                                                                              color: Colors.black),
+                                                                              color: Colors.white),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -396,7 +394,6 @@ class _TextScreenState extends State<TextScreen>
                                             builder: (ctx, snapshot) {
                                               return snapshot.data != null
                                                   ? ListView.separated(
-                                                      reverse: false,
                                                       physics:
                                                           NeverScrollableScrollPhysics(),
                                                       shrinkWrap: true,
@@ -566,7 +563,9 @@ class _TextScreenState extends State<TextScreen>
                                         .add({
                                         "usertype": usertype,
                                         "content": _message.text,
-                                        "time": DateTime.now().toString()
+                                        "time": DateTime.now()
+                                            .millisecondsSinceEpoch
+                                            .toString()
                                       }).then((value) => _message.clear())
                                     : Firestore.instance
                                         .collection("Users")
@@ -577,7 +576,9 @@ class _TextScreenState extends State<TextScreen>
                                         .add({
                                         "usertype": usertype,
                                         "content": _message.text,
-                                        "time": DateTime.now().toString()
+                                        "time": DateTime.now()
+                                            .millisecondsSinceEpoch
+                                            .toString()
                                       }).then((value) => _message.clear());
                               }
                             },
