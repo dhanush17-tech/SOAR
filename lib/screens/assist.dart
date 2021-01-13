@@ -165,8 +165,7 @@ class _Assist extends State<Assist> {
         ],
       ),
       body: Container(
-                color: Color(4278190106),
-
+        color: Color(4278190106),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Align(
@@ -217,23 +216,27 @@ class _Assist extends State<Assist> {
                     ),
                   ),
                   new ListView.separated(
-                    separatorBuilder: (ctx,i)=>SizedBox(height: 0,),
+                    separatorBuilder: (ctx, i) => SizedBox(
+                      height: 0,
+                    ),
                     physics: NeverScrollableScrollPhysics(),
                     padding: new EdgeInsets.all(8.0),
                     reverse: true,
                     shrinkWrap: true,
                     itemBuilder: (_, int index) {
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 0),
                         child: Column(
-                          children: [_messages[index], ],
+                          children: [
+                            _messages[index],
+                          ],
                         ),
                       );
                     },
                     itemCount: _messages.length,
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 80,
                   ),
                 ]),
               ),
@@ -321,7 +324,7 @@ class ChatMessage extends StatelessWidget {
                   width: 10,
                 ),
                 Container(
-constraints: BoxConstraints(maxWidth: 150),
+                  constraints: BoxConstraints(maxWidth: 150),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,

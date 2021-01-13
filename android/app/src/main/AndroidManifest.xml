@@ -84,5 +84,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+     <uses-library android:name="android.test.runner" />
     </application>
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.example.SOAR"
+        android:label="SOAR" />
 </manifest>

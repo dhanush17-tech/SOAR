@@ -160,7 +160,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              left: 110),
+                                                              left: 0),
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           Navigator.push(
@@ -204,13 +204,13 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  left: 110),
+                                                                  left: 0),
                                                           child: CircleAvatar(
                                                             backgroundColor:
                                                                 Color(
                                                                     4278272638),
                                                             backgroundImage:
-                                                                AssetImage(
+                                                                NetworkImage(
                                                               i.data[
                                                                   "location"],
                                                             ),
@@ -548,6 +548,45 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, top: 10),
+                              child: Text(
+                                'Poster',
+                                style: TextStyle(
+                                    fontSize: 43,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "good",
+                                    color: Color(4283848280)),
+                              ),
+                            ),
+                          ),  SizedBox(
+                            height: 15, 
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+
+                              padding: const EdgeInsets.only(                                  left: 19.0, top: 0, right: 25),
+                              child: Container(
+                                width: 200,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: NetworkImage(feed["postimage"]),
+                                        fit: BoxFit.fill)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
                           ),
                         ],
                       );

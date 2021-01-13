@@ -43,7 +43,17 @@ class _Page3State extends State<Page3> {
     });
   }
 
+  String id;
+
   var formatter = new DateFormat('MMM');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    id = new DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,111 +211,111 @@ class _Page3State extends State<Page3> {
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: GestureDetector(
-                          onTap:
-                              () async {  setState(() {
-                                    issubmitted = true;
-                                    man = true;
-                                  });
-                                  String url;
-                                  await uploadImage();
-                                  final Reference storageRef =
-                                      FirebaseStorage.instance.ref().child(
-                                          "${DateTime.now().toString() + auth.currentUser.uid}");
+                          onTap: issubmitted==true?null:() async {
+                            setState(() {
+                              issubmitted = true;
+                              man = true;
+                            });
+                            String url;
+                            await uploadImage();
+                            final Reference storageRef =
+                                FirebaseStorage.instance.ref().child(
+                                    "${DateTime.now().toString() + auth.currentUser.uid}");
 
-                                  UploadTask uploadTask = await storageRef
-                                      .putFile(video)
-                                      .then((val) async {
-                                    String imageUrl =
-                                        await storageRef.getDownloadURL();
-                                    setState(() {
-                                      url = imageUrl;
-                                    });
-                                    print(url);
-                                  });
-                                  print(downloadUrl);
-                                  final postsRef = Firestore.instance;
-                                  await postsRef
-                                      .collection("Feed")
-                                      .document(DateTime.now().toString())
-                                      .setData({
-                                    "owener": name,
-                                    "summury": summaryController.text,
-                                    "title": pitchname.text,
-                                    "uid": auth.currentUser.uid,
-                                    "date": DateTime.now().toString(),
-                                    "postimage": downloadUrl,
-                                    "features": friendsList.toList(),
-                                    "titles": titleList.toList(),
-                                    "likes": 0,
-                                    "location": dpurl,
-                                    "wow": 0,
+                            UploadTask uploadTask = await storageRef
+                                .putFile(video)
+                                .then((val) async {
+                              String imageUrl =
+                                  await storageRef.getDownloadURL();
+                              setState(() {
+                                url = imageUrl;
+                              });
+                              print(url);
+                            });
+                            print(downloadUrl);
+                            final postsRef = Firestore.instance;
+                            await postsRef
+                                .collection("Feed")
+                                .document(id)
+                                .setData({
+                              "owener": name,
+                              "summury": summaryController.text,
+                              "title": pitchname.text,
+                              "uid": auth.currentUser.uid,
+                              "date": id,
+                              "postimage": downloadUrl,
+                              "features": friendsList.toList(),
+                              "titles": titleList.toList(),
+                              "likes": 0,
+                              "location": dpurl,
+                              "wow": 0,
 
-                                    "day": DateFormat('d')
-                                        .format(time), // prints Tuesday,
-                                    "month": formatter.format(time),
-                                    "value_propotion": "${lowPrice.text}",
-                                    "currency": "$currencycode",
-                                    "how_it_helps": pitchController.text,
-                                    "target_audience": companyController.text,
-                                    "company_progress": value_First,
-                                    "revenue_model": value_radiobutton,
-                                    "video_url": url
-                                  });
+                              "day": DateFormat('d')
+                                  .format(time), // prints Tuesday,
+                              "month": formatter.format(time),
+                              "value_propotion": "${lowPrice.text}",
+                              "currency": "$currencycode",
+                              "how_it_helps": pitchController.text,
+                              "target_audience": companyController.text,
+                              "company_progress": value_First,
+                              "revenue_model": value_radiobutton,
+                              "video_url": url
+                            });
 
-                                  final addtouser = Firestore.instance;
-                                  await addtouser
-                                      .collection("Users")
-                                      .document(auth.currentUser.uid)
-                                      .collection("posts")
-                                      .document(time.toString())
-                                      .set({
-                                    "owener": name,
-                                    "summury": summaryController.text,
-                                    "title": pitchname.text,
-                                    "uid": auth.currentUser.uid,
-                                    "date": DateTime.now().toString(),
-                                    "postimage": downloadUrl,
-                                    "features": friendsList.toList(),
-                                    "titles": titleList.toList(),
-                                    "likes": 0,
-                                    "location": dpurl,
-                                    "currency": "$currencycode",
-                                    "wow": 0,
-                                    "day": DateFormat('d').format(time),
-                                    "month": formatter.format(time),
-                                    "value_propotion":
-                                        "${lowPrice.text}" + "$currencycode",
-                                    "how_it_helps": pitchController.text,
-                                    "target_audience": companyController.text,
-                                    "company_progress": value_First,
-                                    "revenue_model": value_radiobutton,
-                                    "video_url": url
-                                  });
-                                  print("done");
+                            final addtouser = Firestore.instance;
+                            await addtouser
+                                .collection("Users")
+                                .document(auth.currentUser.uid)
+                                .collection("posts")
+                                .document(id)
+                                .set({
+                              "owener": name,
+                              "summury": summaryController.text,
+                              "title": pitchname.text,
+                              "uid": auth.currentUser.uid,
+                              "date": id,
+                              "postimage": downloadUrl,
+                              "features": friendsList.toList(),
+                              "titles": titleList.toList(),
+                              "likes": 0,
+                              "location": dpurl,
+                              "currency": "$currencycode",
+                              "wow": 0,
+                              "day": DateFormat('d').format(time),
+                              "month": formatter.format(time),
+                              "value_propotion":
+                                  "${lowPrice.text}" + "$currencycode",
+                              "how_it_helps": pitchController.text,
+                              "target_audience": companyController.text,
+                              "company_progress": value_First,
+                              "revenue_model": value_radiobutton,
+                              "video_url": url
+                            });
+                            print("done");
 
-                                  print(friendsList);
-                                  print(titleList);
-                                  setState(() {
-                                    show = true;
-                                  });
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    setState(() {
-                                      show = false;
-                                    });
-                                    setState(() {
-                                      man = false;
-                                    });
-                                  }).then((value) {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => StartEnt()),
-                                        (route) => false);
+                            print(friendsList);
+                            print(titleList);
+                            setState(() {
+                              show = true;
+                            });
+                            Future.delayed(Duration(seconds: 3), () {
+                              setState(() {
+                                show = false;
+                              });
+                              setState(() {
+                                man = false;
+                                issubmitted = false;
+                              });
+                            }).then((value) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => StartEnt()),
+                                  (route) => false);
 
-                                    print("hurrayyyyy");
-                                  });
-                                  print(currencycode);
-                                },
+                              print("hurrayyyyy");
+                            });
+                            print(currencycode);
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(top: 50),
                             child: Container(

@@ -359,7 +359,6 @@ class _ChatScreenState extends State<ChatScreen>
                                                                         uidforprofile: auth
                                                                             .currentUser
                                                                             .uid,
-                                                                            
                                                                       )));
                                                         },
                                                         child: CircleAvatar(
@@ -471,9 +470,6 @@ class _ChatScreenState extends State<ChatScreen>
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                               usertype == "entrepreneur"
                                   ? Padding(
                                       padding: const EdgeInsets.only(left: 30),
@@ -513,7 +509,7 @@ class _ChatScreenState extends State<ChatScreen>
                                             builder: (_) => Search()));
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 60),
+                                    padding: const EdgeInsets.only(top: 30),
                                     child: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:
@@ -588,47 +584,45 @@ class _ChatScreenState extends State<ChatScreen>
                                                         var man = snapshot.data;
                                                         return snapshot.data !=
                                                                 null
-                                                            ? Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right:
-                                                                            10,
-                                                                        left:
-                                                                            10),
-                                                                child:
-                                                                    Container(
+                                                            ? GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      PageRouteBuilder(
+                                                                          transitionDuration: Duration(milliseconds: 500),
+                                                                          pageBuilder: (ctx, ani, inde) => TextScreen(
+                                                                                widgeti: i,
+                                                                                id: course["uid_entrepreneur"],
+                                                                                dpurl: man["location"],
+                                                                                uid: course["uid"],
+                                                                                name: man["name"],
+                                                                              )));
+                                                                },
+                                                                child: Padding(
                                                                   padding: EdgeInsets
                                                                       .only(
                                                                           right:
                                                                               10,
                                                                           left:
                                                                               10),
-                                                                  height: 100,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            0.27),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            20),
-                                                                  ),
                                                                   child:
-                                                                      GestureDetector(
-                                                                    onTap: () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          PageRouteBuilder(
-                                                                              transitionDuration: Duration(milliseconds: 500),
-                                                                              pageBuilder: (ctx, ani, inde) => TextScreen(
-                                                                                    widgeti: i,
-                                                                                    id: course["uid_entrepreneur"],
-                                                                                    dpurl: man["location"],
-                                                                                    uid: course["uid"],
-                                                                                    name: man["name"],
-                                                                                  )));
-                                                                    },
+                                                                      Container(
+                                                                    padding: EdgeInsets.only(
+                                                                        right:
+                                                                            10,
+                                                                        left:
+                                                                            10),
+                                                                    height: 100,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              0.27),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20),
+                                                                    ),
                                                                     child: Row(
                                                                       children: [
                                                                         Hero(
@@ -983,7 +977,7 @@ class _ChatScreenState extends State<ChatScreen>
                               MaterialPageRoute(builder: (_) => Search()));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 60),
+                          padding: const EdgeInsets.only(top: 30),
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -1050,49 +1044,52 @@ class _ChatScreenState extends State<ChatScreen>
                                                 AsyncSnapshot snapshot) {
                                               var man = snapshot.data;
                                               return snapshot.data != null
-                                                  ? Padding(
-                                                      padding: EdgeInsets.only(
-                                                          right: 10, left: 10),
-                                                      child: Container(
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            PageRouteBuilder(
+                                                                transitionDuration:
+                                                                    Duration(
+                                                                        milliseconds:
+                                                                            500),
+                                                                pageBuilder: (ctx,
+                                                                        ani,
+                                                                        inde) =>
+                                                                    TextScreen(
+                                                                      widgeti:
+                                                                          i,
+                                                                      id: course[
+                                                                          "uid_entrepreneur"],
+                                                                      dpurl: man[
+                                                                          "location"],
+                                                                      uid: course[
+                                                                          "uid"],
+                                                                      name: man[
+                                                                          "name"],
+                                                                    )));
+                                                      },
+                                                      child: Padding(
                                                         padding:
                                                             EdgeInsets.only(
                                                                 right: 10,
                                                                 left: 10),
-                                                        height: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white
-                                                              .withOpacity(
-                                                                  0.27),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                        ),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                PageRouteBuilder(
-                                                                    transitionDuration:
-                                                                        Duration(
-                                                                            milliseconds:
-                                                                                500),
-                                                                    pageBuilder: (ctx,
-                                                                            ani,
-                                                                            inde) =>
-                                                                        TextScreen(
-                                                                          widgeti:
-                                                                              i,
-                                                                          id: course[
-                                                                              "uid_entrepreneur"],
-                                                                          dpurl:
-                                                                              man["location"],
-                                                                          uid: course[
-                                                                              "uid"],
-                                                                          name:
-                                                                              man["name"],
-                                                                        )));
-                                                          },
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  right: 10,
+                                                                  left: 10),
+                                                          height: 100,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white
+                                                                .withOpacity(
+                                                                    0.27),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
                                                           child: Row(
                                                             children: [
                                                               Hero(

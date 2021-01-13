@@ -42,27 +42,28 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         Tween<double>(begin: 0.5, end: 1).animate(_controller);
     _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
         .animate(_controller);
+        id = new DateTime.now().millisecondsSinceEpoch.toString();
   }
 
-    Future _signOut() async {
-      _logoutUser().then((value) {
-        print("done");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Loginscreen()));
-      });
-    }
+  Future _signOut() async {
+    _logoutUser().then((value) {
+      print("done");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Loginscreen()));
+    });
+  }
 
-    SharedPreferences prefs;
+  SharedPreferences prefs;
 
-    Future<Null> _logoutUser() async {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final FacebookLogin facebookLogIn = FacebookLogin();
-      await facebookLogIn.logOut();
-      await googleSignIn.signOut();
+  Future<Null> _logoutUser() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final FacebookLogin facebookLogIn = FacebookLogin();
+    await facebookLogIn.logOut();
+    await googleSignIn.signOut();
 
-      prefs = await SharedPreferences.getInstance();
-      prefs.remove("useremail");
-    }
+    prefs = await SharedPreferences.getInstance();
+    prefs.remove("useremail");
+  }
 
   @override
   void dispose() {
@@ -127,6 +128,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   bool isLiked = false;
   bool iswow = false;
 
+  String id;
+
   Widget menu(context) {
     return SlideTransition(
       position: _slideAnimation,
@@ -146,42 +149,45 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       .snapshots(),
                   builder: (ctx, sn) {
                     return dpurl != null
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 190),
-                                  child: CircleAvatar(
-                                    backgroundColor: Color(4278272638),
-                                    backgroundImage: NetworkImage(
-                                      dpurl,
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 190),
+                                    child: CircleAvatar(
+                                      backgroundColor: Color(4278272638),
+                                      backgroundImage: NetworkImage(
+                                        dpurl,
+                                      ),
+                                      radius: 40,
                                     ),
-                                    radius: 40,
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 190),
-                                child: Text(
-                                  sn.data["name"],
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 20, color: Color(4278228470)),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                              )
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 190),
+                                  child: Text(
+                                    sn.data["name"],
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 20, color: Color(4278228470)),
+                                  ),
+                                )
+                              ],
+                            ),
                           )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 190),
+                                padding: const EdgeInsets.only(left: 200),
                                 child: CircleAvatar(
                                   backgroundColor: Color(4278272638),
                                   backgroundImage:
@@ -193,7 +199,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                 height: 10,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 190),
+                                padding: const EdgeInsets.only(left: 206),
                                 child: Text(
                                   sn.data["name"],
                                   textAlign: TextAlign.center,
@@ -310,7 +316,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       borderRadius: isCollapsed
                           ? BorderRadius.circular(0)
                           : BorderRadius.circular(20),
-                    color: Color(4278190106),
+                      color: Color(4278190106),
                     ),
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
@@ -504,11 +510,11 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                               child: Row(
                                                                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                                                                 children: [
-                                                                                                  dpurl != null
+                                                                                                  i.data["location"] != null
                                                                                                       ? Container(
                                                                                                           width: 45,
                                                                                                           height: 45,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(dpurl), fit: BoxFit.fill)),
+                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
                                                                                                         )
                                                                                                       : Container(
                                                                                                           width: 45,

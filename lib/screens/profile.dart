@@ -692,7 +692,7 @@ class _ProfileState extends State<Profile> {
                                                                       "complete"));
                                                         });
                                                       }).then((value) {
-                                                      setState(() {
+                                                        setState(() {
                                                           _nowuserdetails();
                                                           _fetchUserinfoForSettingsPage();
                                                           checkfollowerexists();
@@ -728,7 +728,7 @@ class _ProfileState extends State<Profile> {
                                                                       "complete"));
                                                         });
                                                       }).then((value) {
-                                                       setState(() {
+                                                        setState(() {
                                                           _nowuserdetails();
                                                           _fetchUserinfoForSettingsPage();
                                                           checkfollowerexists();
@@ -971,9 +971,12 @@ class _ProfileState extends State<Profile> {
                                     )),
                               ],
                             ),
-                            SizedBox(
-                              width: 30,
-                            ),
+                            Container(
+                                width: 1,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.grey)),
                             Column(
                               children: [
                                 no_ofposts == null
@@ -1033,6 +1036,7 @@ class _ProfileState extends State<Profile> {
                               return Text('Loading... data');
                             return snapshot.data != null
                                 ? ListView.separated(
+                                    reverse: true,
                                     separatorBuilder: (ctx, i) =>
                                         SizedBox(height: 20),
                                     shrinkWrap: true,
