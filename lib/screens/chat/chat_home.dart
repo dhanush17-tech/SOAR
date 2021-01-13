@@ -359,6 +359,7 @@ class _ChatScreenState extends State<ChatScreen>
                                                                         uidforprofile: auth
                                                                             .currentUser
                                                                             .uid,
+                                                                            
                                                                       )));
                                                         },
                                                         child: CircleAvatar(

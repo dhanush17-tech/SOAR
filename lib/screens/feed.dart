@@ -310,7 +310,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       borderRadius: isCollapsed
                           ? BorderRadius.circular(0)
                           : BorderRadius.circular(20),
-                      color: Color(4278190106),
+                    color: Color(4278190106),
                     ),
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,

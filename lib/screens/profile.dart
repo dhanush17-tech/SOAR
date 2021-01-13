@@ -88,6 +88,18 @@ class _ProfileState extends State<Profile> {
     } catch (e) {}
   }
 
+  bro() {
+    Firestore.instance
+        .collection("Users")
+        .document(widget.uidforprofile)
+        .get()
+        .then((value) {
+      setState(() {
+        currentusertype = value["usertype"];
+      });
+    });
+  }
+
   String isfollower;
   checkfollowerexists() async {
     QuerySnapshot _query = await Firestore.instance
@@ -110,22 +122,6 @@ class _ProfileState extends State<Profile> {
   }
 
   String currentusertype;
-
-  Future<void> _usertype() async {
-    try {
-      await Firestore.instance
-          .collection("Users")
-          .document(auth.currentUser.uid)
-          .get()
-          .then((value) {
-        if (value.exists) {
-          setState(() {
-            currentusertype = value.data()["usertype"];
-          });
-        }
-      });
-    } catch (e) {}
-  }
 
   TextEditingController nameChange = TextEditingController();
   TextEditingController websiteUrlChnage = TextEditingController();
@@ -202,6 +198,7 @@ class _ProfileState extends State<Profile> {
     _edit();
     print(widget.uidforprofile);
     noofposts();
+    bro();
   }
 
   int no_ofposts;
@@ -517,9 +514,9 @@ class _ProfileState extends State<Profile> {
                                 SizedBox(
                                   width: 20,
                                 ),
-                                currentusertype != "entrepreneur"
-                                    ? auth.currentUser.uid !=
-                                            widget.uidforprofile
+                                currentusertype == "entrepreneur"
+                                    ? widget.uidforprofile !=
+                                            auth.currentUser.uid
                                         ? isfollower == "no"
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
@@ -695,7 +692,7 @@ class _ProfileState extends State<Profile> {
                                                                       "complete"));
                                                         });
                                                       }).then((value) {
-                                                        setState(() {
+                                                      setState(() {
                                                           _nowuserdetails();
                                                           _fetchUserinfoForSettingsPage();
                                                           checkfollowerexists();
@@ -731,7 +728,7 @@ class _ProfileState extends State<Profile> {
                                                                       "complete"));
                                                         });
                                                       }).then((value) {
-                                                        setState(() {
+                                                       setState(() {
                                                           _nowuserdetails();
                                                           _fetchUserinfoForSettingsPage();
                                                           checkfollowerexists();
@@ -767,7 +764,7 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                               )
                                         : Container()
-                                    : Container(),
+                                    : Container()
                               ],
                             ),
                           ),
@@ -1362,7 +1359,7 @@ class _ProfileState extends State<Profile> {
                                                                           Navigator.push(
                                                                               context,
                                                                               MaterialPageRoute(
-                                                                                builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"],d:i),
+                                                                                builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"], d: i),
                                                                               ));
                                                                         },
                                                                         child: Container(
