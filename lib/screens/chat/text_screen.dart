@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:SOAR/screens/feed.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import '../video_conferencing.dart';
 
 class TextScreen extends StatefulWidget {
@@ -322,15 +322,28 @@ class _TextScreenState extends State<TextScreen>
                                                                         Center(
                                                                       child:
                                                                           Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
+                                                                        padding: const EdgeInsets.only(
+                                                                            top:
+                                                                                8.0,
+                                                                            left:
+                                                                                8.0,
+                                                                            right:
+                                                                                8.0),
                                                                         child:
+                                                                            Column(
+                                                                          children: [
                                                                             Text(
-                                                                          c["content"],
-                                                                          style: GoogleFonts.poppins(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              letterSpacing: 1,
-                                                                              color: Colors.white),
+                                                                              c["content"],
+                                                                              style: GoogleFonts.poppins(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.white),
+                                                                            ),
+                                                                            Align(
+                                                                              alignment: Alignment.bottomRight,
+                                                                              child: Text(
+                                                                                timeago.format(DateTime.parse(c["timeago"])),
+                                                                                style: GoogleFonts.poppins(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.black.withOpacity(0.5), fontSize: 10),
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ),
                                                                     ),
@@ -365,12 +378,20 @@ class _TextScreenState extends State<TextScreen>
                                                                         padding:
                                                                             const EdgeInsets.all(8.0),
                                                                         child:
+                                                                            Column(
+                                                                          children: [
                                                                             Text(
-                                                                          c["content"],
-                                                                          style: GoogleFonts.poppins(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              letterSpacing: 1,
-                                                                              color: Colors.white),
+                                                                              c["content"],
+                                                                              style: GoogleFonts.poppins(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.white),
+                                                                            ),
+                                                                            Align(
+                                                                              alignment: Alignment.bottomLeft,
+                                                                              child: Text(
+                                                                                timeago.format(DateTime.parse(c["timeago"])),
+                                                                                style: GoogleFonts.poppins(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.black.withOpacity(0.5), fontSize: 10),
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ),
                                                                     ),
@@ -420,9 +441,13 @@ class _TextScreenState extends State<TextScreen>
                                                                         .topRight,
                                                                 child:
                                                                     Container(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              8,
+                                                                          right:
+                                                                              8,
+                                                                          top:
                                                                               8),
                                                                   width: 200,
                                                                   decoration: BoxDecoration(
@@ -437,15 +462,30 @@ class _TextScreenState extends State<TextScreen>
                                                                               .blue[
                                                                           900]),
                                                                   child: Center(
-                                                                    child: Text(
-                                                                      c["content"],
-                                                                      style: GoogleFonts.poppins(
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          letterSpacing:
-                                                                              1,
-                                                                          color:
-                                                                              Colors.white),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        Text(
+                                                                          c["content"],
+                                                                          style: GoogleFonts.poppins(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              letterSpacing: 1,
+                                                                              color: Colors.white),
+                                                                        ),
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomRight,
+                                                                          child:
+                                                                              Text(
+                                                                            timeago.format(DateTime.parse(c["timeago"])),
+                                                                            style: GoogleFonts.poppins(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                letterSpacing: 1,
+                                                                                color: Colors.black.withOpacity(0.5),
+                                                                                fontSize: 10),
+                                                                          ),
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
@@ -476,15 +516,25 @@ class _TextScreenState extends State<TextScreen>
                                                                           const EdgeInsets.all(
                                                                               8.0),
                                                                       child:
+                                                                          Column(
+                                                                        children: [
                                                                           Text(
-                                                                        c["content"],
-                                                                        style: GoogleFonts.poppins(
-                                                                            fontWeight: FontWeight
-                                                                                .bold,
-                                                                            letterSpacing:
-                                                                                1,
-                                                                            color:
-                                                                                Colors.white),
+                                                                            c["content"],
+                                                                            style: GoogleFonts.poppins(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                letterSpacing: 1,
+                                                                                color: Colors.white),
+                                                                          ),
+                                                                          Align(
+                                                                            alignment:
+                                                                                Alignment.bottomRight,
+                                                                            child:
+                                                                                Text(
+                                                                              timeago.format(DateTime.parse(c["timeago"])),
+                                                                              style: GoogleFonts.poppins(fontWeight: FontWeight.bold, letterSpacing: 1, color: Colors.black.withOpacity(0.5), fontSize: 10),
+                                                                            ),
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
                                                                   ),
@@ -565,7 +615,8 @@ class _TextScreenState extends State<TextScreen>
                                         "content": _message.text,
                                         "time": DateTime.now()
                                             .millisecondsSinceEpoch
-                                            .toString()
+                                            .toString(),
+                                        "timeago": DateTime.now().toString()
                                       }).then((value) => _message.clear())
                                     : Firestore.instance
                                         .collection("Users")
@@ -578,7 +629,8 @@ class _TextScreenState extends State<TextScreen>
                                         "content": _message.text,
                                         "time": DateTime.now()
                                             .millisecondsSinceEpoch
-                                            .toString()
+                                            .toString(),
+                                        "timeago": DateTime.now().toString()
                                       }).then((value) => _message.clear());
                               }
                             },

@@ -22,6 +22,7 @@ import 'post/post_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Feed extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         Tween<double>(begin: 0.5, end: 1).animate(_controller);
     _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
         .animate(_controller);
-        id = new DateTime.now().millisecondsSinceEpoch.toString();
+    print(DateTime.now());
   }
 
   Future _signOut() async {
@@ -479,7 +480,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                       Padding(
                                                                         padding: const EdgeInsets.only(
                                                                             top:
-                                                                                1,
+                                                                                0,
                                                                             left:
                                                                                 10),
                                                                         child:
@@ -491,6 +492,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                           children: [
                                                                             Container(
                                                                                 child: Row(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                               children: [
                                                                                 StreamBuilder(
@@ -507,55 +509,68 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                                               uidforprofile: i.data["uid"],
                                                                                                             )));
                                                                                               },
-                                                                                              child: Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                              child: Column(
                                                                                                 children: [
-                                                                                                  i.data["location"] != null
-                                                                                                      ? Container(
-                                                                                                          width: 45,
-                                                                                                          height: 45,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
-                                                                                                        )
-                                                                                                      : Container(
-                                                                                                          width: 45,
-                                                                                                          height: 45,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
+                                                                                                  Row(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                    children: [
+                                                                                                      i.data["location"] != null
+                                                                                                          ? Container(
+                                                                                                              width: 50,
+                                                                                                              height: 50,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
+                                                                                                            )
+                                                                                                          : Container(
+                                                                                                              width: 50,
+                                                                                                              height: 50,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
+                                                                                                            ),
+                                                                                                      SizedBox(
+                                                                                                        width: 10,
+                                                                                                      ),
+                                                                                                      Padding(
+                                                                                                        padding: const EdgeInsets.only(bottom: 0),
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                          children: [
+                                                                                                            Container(
+                                                                                                              width: MediaQuery.of(context).size.width * 0.50,
+                                                                                                              child: SingleChildScrollView(
+                                                                                                                scrollDirection: Axis.horizontal,
+                                                                                                                child: Padding(
+                                                                                                                    padding: const EdgeInsets.only(
+                                                                                                                      top: 16,
+                                                                                                                    ),
+                                                                                                                    child: Text(
+                                                                                                                      i.data["name"],
+                                                                                                                      style: GoogleFonts.poppins(
+                                                                                                                        fontSize: 17,
+                                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                                        color: Colors.white,
+                                                                                                                      ),
+                                                                                                                    )),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                            Text(
+                                                                                                              i.data["tagline"],
+                                                                                                              style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
+                                                                                                            ),
+                                                                                                          ],
                                                                                                         ),
-                                                                                                  SizedBox(
-                                                                                                    width: 10,
+                                                                                                      ),
+                                                                                                    ],
                                                                                                   ),
-                                                                                                  Padding(
-                                                                                                    padding: const EdgeInsets.only(bottom: 10),
-                                                                                                    child: Column(
-                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                      children: [
-                                                                                                        Container(
-                                                                                                          width: MediaQuery.of(context).size.width * 0.50,
-                                                                                                          child: SingleChildScrollView(
-                                                                                                            scrollDirection: Axis.horizontal,
-                                                                                                            child: Padding(
-                                                                                                                padding: const EdgeInsets.only(
-                                                                                                                  top: 16,
-                                                                                                                ),
-                                                                                                                child: Text(
-                                                                                                                  i.data["name"],
-                                                                                                                  style: GoogleFonts.poppins(
-                                                                                                                    fontSize: 17,
-                                                                                                                    fontWeight: FontWeight.w600,
-                                                                                                                    color: Colors.white,
-                                                                                                                  ),
-                                                                                                                )),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        Text(
-                                                                                                          i.data["tagline"],
-                                                                                                          style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
-                                                                                                        )
-                                                                                                      ],
+                                                                                                  Text(
+                                                                                                    timeago.format(DateTime.parse(course["timeago"])),
+                                                                                                    style: TextStyle(
+                                                                                                      fontSize: 25,
+                                                                                                      color: Colors.grey.withOpacity(0.5),
+                                                                                                      fontFamily: "good",
                                                                                                     ),
-                                                                                                  ),
+                                                                                                  )
                                                                                                 ],
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                                               ),
                                                                                             );
                                                                                     }),
@@ -849,7 +864,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                       ),
                                                                                     ),
                                                                                   )),
-                                                                            )
+                                                                            ),
                                                                           ],
                                                                         ),
                                                                       )
