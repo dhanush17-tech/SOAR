@@ -409,11 +409,11 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                 child: StreamBuilder(
                                   stream: Firestore.instance
                                       .collection("motivation")
-                                      .document("JptpZ3TIXtSaGlfnvYP6")
+                                      .document(id)
                                       .snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot snapshot) {
-                                    return ListView.builder(
+                                    return snapshot.data==null?Container(): ListView.builder(
                                         shrinkWrap: true,
                                         itemCount:
                                             snapshot.data["images"].length,
