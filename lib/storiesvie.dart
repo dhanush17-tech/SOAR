@@ -81,6 +81,7 @@ class _MoreStoriesState extends State<MoreStories> {
       backgroundColor: Color(4278190106),
       body: imgList.length != 0
           ? StoryView(
+              inline: true,
               storyItems: imgList.map((e) {
                     var index = imgList.indexOf(e);
                     print(duration[index].round());

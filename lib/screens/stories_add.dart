@@ -269,7 +269,7 @@ class _StoriesAddState extends State<StoriesAdd> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 10),
                         child: Text(
-                          "Upload Your Story",
+                          "Upload Your Quick Pitch",
                           style: TextStyle(
                               fontFamily: "good",
                               fontSize: 50,
