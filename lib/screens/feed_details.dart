@@ -139,14 +139,35 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      feed["title"],
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white,
+                                                    Container(
+                                                      height: 50,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .49,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 0,
+                                                            ),
+                                                            child: Text(
+                                                              feed["title"],
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                fontSize: 30,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            )),
                                                       ),
                                                     ),
                                                   ],
@@ -229,14 +250,27 @@ class _FeedDetailsState extends State<FeedDetails> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(4278190106)),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: VideoPlayer(_controller)),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  // If the video is playing, pause it.
+                                  if (_controller.value.isPlaying) {
+                                    _controller.pause();
+                                  } else {
+                                    // If the video is paused, play it.
+                                    _controller.play();
+                                  }
+                                });
+                              },
+                              child: Container(
+                                height: 250,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Color(4278190106)),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: VideoPlayer(_controller)),
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -566,14 +600,15 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     color: Color(4283848280)),
                               ),
                             ),
-                          ),  SizedBox(
-                            height: 15, 
+                          ),
+                          SizedBox(
+                            height: 15,
                           ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Padding(
-
-                              padding: const EdgeInsets.only(                                  left: 19.0, top: 0, right: 25),
+                              padding: const EdgeInsets.only(
+                                  left: 19.0, top: 0, right: 25),
                               child: Container(
                                 width: 200,
                                 height: 300,

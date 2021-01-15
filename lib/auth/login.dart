@@ -249,7 +249,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   FlatButton(
                     onPressed: () async {
                       if (_googlesigninKey.currentState.validate()) {
-                        await _googleSignIn().then((value) {
+                        await _googleSignIn().then((value) async {
                           DbService(uid: _auth.currentUser.uid)
                               .updateuserdata(
                                   _auth.currentUser.displayName,
@@ -284,11 +284,11 @@ class _LoginscreenState extends State<Loginscreen> {
                           });
 
                           Navigator.pop(context);
-                          _usertype();
+                          await _usertype();
 
-                          gotostart();
+                          await gotostart();
                         });
-                        _ensureLoggedIn(_auth.currentUser.email);
+                        await _ensureLoggedIn(_auth.currentUser.email);
                       }
                     },
                     child: Text(
@@ -483,7 +483,7 @@ class _LoginscreenState extends State<Loginscreen> {
                     if (_googlesigninKey.currentState.validate()) {
                       UserCredential authResult = await _auth
                           .signInWithCredential(authCredential)
-                          .then((value) {
+                          .then((value) async {
                         DbService(uid: _auth.currentUser.uid)
                             .updateuserdata(
                                 _auth.currentUser.displayName,
@@ -516,7 +516,8 @@ class _LoginscreenState extends State<Loginscreen> {
                             });
                           }
                         });
-                        _ensureLoggedIn(_auth.currentUser.email).then((value) {
+                        await _ensureLoggedIn(_auth.currentUser.email)
+                            .then((value) {
                           _usertype();
                           gotostart();
                           Navigator.pop(context);
@@ -532,9 +533,9 @@ class _LoginscreenState extends State<Loginscreen> {
             );
           });
     } else {
-      _ensureLoggedIn(_auth.currentUser.email).then((value) async {
+      await _ensureLoggedIn(_auth.currentUser.email).then((value) async {
         await _usertype();
-        gotostartwithdb();
+        await gotostartwithdb();
         setState(() {});
         print("mdddddan");
       });

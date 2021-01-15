@@ -12,7 +12,7 @@ class FeedDetilsForEntrepreneurs extends StatefulWidget {
   String id;
   String url;
   int d;
-  FeedDetilsForEntrepreneurs({this.documnetid, this.id, this.url,this.d});
+  FeedDetilsForEntrepreneurs({this.documnetid, this.id, this.url, this.d});
   @override
   _FeedDetilsForEntrepreneursState createState() =>
       _FeedDetilsForEntrepreneursState();
@@ -141,14 +141,35 @@ class _FeedDetilsForEntrepreneursState
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      feed["title"],
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white,
+                                                    Container(
+                                                      height: 50,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .49,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 0,
+                                                            ),
+                                                            child: Text(
+                                                              feed["title"],
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                fontSize: 30,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            )),
                                                       ),
                                                     ),
                                                   ],
@@ -162,7 +183,7 @@ class _FeedDetilsForEntrepreneursState
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              left: 110),
+                                                              left: 0),
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           Navigator.pop(
@@ -192,13 +213,13 @@ class _FeedDetilsForEntrepreneursState
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  left: 110),
+                                                                  left: 0),
                                                           child: CircleAvatar(
                                                             backgroundColor:
                                                                 Color(
                                                                     4278272638),
                                                             backgroundImage:
-                                                                AssetImage(
+                                                                NetworkImage(
                                                               i.data[
                                                                   "location"],
                                                             ),
@@ -219,14 +240,27 @@ class _FeedDetilsForEntrepreneursState
                             padding: const EdgeInsets.all(8.0),
                             child: Hero(
                               tag: "dssd+${widget.d}",
-                              child: Container(
-                                height: 250,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Color(4278190106)),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: VideoPlayer(_controller)),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    // If the video is playing, pause it.
+                                    if (_controller.value.isPlaying) {
+                                      _controller.pause();
+                                    } else {
+                                      // If the video is paused, play it.
+                                      _controller.play();
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(4278190106)),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: VideoPlayer(_controller)),
+                                ),
                               ),
                             ),
                           ),
@@ -520,6 +554,46 @@ class _FeedDetilsForEntrepreneursState
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, top: 10),
+                              child: Text(
+                                'Poster',
+                                style: TextStyle(
+                                    fontSize: 43,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "good",
+                                    color: Color(4283848280)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 19.0, top: 0, right: 25),
+                              child: Container(
+                                width: 200,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: NetworkImage(feed["postimage"]),
+                                        fit: BoxFit.fill)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
                           ),
                         ],
                       );

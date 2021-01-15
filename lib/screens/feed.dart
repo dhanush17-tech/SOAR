@@ -462,12 +462,15 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                               BoxDecoration(
                                                             gradient: LinearGradient(
                                                                 colors: [
-                                                                  Color(
-                                                                      4278328185).withOpacity(0.4),
-                                                                  Color(
-                                                                      4278547942).withOpacity(0.4),
-                                                                  Color(
-                                                                      4280311451).withOpacity(0.5)
+                                                                  Color(4278328185)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  Color(4278547942)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  Color(4280311451)
+                                                                      .withOpacity(
+                                                                          0.5)
                                                                 ],
                                                                 begin: Alignment
                                                                     .topLeft,
@@ -637,7 +640,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                             Hero(
                                                                               tag: "dssd+$i",
                                                                               child: Container(
-                                                                                  height: 170,
+                                                                                  height: 220,
                                                                                   decoration: BoxDecoration(
                                                                                       boxShadow: <BoxShadow>[BoxShadow(color: Colors.black54, blurRadius: 15.0, offset: Offset(0.0, 0.75))],
                                                                                       borderRadius: BorderRadius.only(
@@ -646,7 +649,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                         topRight: Radius.circular(20),
                                                                                         bottomLeft: Radius.circular(20),
                                                                                       ),
-                                                                                      image: DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill)),
+                                                                                      image: DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.cover)),
                                                                                   child: likes == i.toString()
                                                                                       ? Container(
                                                                                           child: Fade(
