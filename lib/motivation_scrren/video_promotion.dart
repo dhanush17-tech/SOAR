@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_gradient_text/easy_gradient_text.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,8 +73,8 @@ class _PromoVideoState extends State<PromoVideo> {
           parallaxEnabled: true,
           parallaxOffset: 0.1,
           body: _body(),
-          backdropColor: Colors.transparent,
-          color: Colors.transparent,
+          backdropColor: Color(4280032553),
+          color: Color(4280032553).withOpacity(1),
           panelBuilder: (sc) => _panel(sc, context, widget.id),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -158,8 +159,9 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 10.0, bottom: 0),
-                                  child: Text(
-                                    moti["name"],
+                                  child: GradientText(
+                                    text: moti["name"],
+                                    colors: [Colors.blue[400], Colors.blue[700]],
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 30,
@@ -169,7 +171,7 @@ Widget _panel(ScrollController sc, ctx, String id) {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,6 +197,7 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                           moti["name"],
                                           style: TextStyle(
                                               fontSize: 20,
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(
@@ -266,16 +269,16 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                 )
                               ],
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 40),
                             Text(
                               moti["about user"],
                               style: GoogleFonts.robotoCondensed(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 40,
                             ),
                             Align(
                               alignment: Alignment.center,
@@ -384,20 +387,9 @@ Widget _panel(ScrollController sc, ctx, String id) {
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 40,
                             ),
-                            DropCapText(
-                              moti["about_promo"],
-                              dropCapPadding: EdgeInsets.only(right: 7),
-                              dropCapStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.blue),
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  wordSpacing: 4,
-                                  color: Colors.white,
-                                  height: 1.4),
-                            ),
+                          
                             SizedBox(
                               height: 30,
                             ),
