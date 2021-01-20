@@ -25,8 +25,6 @@ class _PromoVideoState extends State<PromoVideo> {
 
   final double _initFabHeight = 120.0;
   double _fabHeight;
-  double _panelHeightOpen;
-  double _panelHeightClosed = 170.0;
 
   @override
   void initState() {
@@ -50,6 +48,8 @@ class _PromoVideoState extends State<PromoVideo> {
 
   @override
   Widget build(BuildContext context) {
+    double _panelHeightOpen;
+    double _panelHeightClosed = MediaQuery.of(context).size.height * .22;
     _panelHeightOpen = MediaQuery.of(context).size.height * .7;
     return Scaffold(
         body: Stack(
@@ -72,11 +72,10 @@ class _PromoVideoState extends State<PromoVideo> {
           parallaxEnabled: true,
           parallaxOffset: 0.1,
           body: _body(),
-          backdropColor: Colors.transparent,
-          color: Colors.transparent,
+          backdropColor: Color(4280032553),
+          color: Color(4280032553),
           panelBuilder: (sc) => _panel(sc, context, widget.id),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topRight: Radius.circular(40)),
           onPanelSlide: (double pos) => setState(() {
             _fabHeight =
                 pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
@@ -135,17 +134,10 @@ Widget _panel(ScrollController sc, ctx, String id) {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.transparent,
-                              Color(4279703319).withOpacity(0.8)
-                            ],
-                            end: Alignment.bottomRight,
-                            begin: Alignment.topRight,
-                          )),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -157,19 +149,21 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                 alignment: Alignment.bottomLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 0),
-                                  child: Text(
-                                    moti["name"],
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 30,
-                                        color: Colors.blue),
-                                  ),
+                                      right: 15.0, bottom: 0),
+                                  child: moti["title"] == null
+                                      ? Text("")
+                                      : Text(
+                                          moti["title"] ?? "",
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 25,
+                                              color: Colors.blue),
+                                        ),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,10 +189,11 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                           moti["name"],
                                           style: TextStyle(
                                               fontSize: 20,
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(
-                                          height: 4,
+                                          height: 10,
                                         ),
                                         Row(
                                           children: [
@@ -236,7 +231,7 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                               ),
                                             ),
                                             SizedBox(
-                                              width: 2,
+                                              width: 10,
                                             ),
                                             Text(
                                               "${moti["likes"]}",
@@ -270,7 +265,7 @@ Widget _panel(ScrollController sc, ctx, String id) {
                             Text(
                               moti["about user"],
                               style: GoogleFonts.robotoCondensed(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w500),
                             ),
@@ -386,21 +381,6 @@ Widget _panel(ScrollController sc, ctx, String id) {
                             SizedBox(
                               height: 30,
                             ),
-                            DropCapText(
-                              moti["about_promo"],
-                              dropCapPadding: EdgeInsets.only(right: 7),
-                              dropCapStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.blue),
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  wordSpacing: 4,
-                                  color: Colors.white,
-                                  height: 1.4),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 5.0, right: 5),
@@ -413,34 +393,38 @@ Widget _panel(ScrollController sc, ctx, String id) {
                                       .snapshots(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot snapshot) {
-                                    return snapshot.data==null?Container(): ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            snapshot.data["images"].length,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (ctx, i) {
-                                          var images = snapshot.data["images"];
-                                          return Row(
-                                            children: <Widget>[
-                                              Container(
-                                                width: 160,
-                                                height: 210,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            snapshot.data[
-                                                                "images"][i]),
-                                                        fit: BoxFit.fill)),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                            ],
-                                          );
-                                        });
+                                    return snapshot.data == null
+                                        ? Container()
+                                        : ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.data["images"].length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (ctx, i) {
+                                              var images =
+                                                  snapshot.data["images"];
+                                              return Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    width: 160,
+                                                    height: 210,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                snapshot.data[
+                                                                        "images"]
+                                                                    [i]),
+                                                            fit: BoxFit.fill)),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                ],
+                                              );
+                                            });
                                   },
                                 ),
                               ),

@@ -35,7 +35,7 @@ class StartEntrepreneur extends StatefulWidget {
 
 class _StartEntrepreneurState extends State<StartEntrepreneur>
     with SingleTickerProviderStateMixin {
-  var _bottomNavIndex = 2; //default index of first screen
+  var _bottomNavIndex = 0; //default index of first screen
 
   AnimationController _animationController;
   Animation<double> animation;
@@ -73,21 +73,25 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
   }
 
   final iconList = <IconData>[
-    Icons.settings,
-    Icons.explore,
-    Icons.message,
+    Icons.home,
+    Icons.hot_tub_outlined,
     Icons.person,
+    Icons.message,
   ];
   final screen = [
     SettingsPage(),
     Stories(),
-    ChatScreen(),
     Profile(
       uidforprofile: auth.currentUser.uid,
     ),
+    ChatScreen(),
   ];
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(4281941064), // navigation bar color
+        statusBarColor: Colors.transparent, // status bar color
+
+  ));
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
@@ -103,9 +107,20 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
         child: FloatingActionButton(
           elevation: 8,
           backgroundColor: Colors.blue[800],
-          child: Icon(
-            Icons.add_rounded,
-            color: Color(4278190106),
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(colors: [
+                  Color(4278232031).withOpacity(0.8),
+                  Colors.indigoAccent.withOpacity(1)
+                ], begin: Alignment.centerLeft, end: Alignment.bottomRight)),
+            child: Icon(
+              Icons.add_rounded,
+              color: Colors.white,
+              size: 35,
+            ),
           ),
           onPressed: () {
             Navigator.push(
@@ -118,7 +133,7 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         itemCount: iconList.length,
         tabBuilder: (int index, bool isActive) {
-          final color = isActive ? Colors.white : Color(4278190106);
+          final color = isActive ? Colors.blue : Colors.grey.withOpacity(1);
           return Stack(
             children: [
               Padding(
@@ -137,10 +152,10 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
                         width: 2,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white,
+                            color: Colors.blue,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.white,
+                                color: Colors.blue,
                                 blurRadius: 6.0,
                                 spreadRadius: 10.0,
                                 offset: Offset(
@@ -159,7 +174,7 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
             ],
           );
         },
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color(4281941064),
         activeIndex: _bottomNavIndex,
         notchAndCornersAnimation: animation,
         splashSpeedInMilliseconds: 00,

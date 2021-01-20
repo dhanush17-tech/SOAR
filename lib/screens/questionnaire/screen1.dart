@@ -2,6 +2,7 @@ import 'package:country_currency_pickers/country.dart';
 import 'package:country_currency_pickers/currency_picker_dropdown.dart';
 import 'package:country_currency_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:SOAR/screens/post/mainpaost.dart';
 
 class Questionnaire extends StatefulWidget {
   @override
@@ -116,7 +117,7 @@ class _QuestionnaireState extends State<Questionnaire> {
                     ),
                     child: TextFormField(
                       controller: pitchController,
-                      validator: (value) => value.length > 20
+                      validator: (value) => value.length < 20
                           ? "Your summary should be more than 20"
                           : null,
                       style: TextStyle(
@@ -170,8 +171,9 @@ class _QuestionnaireState extends State<Questionnaire> {
                       decoration: InputDecoration(
                         fillColor: Color(4278197050).withOpacity(0.5),
                         filled: true,
-                        contentPadding: EdgeInsets.only(bottom: 1),
-                        focusedBorder: OutlineInputBorder( 
+                        contentPadding:
+                            EdgeInsets.only(left: 9, right: 9, bottom: 5),
+                        focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
                       ),
@@ -181,11 +183,13 @@ class _QuestionnaireState extends State<Questionnaire> {
                 SizedBox(
                   height: MediaQuery.of(context).viewInsets.bottom,
                 ),
+                SizedBox(height: 10)
               ],
             ),
           ),
         ),
       ),
+        
     );
   }
 
@@ -203,6 +207,6 @@ class _QuestionnaireState extends State<Questionnaire> {
 
 TextEditingController pitchController = new TextEditingController();
 TextEditingController companyController = new TextEditingController();
-GlobalKey<FormState> key2 = GlobalKey<FormState>();
+final key2 = GlobalKey<FormState>();
 TextEditingController lowPrice = TextEditingController(); //after
-String currencycode ="INR";
+String currencycode = "INR";

@@ -25,12 +25,14 @@ class _SeeMoreState extends State<SeeMore> {
             dpurl = value.data()["location"];
             name = value.data()["name"];
             tagline = value.data()["tagline"];
+            usertype = value.data()["usertype"];
           });
         }
       });
     } catch (e) {}
   }
 
+  String usertype;
   String name;
   String dpurl;
   String tagline;
@@ -81,58 +83,67 @@ class _SeeMoreState extends State<SeeMore> {
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 var cool = snapshot.data;
-                                return cool==null?Container(): Row(
-                                  children: [
-                                    cool["location"] == null
-                                        ? Stack(
+                                return cool == null
+                                    ? Container()
+                                    : Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: cool["location"] == null
+                                                ? Stack(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage:
+                                                            AssetImage(
+                                                          "assets/unknown.png",
+                                                        ),
+                                                        backgroundColor:
+                                                            Color(4278272638),
+                                                        radius: 35,
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Stack(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage:
+                                                            NetworkImage(cool[
+                                                                "location"]),
+                                                        backgroundColor:
+                                                            Color(4278272638),
+                                                        radius: 35,
+                                                      ),
+                                                    ],
+                                                  ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                  "assets/unknown.png",
-                                                ),
-                                                backgroundColor:
-                                                    Color(4278272638),
-                                                radius: 45,
+                                              Text(
+                                                snap["title"],
+                                                style: TextStyle(
+                                                    fontSize: 55,
+                                                    fontFamily: "good",
+                                                    color: Color(4278228470)),
                                               ),
-                                            ],
-                                          )
-                                        : Stack(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    cool["location"]),
-                                                backgroundColor:
-                                                    Color(4278272638),
-                                                radius: 55,
+                                              Text(
+                                                cool["name"],
+                                                style: TextStyle(
+                                                    fontSize: 25,
+                                                    height: 0.3,
+                                                    fontFamily: "good",
+                                                    color: Colors.white
+                                                        .withOpacity(0.5)),
                                               ),
                                             ],
                                           ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          snap["title"],
-                                          style: TextStyle(
-                                              fontSize: 75,
-                                              fontFamily: "good",
-                                              color: Color(4278228470)),
-                                        ),
-                                        Text(
-                                          cool["name"],
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              fontFamily: "good",
-                                              color: Colors.white
-                                                  .withOpacity(0.5)),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
+                                        ],
+                                      );
                               },
                             );
                           },
@@ -232,7 +243,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                             padding:
                                                                 const EdgeInsets
                                                                         .only(
-                                                                    top: 25),
+                                                                    top: 5),
                                                             child: Column(
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
@@ -279,51 +290,52 @@ class _SeeMoreState extends State<SeeMore> {
               ),
             )
           ]),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 80,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
-                    color: Colors.white),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Form(
-                            key: _key,
-                            child: Container(
-                                height: 35,
-                                width: MediaQuery.of(context).size.width * 0.83,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: Color(4278228470))),
-                                child: TextFormField(
-                                  style: TextStyle(
-                                    color: Color(4278190106),
-                                  ),
-                                  controller: _comment,
-                                  validator: (value) =>
-                                      value.length == 0 ? "" : null,
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      contentPadding: EdgeInsets.only(
-                                          left: 10, right: 10, bottom: 10)),
-                                ))),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: GestureDetector(
+          usertype == "entrepreneur"
+              ? Container()
+              : Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 80,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20)),
+                        color: Colors.white),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Form(
+                              key: _key,
+                              child: Container(
+                                  height: 35,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.83,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Color(4278228470))),
+                                  child: TextFormField(
+                                    style: TextStyle(
+                                      color: Color(4278190106),
+                                    ),
+                                    controller: _comment,
+                                    validator: (value) =>
+                                        value.length == 0 ? "" : null,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                            left: 10, right: 10, bottom: 10)),
+                                  ))),
+                                  SizedBox(width: 8,),
+                          GestureDetector(
                             onTap: () {
                               if (_key.currentState.validate()) {
                                 Firestore.instance
@@ -341,25 +353,22 @@ class _SeeMoreState extends State<SeeMore> {
                               }
                             },
                             child: Container(
-                              height: 29,
-                              width: 29,
+                              height: 40,
+                              width: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color(4278228470),
-                              ),
+                            gradient: LinearGradient(colors: [Colors.blue[400], Colors.blueAccent[700]])                                  ),
                               child: Icon(
-                                Icons.arrow_forward_rounded,
-                                color: Color(4278190106),
-                                size: 25,
+                                Icons.send,
+                                color: Colors.white,
+                                size: 20,
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              )),
+                  )),
         ]));
   }
 }

@@ -63,7 +63,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     await googleSignIn.signOut();
 
     prefs = await SharedPreferences.getInstance();
-    prefs.remove("useremail");
+    await prefs.remove("useremail");
   }
 
   @override
@@ -219,19 +219,20 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.55),
+                          left: MediaQuery.of(context).size.width * 0.535),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 0),
+                        padding: EdgeInsets.only(left: 20),
                         child: GestureDetector(
-                          onTap: () {
-                            _signOut();
+                          onTap: () async {
+                            await _signOut();
                           },
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Icon(
                                 Icons.exit_to_app_outlined,
                                 color: Colors.redAccent,
-                                size: 35,
+                                size: 31,
                               ),
                               SizedBox(
                                 width: 15,
@@ -250,7 +251,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.569,
+                          left: MediaQuery.of(context).size.width * 0.595,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -262,7 +263,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                           children: [
                             Image.asset(
                               "assets/faq.png",
-                              scale: 15,
+                              scale: 17,
                               color: Colors.white,
                             ),
                             SizedBox(
@@ -296,7 +297,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(4278716491),
+      backgroundColor: Color(4278190106).withOpacity(0.9),
       body: Stack(
         children: [
           menu(context),
@@ -460,22 +461,21 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                       child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                                colors: [
-                                                                  Color(4278328185)
-                                                                      .withOpacity(
-                                                                          0.4),
-                                                                  Color(4278547942)
-                                                                      .withOpacity(
-                                                                          0.4),
-                                                                  Color(4280311451)
-                                                                      .withOpacity(
-                                                                          0.5)
-                                                                ],
-                                                                begin: Alignment
-                                                                    .topLeft,
-                                                                end: Alignment
-                                                                    .bottomRight),
+                                                            gradient:
+                                                                LinearGradient(
+                                                                    
+                                                                    begin: Alignment
+                                                                        .topLeft,
+                                                                    end: Alignment
+                                                                        .bottomRight,
+                                                                    colors: [
+                                                                      Color(4280311451)
+                                                                          .withOpacity(
+                                                                              0.4),
+                                                                      Color(4278547942)
+                                                                          .withOpacity(
+                                                                              0.4),
+                                                                    ]),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -596,7 +596,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                 height: 50,
                                                                                 decoration: BoxDecoration(
                                                                                   borderRadius: BorderRadius.circular(10),
-                                                                                  color: Colors.white.withOpacity(0.9),
+                                                                                  color: Colors.white.withOpacity(0.12),
                                                                                 ),
                                                                                 child: Padding(
                                                                                   padding: const EdgeInsets.only(top: 5),
@@ -606,7 +606,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                         padding: const EdgeInsets.only(top: 5),
                                                                                         child: Text(
                                                                                           course["day"],
-                                                                                          style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Color(4278228470)),
+                                                                                          style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Colors.white),
                                                                                         ),
                                                                                       ),
                                                                                       SizedBox(
@@ -614,7 +614,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                       ),
                                                                                       Text(
                                                                                         course["month"],
-                                                                                        style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Color(4278190106)),
+                                                                                        style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white),
                                                                                       )
                                                                                     ],
                                                                                   ),
@@ -713,103 +713,63 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.spaceEvenly,
                                                                           children: [
-                                                                            isdusablelike.contains(i) == false
-                                                                                ? Row(
-                                                                                    children: [
-                                                                                      GestureDetector(
-                                                                                          onTap: () async {
-                                                                                            setState(() {
-                                                                                              isdusablelike.add(i);
-                                                                                            });
-                                                                                            Firestore.instance.collection('Feed').document(course.documentID).updateData({
-                                                                                              "likes": FieldValue.increment(1)
-                                                                                            });
-                                                                                            print(course["likes"]);
-                                                                                            Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
-                                                                                              "likes": FieldValue.increment(1)
-                                                                                            });
-                                                                                            setState(() {
-                                                                                              isLiked = true;
-                                                                                              getTimerWid();
-                                                                                              likes = i.toString();
+                                                                            Row(
+                                                                              children: [
+                                                                                GestureDetector(
+                                                                                    onTap: () async {
+                                                                                      setState(() {
+                                                                                        isdusablelike.add(i);
+                                                                                      });
+                                                                                      Firestore.instance.collection('Feed').document(course.documentID).updateData({
+                                                                                        "likes": FieldValue.increment(1)
+                                                                                      });
+                                                                                      print(course["likes"]);
+                                                                                      Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
+                                                                                        "likes": FieldValue.increment(1)
+                                                                                      });
+                                                                                      setState(() {
+                                                                                        isLiked = true;
+                                                                                        getTimerWid();
+                                                                                        likes = i.toString();
 
-                                                                                              print("done");
-                                                                                            });
-                                                                                            print(i);
-                                                                                          },
-                                                                                          child: Image.asset(
-                                                                                            "assets/heart.png",
-                                                                                            color: Color(4290118716),
-                                                                                            scale: 10,
-                                                                                          )),
-                                                                                      Text(
-                                                                                        "${course["likes"]}",
-                                                                                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
-                                                                                      ),
-                                                                                    ],
-                                                                                  )
-                                                                                : Row(
-                                                                                    children: [
-                                                                                      GestureDetector(
-                                                                                          onTap: () async {
-                                                                                            setState(() {
-                                                                                              isdusablelike.removeAt(i);
-                                                                                            });
-                                                                                            Firestore.instance.collection('Feed').document(course.documentID).updateData({
-                                                                                              "likes": FieldValue.increment(-1)
-                                                                                            });
-                                                                                            print(course["likes"]);
-                                                                                            Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
-                                                                                              "likes": FieldValue.increment(-1)
-                                                                                            });
-
-                                                                                            print(i);
-                                                                                          },
-                                                                                          child: Image.asset("assets/heartout.png", color: Color(4290118716), scale: 8)),
-                                                                                      Text(
-                                                                                        "${course["likes"]}",
-                                                                                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
+                                                                                        print("done");
+                                                                                      });
+                                                                                      print(i);
+                                                                                    },
+                                                                                    child: Image.asset(
+                                                                                      "assets/heart.png",
+                                                                                      color: Color(4290118716),
+                                                                                      scale: 10,
+                                                                                    )),
+                                                                                Text(
+                                                                                  "${course["likes"]}",
+                                                                                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                             SizedBox(
                                                                               width: 10,
                                                                             ),
                                                                             Padding(
                                                                               padding: const EdgeInsets.only(right: 0),
                                                                               child: GestureDetector(
-                                                                                onTap: isdisablewow.contains(i) == false
-                                                                                    ? () {
-                                                                                        Firestore.instance.collection('Feed').document(course.documentID).updateData({
-                                                                                          "wow": FieldValue.increment(1)
-                                                                                        });
-                                                                                        print(course["likes"]);
-                                                                                        Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
-                                                                                          "wow": FieldValue.increment(1)
-                                                                                        });
-                                                                                        setState(() {
-                                                                                          iswow = true;
-                                                                                          getTimerWidforwow();
-                                                                                          wow = i.toString();
-                                                                                          setState(() {
-                                                                                            isdisablewow.add(i);
-                                                                                          });
-                                                                                          print("done");
-                                                                                        });
-                                                                                        print(i);
-                                                                                      }
-                                                                                    : () {
-                                                                                        setState(() {
-                                                                                          isdisablewow.removeAt(i);
-                                                                                        });
-                                                                                        Firestore.instance.collection('Feed').document(course.documentID).updateData({
-                                                                                          "wow": FieldValue.increment(-1)
-                                                                                        });
-                                                                                        print(course["likes"]);
-                                                                                        Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
-                                                                                          "wow": FieldValue.increment(-1)
-                                                                                        });
-                                                                                      },
+                                                                                onTap: () {
+                                                                                  Firestore.instance.collection('Feed').document(course.documentID).updateData({
+                                                                                    "wow": FieldValue.increment(1)
+                                                                                  });
+                                                                                  print(course["likes"]);
+                                                                                  Firestore.instance.collection("Users").document(course["uid"]).collection("posts").document(course.documentID).updateData({
+                                                                                    "wow": FieldValue.increment(1)
+                                                                                  });
+                                                                                  setState(() {
+                                                                                    iswow = true;
+                                                                                    getTimerWidforwow();
+                                                                                    wow = i.toString();
+
+                                                                                    print("done");
+                                                                                  });
+                                                                                  print(i);
+                                                                                },
                                                                                 child: Row(
                                                                                   children: [
                                                                                     Image.asset(
@@ -863,17 +823,14 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                     alignment: Alignment.center,
                                                                                     width: 100,
                                                                                     height: 30,
-                                                                                    decoration: BoxDecoration(
-                                                                                      borderRadius: BorderRadius.circular(8),
-                                                                                      color: Colors.white.withOpacity(0.8),
-                                                                                    ),
+                                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.white.withOpacity(.3)),
                                                                                     child: Text(
                                                                                       "Learn More",
-                                                                                      style: TextStyle(
+                                                                                      style: TextStyle( 
                                                                                         fontSize: 22,
                                                                                         fontFamily: "good",
-                                                                                        fontWeight: FontWeight.w300,
-                                                                                        color: Colors.blue,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                        color: Colors.white,
                                                                                       ),
                                                                                     ),
                                                                                   )),

@@ -54,6 +54,12 @@ class _FeedDetailsState extends State<FeedDetails> {
     });
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   ScrollController sc;
   @override
   Widget build(BuildContext context) {
@@ -96,13 +102,15 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       : Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Row(
                                               children: [
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 0, left: 0),
+                                                          top: 0, left: 5),
                                                   child: Align(
                                                     alignment:
                                                         Alignment.topLeft,
@@ -113,18 +121,26 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                               context);
                                                         },
                                                         child: Container(
-                                                          height: 50,
+                                                          height: 35,
+                                                          width: 35,
                                                           decoration:
                                                               BoxDecoration(
                                                             shape:
                                                                 BoxShape.circle,
+                                                            gradient:
+                                                                LinearGradient(
+                                                                    colors: [
+                                                                  Colors.blue[
+                                                                      400],
+                                                                  Colors.blueAccent[
+                                                                      700]
+                                                                ]),
                                                             color: Color(
                                                                 4278228470),
                                                           ),
                                                           child: Icon(
                                                             Icons.arrow_back,
-                                                            color: Color(
-                                                                4278190106),
+                                                            color: Colors.white,
                                                             size: 30,
                                                           ),
                                                         ),

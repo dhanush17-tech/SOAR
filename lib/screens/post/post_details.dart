@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:SOAR/screens/start_entrepreneur.dart';
 import 'package:fade/fade.dart';
 import 'package:intl/intl.dart';
+import 'package:SOAR/screens/post/mainpaost.dart';
 
 class PostDetails extends StatefulWidget {
   @override
@@ -51,10 +52,10 @@ class _PostDetailsState extends State<PostDetails> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         backgroundColor: Color(4278190106),
-        body: Form(
-          key: addwidgetfromkey,
-          child: SingleChildScrollView(
-            reverse: true,
+        body: SingleChildScrollView(
+          reverse: true,
+          child: Form(
+            key: addwidgetfromkey,
             child: Column(
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -83,29 +84,26 @@ class _PostDetailsState extends State<PostDetails> {
                         ),
                         child: Column(
                           children: [
-                            Form(
-                              key: content,
-                              child: TextFormField(
-                                controller: summaryController,
-                                validator: (value) => value.length > 20
-                                    ? "Your summary should be more than 20"
-                                    : null,
-                                style: TextStyle(
-                                    color: Color(4278228470),
-                                    fontSize: 30,
-                                    fontFamily: "good",
-                                    fontWeight: FontWeight.w500),
-                                decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(9),
-                                    hintText: "Content",
-                                    hintStyle: GoogleFonts.poppins(
-                                        color: Color(4278228470),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                    border: InputBorder.none),
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                              ),
+                            TextFormField(
+                              controller: summaryController,
+                              validator: (value) => value.length > 20
+                                  ? "Your summary should be more than 20"
+                                  : null,
+                              style: TextStyle(
+                                  color: Color(4278228470),
+                                  fontSize: 30,
+                                  fontFamily: "good",
+                                  fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(9),
+                                  hintText: "Content",
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: Color(4278228470),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                  border: InputBorder.none),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
                             ),
                           ],
                         )),
@@ -130,6 +128,10 @@ class _PostDetailsState extends State<PostDetails> {
                 SizedBox(
                   height: MediaQuery.of(context).viewInsets.bottom,
                 ),
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 10,
+                )
               ],
             ),
           ),
@@ -326,11 +328,11 @@ class _TitleTextListState extends State<TitleTextList> {
   }
 }
 
-TextEditingController pitchname = TextEditingController();
+final TextEditingController pitchname = TextEditingController();
 List<String> friendsList = [null];
 List<String> titleList = [null];
 String name;
 String dpurl;
 TextEditingController summaryController = TextEditingController();
-GlobalKey<FormState> content = GlobalKey<FormState>();
+final content = GlobalKey<FormState>();
 GlobalKey<FormState> addwidgetfromkey = GlobalKey<FormState>();

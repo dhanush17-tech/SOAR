@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:progress_timeline/progress_timeline.dart';
-
+import 'package:get/get.dart';
 import '../feed.dart';
 import '../profile.dart';
 import '../../motivation_scrren/motivation_home.dart';
@@ -27,25 +27,7 @@ class _MainPostState extends State<MainPost> {
     SingleState(stateTitle: "Stage 3"),
     SingleState(stateTitle: "Stage 4"),
   ];
-  PreloadPageController _controller;
   int current = 0;
-  bool isOnPageTurning = false;
-
-  void scrollListener() {
-    if (isOnPageTurning &&
-        _controller.page == _controller.page.roundToDouble()) {
-      setState(() {
-        current = _controller.page.toInt();
-        isOnPageTurning = false;
-      });
-    } else if (!isOnPageTurning && current.toDouble() != _controller.page) {
-      if ((current.toDouble() - _controller.page).abs() > 0.1) {
-        setState(() {
-          isOnPageTurning = true;
-        });
-      }
-    }
-  }
 
   @override
   void initState() {
@@ -54,21 +36,17 @@ class _MainPostState extends State<MainPost> {
       iconSize: 35,
       textStyle: TextStyle(fontSize: 0),
     );
-    _controller = PreloadPageController(initialPage: 1);
-    _controller.addListener(scrollListener);
-    pitchname = TextEditingController();
-    companyController = TextEditingController();
-    summaryController = TextEditingController();
-    pitchController = TextEditingController();
-    lowPrice = TextEditingController();
-    
+    controller = PreloadPageController(initialPage: 0);
+
     super.initState();
   }
 
   List man = [PostImage(), PostDetails(), Questionnaire(), Page2(), Page3()];
 
+  GlobalKey<FormState> cool = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    rebuildAllChildren(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color(4278190106),
@@ -105,21 +83,146 @@ class _MainPostState extends State<MainPost> {
             child: screenProgress,
           ),
           Container(
-              height: MediaQuery.of(context).size.height * 0.70,
-              child: PreloadPageView.builder(
-                  itemBuilder: (BuildContext context, int position) {
-                    return man[position];
-                  },
-                  itemCount: 5,
-                  controller: PreloadPageController(initialPage: 0),
-                  onPageChanged: (int position) {
-                    setState(() {
-                      screenProgress.state.currentStageIndex = position;
-                      screenProgress.state.setState(() {});
-                    });
-                  }))
+            height: MediaQuery.of(context).size.height * 0.7099,
+            child: Stack(
+              children: [
+                PreloadPageView.builder(
+                    itemBuilder: (BuildContext context, int position) {
+                      return Stack(
+                        children: [
+                          man[position],
+                        ],
+                      );
+                    },
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    controller: controller,
+                    onPageChanged: (int position) {
+                      setState(() {
+                        screenProgress.state.currentStageIndex = position;
+                        screenProgress.state.setState(() {});
+                      });
+                    }),
+                button()
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
+
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
+  }
+
+  Widget button() {
+    return FutureBuilder(
+        future: Future.value(true),
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 10.0, bottom: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+          Align(
+                        alignment: Alignment.bottomLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              controller.previousPage(
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeIn);
+                            });
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.redAccent,
+                            ),
+                            child: Icon(
+                              Icons.arrow_back_rounded,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )
+,                pagee == 4
+                    ? Container()
+                    : FutureBuilder(
+                        future: Future.value(true),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return Align(
+                            alignment: Alignment.bottomRight,
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (controller.page == 0) {
+                                    key1.currentState.validate()
+                                        ? controller.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeIn)
+                                        : null;
+                                  }
+                                  if (controller.page == 1) {
+                                    addwidgetfromkey.currentState.validate()
+                                        ? controller.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeIn)
+                                        : null;
+                                  }
+                                  if (controller.page == 2) {
+                                    controller.nextPage(
+                                        duration: Duration(milliseconds: 500),
+                                        curve: Curves.easeIn);
+                                  }
+                                  if (controller.page == 3) {
+                                    if (value_First != null) {
+                                      setState(() {
+                                        controller.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeIn);
+                                        pagee = 4;
+                                      });
+                                    }
+                                  }
+
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(4283488874),
+                                  ),
+                                  child: Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                )),
+                          );
+                        },
+                      ),
+              ],
+            ),
+          );
+        });
+  }
+
+  int pagee;
 }
+
+PreloadPageController controller;

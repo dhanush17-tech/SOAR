@@ -10,6 +10,7 @@ import 'chat/chat_home.dart';
 import 'for_users_feed_details.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:easy_gradient_text/easy_gradient_text.dart';
 
 class Profile extends StatefulWidget {
   String uidforprofile;
@@ -91,7 +92,7 @@ class _ProfileState extends State<Profile> {
   bro() {
     Firestore.instance
         .collection("Users")
-        .document(widget.uidforprofile)
+        .document(auth.currentUser.uid)
         .get()
         .then((value) {
       setState(() {
@@ -278,7 +279,11 @@ class _ProfileState extends State<Profile> {
                                               height: 45,
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                color: Colors.blue,
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.blue[400],
+                                                      Colors.blue[700]
+                                                    ]),
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.black
@@ -514,262 +519,260 @@ class _ProfileState extends State<Profile> {
                                 SizedBox(
                                   width: 20,
                                 ),
-                                currentusertype == "entrepreneur"
-                                    ? widget.uidforprofile !=
-                                            auth.currentUser.uid
-                                        ? isfollower == "no"
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 35, right: 10),
-                                                child: Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      List<String> spiltList =
-                                                          name.split(" ");
-                                                      List<String> indexList =
-                                                          [];
-                                                      for (int i = 0;
-                                                          i < spiltList.length;
-                                                          i++) {
-                                                        for (int j = 0;
-                                                            j <
-                                                                spiltList[i]
-                                                                        .length +
-                                                                    i;
-                                                            j++) {
-                                                          indexList.add(
+                                if (currentusertype != "entrepreneur")
+                                  (widget.uidforprofile != auth.currentUser.uid
+                                      ? isfollower == "no"
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 35, right: 10),
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    List<String> spiltList =
+                                                        name.split(" ");
+                                                    List<String> indexList = [];
+                                                    for (int i = 0;
+                                                        i < spiltList.length;
+                                                        i++) {
+                                                      for (int j = 0;
+                                                          j <
                                                               spiltList[i]
-                                                                  .substring(
-                                                                      0, j)
-                                                                  .toLowerCase());
-                                                        }
+                                                                      .length +
+                                                                  i;
+                                                          j++) {
+                                                        indexList.add(
+                                                            spiltList[i]
+                                                                .substring(0, j)
+                                                                .toLowerCase());
                                                       }
-                                                      Firestore.instance
-                                                          .collection("Users")
-                                                          .document(auth
-                                                              .currentUser.uid)
-                                                          .collection(
-                                                              "following")
-                                                          .document(widget
-                                                              .uidforprofile)
-                                                          .setData({
-                                                        "location": location,
-                                                        "name": name,
-                                                        "tagline": tagline,
-                                                        "usertype": usertype,
-                                                        "websiteurl":
-                                                            websiteurl,
-                                                        "uid": auth
-                                                            .currentUser.uid,
-                                                        "uid_entrepreneur":
-                                                            widget
-                                                                .uidforprofile,
-                                                        "searchkey": indexList
-                                                      }).then((value) {
-                                                        print("done");
-                                                        setState(() {
-                                                          _nowuserdetails();
-                                                          _fetchUserinfoForSettingsPage();
-                                                          checkfollowerexists();
-                                                          checkfor_rentrepreneur();
-                                                        });
+                                                    }
+                                                    Firestore.instance
+                                                        .collection("Users")
+                                                        .document(auth
+                                                            .currentUser.uid)
+                                                        .collection("following")
+                                                        .document(widget
+                                                            .uidforprofile)
+                                                        .setData({
+                                                      "location": location,
+                                                      "name": name,
+                                                      "tagline": tagline,
+                                                      "usertype": usertype,
+                                                      "websiteurl": websiteurl,
+                                                      "uid":
+                                                          auth.currentUser.uid,
+                                                      "uid_entrepreneur":
+                                                          widget.uidforprofile,
+                                                      "searchkey": indexList
+                                                    }).then((value) {
+                                                      print("done");
+                                                      setState(() {
+                                                        _nowuserdetails();
+                                                        _fetchUserinfoForSettingsPage();
+                                                        checkfollowerexists();
+                                                        checkfor_rentrepreneur();
                                                       });
+                                                    });
 
-                                                      List<String> otherList =
-                                                          nowuser_name
-                                                              .split(" ");
-                                                      List<String> ndexList =
-                                                          [];
-                                                      for (int m = 0;
-                                                          m < otherList.length;
-                                                          m++) {
-                                                        for (int f = 0;
-                                                            f <
-                                                                otherList[m]
-                                                                        .length +
-                                                                    m;
-                                                            f++) {
-                                                          ndexList.add(otherList[
-                                                                  m]
-                                                              .substring(0, f)
-                                                              .toLowerCase());
-                                                        }
+                                                    List<String> otherList =
+                                                        nowuser_name.split(" ");
+                                                    List<String> ndexList = [];
+                                                    for (int m = 0;
+                                                        m < otherList.length;
+                                                        m++) {
+                                                      for (int f = 0;
+                                                          f <
+                                                              otherList[m]
+                                                                      .length +
+                                                                  m;
+                                                          f++) {
+                                                        ndexList.add(
+                                                            otherList[m]
+                                                                .substring(0, f)
+                                                                .toLowerCase());
                                                       }
-                                                      Firestore.instance
-                                                          .collection("Users")
-                                                          .document(widget
-                                                              .uidforprofile)
-                                                          .collection(
-                                                              "followers")
-                                                          .add({
-                                                        "location":
-                                                            nowuser_dpurl,
-                                                        "name": nowuser_name,
-                                                        "tagline":
-                                                            nowuser_tagline,
-                                                        "usertype":
-                                                            nowuser_usertype,
-                                                        "websiteurl":
-                                                            nowuser_websiteurl,
-                                                        "uid": widget
-                                                            .uidforprofile,
-                                                        "investor_uid":
-                                                            nowuser_uid,
-                                                        "searchkey": ndexList
-                                                      }).then((value) {
-                                                        print("done");
-                                                        setState(() {
-                                                          _nowuserdetails();
-                                                          _fetchUserinfoForSettingsPage();
-                                                          checkfollowerexists();
-                                                          checkfor_rentrepreneur();
-                                                        });
+                                                    }
+                                                    Firestore.instance
+                                                        .collection("Users")
+                                                        .document(widget
+                                                            .uidforprofile)
+                                                        .collection("followers")
+                                                        .add({
+                                                      "location": nowuser_dpurl,
+                                                      "name": nowuser_name,
+                                                      "tagline":
+                                                          nowuser_tagline,
+                                                      "usertype":
+                                                          nowuser_usertype,
+                                                      "websiteurl":
+                                                          nowuser_websiteurl,
+                                                      "uid":
+                                                          widget.uidforprofile,
+                                                      "investor_uid":
+                                                          nowuser_uid,
+                                                      "searchkey": ndexList
+                                                    }).then((value) {
+                                                      print("done");
+                                                      setState(() {
+                                                        _nowuserdetails();
+                                                        _fetchUserinfoForSettingsPage();
+                                                        checkfollowerexists();
+                                                        checkfor_rentrepreneur();
                                                       });
-                                                    },
-                                                    child: Container(
-                                                      width: 120,
-                                                      height: 30,
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              Color(4278228470),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          "Follow",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    width: 120,
+                                                    height: 30,
+                                                    decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                              Colors.blue[400],
+                                                              Colors.blueAccent[
+                                                                  700]
+                                                            ],
+                                                            begin: Alignment
+                                                                .centerLeft,
+                                                            end: Alignment
+                                                                .centerRight),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        "Follow",
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                            : Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 35, right: 13),
-                                                child: Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      print("jj");
-                                                      Firestore.instance
-                                                          .collection("Users")
-                                                          .document(auth
-                                                              .currentUser.uid)
-                                                          .collection(
-                                                              "following")
-                                                          .where(
-                                                              'uid_entrepreneur',
-                                                              isEqualTo: widget
-                                                                  .uidforprofile)
-                                                          .get()
-                                                          .then((value) {
-                                                        value.docs
-                                                            .forEach((element) {
-                                                          Firestore.instance
-                                                              .collection(
-                                                                  "Users")
-                                                              .document(auth
-                                                                  .currentUser
-                                                                  .uid)
-                                                              .collection(
-                                                                  "following")
-                                                              .doc(element.id)
-                                                              .delete()
-                                                              .then((value) =>
-                                                                  print(
-                                                                      "complete"));
-                                                        });
-                                                      }).then((value) {
-                                                        setState(() {
-                                                          _nowuserdetails();
-                                                          _fetchUserinfoForSettingsPage();
-                                                          checkfollowerexists();
-                                                          checkfor_rentrepreneur();
-                                                        });
+                                              ),
+                                            )
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 35, right: 13),
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    print("jj");
+                                                    Firestore.instance
+                                                        .collection("Users")
+                                                        .document(auth
+                                                            .currentUser.uid)
+                                                        .collection("following")
+                                                        .where(
+                                                            'uid_entrepreneur',
+                                                            isEqualTo: widget
+                                                                .uidforprofile)
+                                                        .get()
+                                                        .then((value) {
+                                                      value.docs
+                                                          .forEach((element) {
+                                                        Firestore.instance
+                                                            .collection("Users")
+                                                            .document(auth
+                                                                .currentUser
+                                                                .uid)
+                                                            .collection(
+                                                                "following")
+                                                            .doc(element.id)
+                                                            .delete()
+                                                            .then((value) =>
+                                                                print(
+                                                                    "complete"));
                                                       });
+                                                    }).then((value) {
+                                                      setState(() {
+                                                        _nowuserdetails();
+                                                        _fetchUserinfoForSettingsPage();
+                                                        checkfollowerexists();
+                                                        checkfor_rentrepreneur();
+                                                      });
+                                                    });
 
-                                                      Firestore.instance
-                                                          .collection("Users")
-                                                          .document(widget
-                                                              .uidforprofile)
-                                                          .collection(
-                                                              "followers")
-                                                          .where('investor_uid',
-                                                              isEqualTo: auth
-                                                                  .currentUser
-                                                                  .uid)
-                                                          .get()
-                                                          .then((value) {
-                                                        value.docs
-                                                            .forEach((element) {
-                                                          Firestore.instance
-                                                              .collection(
-                                                                  "Users")
-                                                              .document(widget
-                                                                  .uidforprofile)
-                                                              .collection(
-                                                                  "followers")
-                                                              .doc(element.id)
-                                                              .delete()
-                                                              .then((value) =>
-                                                                  print(
-                                                                      "complete"));
-                                                        });
-                                                      }).then((value) {
-                                                        setState(() {
-                                                          _nowuserdetails();
-                                                          _fetchUserinfoForSettingsPage();
-                                                          checkfollowerexists();
-                                                          checkfor_rentrepreneur();
-                                                        });
+                                                    Firestore.instance
+                                                        .collection("Users")
+                                                        .document(widget
+                                                            .uidforprofile)
+                                                        .collection("followers")
+                                                        .where('investor_uid',
+                                                            isEqualTo: auth
+                                                                .currentUser
+                                                                .uid)
+                                                        .get()
+                                                        .then((value) {
+                                                      value.docs
+                                                          .forEach((element) {
+                                                        Firestore.instance
+                                                            .collection("Users")
+                                                            .document(widget
+                                                                .uidforprofile)
+                                                            .collection(
+                                                                "followers")
+                                                            .doc(element.id)
+                                                            .delete()
+                                                            .then((value) =>
+                                                                print(
+                                                                    "complete"));
                                                       });
-                                                    },
-                                                    child: Container(
-                                                      width: 120,
-                                                      height: 30,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.grey,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          "Unfollow",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color: Color(
-                                                                  4278190106),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
+                                                    }).then((value) {
+                                                      setState(() {
+                                                        _nowuserdetails();
+                                                        _fetchUserinfoForSettingsPage();
+                                                        checkfollowerexists();
+                                                        checkfor_rentrepreneur();
+                                                      });
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    width: 120,
+                                                    height: 30,
+                                                    decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                              Colors.blue[400],
+                                                              Colors.blueAccent[
+                                                                  700]
+                                                            ],
+                                                            begin: Alignment
+                                                                .centerLeft,
+                                                            end: Alignment
+                                                                .centerRight),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        "Unfollow",
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Color(
+                                                                4278190106),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                        : Container()
-                                    : Container()
+                                              ),
+                                            )
+                                      : Container())
+                                else
+                                  Container()
                               ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -861,7 +864,9 @@ class _ProfileState extends State<Profile> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                        top: 10,
+                        top: auth.currentUser.uid == widget.uidforprofile
+                            ? 0
+                            : 10,
                       ),
                       child: Padding(
                         padding: EdgeInsets.only(left: 10, top: 0),
@@ -1014,8 +1019,9 @@ class _ProfileState extends State<Profile> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, bottom: 0),
-                      child: Text(
-                        " Pitches",
+                      child: GradientText(
+                        text: " Pitches",
+                        colors: [Colors.blue[400], Colors.blue[700]],
                         style: TextStyle(
                             fontSize: 55,
                             fontFamily: "good",
@@ -1058,348 +1064,367 @@ class _ProfileState extends State<Profile> {
                                                     left: 15,
                                                     right: 15,
                                                     top: 20),
-                                                child: Material(
-                                                  color: Colors.white
-                                                      .withOpacity(0.27),
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  elevation: 20,
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white
-                                                            .withOpacity(0.27),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: Stack(children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Column(
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        top: 1,
-                                                                        left:
-                                                                            10),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Container(
-                                                                        child:
-                                                                            Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        StreamBuilder(
-                                                                            stream:
-                                                                                Firestore.instance.collection("Users").document(course["uid"]).snapshots(),
-                                                                            builder: (ctx, i) {
-                                                                              return i.data == null
-                                                                                  ? Container(width: 20, height: 20)
-                                                                                  : Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                                                      children: [
-                                                                                        i.data["location"] != null
-                                                                                            ? Container(
-                                                                                                width: 45,
-                                                                                                height: 45,
-                                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
-                                                                                              )
-                                                                                            : Container(
-                                                                                                width: 45,
-                                                                                                height: 45,
-                                                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
-                                                                                              ),
-                                                                                        SizedBox(
-                                                                                          width: 10,
-                                                                                        ),
-                                                                                        Padding(
-                                                                                          padding: const EdgeInsets.only(bottom: 10),
-                                                                                          child: Column(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                                                            children: [
-                                                                                              Container(
-                                                                                                width: MediaQuery.of(context).size.width * 0.50,
-                                                                                                child: SingleChildScrollView(
-                                                                                                  scrollDirection: Axis.horizontal,
-                                                                                                  child: Padding(
-                                                                                                      padding: const EdgeInsets.only(
-                                                                                                        top: 16,
-                                                                                                      ),
-                                                                                                      child: Text(
-                                                                                                        i.data["name"],
-                                                                                                        style: GoogleFonts.poppins(
-                                                                                                          fontSize: 17,
-                                                                                                          fontWeight: FontWeight.w600,
-                                                                                                          color: Colors.white,
-                                                                                                        ),
-                                                                                                      )),
-                                                                                                ),
-                                                                                              ),
-                                                                                              Text(
-                                                                                                i.data["tagline"],
-                                                                                                style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
-                                                                                              )
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    );
-                                                                            }),
-                                                                      ],
-                                                                    )),
-                                                                    Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                          colors: [
+                                                            Color(4280311451)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            Color(4278547942)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                          ]),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    child: Stack(children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 1,
+                                                                      left: 10),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
                                                                       child:
-                                                                          Container(
-                                                                        width:
-                                                                            50,
-                                                                        height:
-                                                                            50,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
-                                                                          color: Colors
-                                                                              .white
-                                                                              .withOpacity(0.8),
-                                                                        ),
+                                                                          Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      StreamBuilder(
+                                                                          stream: Firestore
+                                                                              .instance
+                                                                              .collection("Users")
+                                                                              .document(course["uid"])
+                                                                              .snapshots(),
+                                                                          builder: (ctx, i) {
+                                                                            return i.data == null
+                                                                                ? Container(width: 20, height: 20)
+                                                                                : Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                    children: [
+                                                                                      i.data["location"] != null
+                                                                                          ? Container(
+                                                                                              width: 45,
+                                                                                              height: 45,
+                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
+                                                                                            )
+                                                                                          : Container(
+                                                                                              width: 45,
+                                                                                              height: 45,
+                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
+                                                                                            ),
+                                                                                      SizedBox(
+                                                                                        width: 10,
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(bottom: 10),
+                                                                                        child: Column(
+                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                                          children: [
+                                                                                            Container(
+                                                                                              width: MediaQuery.of(context).size.width * 0.50,
+                                                                                              child: SingleChildScrollView(
+                                                                                                scrollDirection: Axis.horizontal,
+                                                                                                child: Padding(
+                                                                                                    padding: const EdgeInsets.only(
+                                                                                                      top: 16,
+                                                                                                    ),
+                                                                                                    child: Text(
+                                                                                                      i.data["name"],
+                                                                                                      style: GoogleFonts.poppins(
+                                                                                                        fontSize: 17,
+                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                        color: Colors.white,
+                                                                                                      ),
+                                                                                                    )),
+                                                                                              ),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              i.data["tagline"],
+                                                                                              style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
+                                                                                            )
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  );
+                                                                          }),
+                                                                    ],
+                                                                  )),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Container(
+                                                                      width: 50,
+                                                                      height:
+                                                                          50,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                        color: Colors
+                                                                            .white
+                                                                            .withOpacity(0.12),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.only(top: 5),
                                                                         child:
+                                                                            Column(
+                                                                          children: [
                                                                             Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(top: 5),
-                                                                          child:
-                                                                              Column(
-                                                                            children: [
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.only(top: 5),
-                                                                                child: Text(
-                                                                                  course["day"],
-                                                                                  style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Color(4278228470)),
-                                                                                ),
+                                                                              padding: const EdgeInsets.only(top: 5),
+                                                                              child: Text(
+                                                                                course["day"],
+                                                                                style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Colors.white),
                                                                               ),
-                                                                              SizedBox(
-                                                                                height: 3,
-                                                                              ),
-                                                                              Text(
-                                                                                course["month"],
-                                                                                style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Color(4278190106)),
-                                                                              )
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 3,
+                                                                            ),
+                                                                            Text(
+                                                                              course["month"],
+                                                                              style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white),
+                                                                            )
+                                                                          ],
                                                                         ),
                                                                       ),
-                                                                    )
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 1,
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
+                                                              child: Material(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          5),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          5),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                ),
+                                                                elevation: 3,
+                                                                child: Stack(
+                                                                  children: [
+                                                                    Hero(
+                                                                      tag:
+                                                                          "dssd+$i",
+                                                                      child: Material(
+                                                                          borderRadius: BorderRadius.only(
+                                                                            topLeft:
+                                                                                Radius.circular(5),
+                                                                            bottomRight:
+                                                                                Radius.circular(5),
+                                                                            topRight:
+                                                                                Radius.circular(20),
+                                                                            bottomLeft:
+                                                                                Radius.circular(20),
+                                                                          ),
+                                                                          elevation: 20,
+                                                                          child: Container(
+                                                                            height:
+                                                                                170,
+                                                                            decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.only(
+                                                                                  topLeft: Radius.circular(5),
+                                                                                  bottomRight: Radius.circular(5),
+                                                                                  topRight: Radius.circular(20),
+                                                                                  bottomLeft: Radius.circular(20),
+                                                                                ),
+                                                                                image: course["postimage"] != null ? DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.cover) : DecorationImage(image: AssetImage("assets/unknown.png"))),
+                                                                          )),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
-                                                              SizedBox(
-                                                                height: 1,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10,
-                                                                        right:
-                                                                            10),
-                                                                child: Material(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            5),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            5),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            20),
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            20),
-                                                                  ),
-                                                                  elevation: 3,
-                                                                  child: Stack(
-                                                                    children: [
-                                                                      Hero(
-                                                                        tag:
-                                                                            "dssd+$i",
-                                                                        child: Material(
-                                                                            borderRadius: BorderRadius.only(
-                                                                              topLeft: Radius.circular(5),
-                                                                              bottomRight: Radius.circular(5),
-                                                                              topRight: Radius.circular(20),
-                                                                              bottomLeft: Radius.circular(20),
-                                                                            ),
-                                                                            elevation: 20,
-                                                                            child: Container(
-                                                                              height: 170,
-                                                                              decoration: BoxDecoration(
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topLeft: Radius.circular(5),
-                                                                                    bottomRight: Radius.circular(5),
-                                                                                    topRight: Radius.circular(20),
-                                                                                    bottomLeft: Radius.circular(20),
-                                                                                  ),
-                                                                                  image: course["postimage"] != null ? DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill) : DecorationImage(image: AssetImage("assets/unknown.png"))),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Image.asset(
+                                                                      "assets/heart.png",
+                                                                      color: Color(
+                                                                          4290118716),
+                                                                      scale: 10,
+                                                                    ),
+                                                                    Text(
+                                                                      "${course["likes"]}",
+                                                                      style: GoogleFonts.poppins(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color: Colors
+                                                                              .white
+                                                                              .withOpacity(1)),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 10,
-                                                              ),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceEvenly,
-                                                                children: [
-                                                                  Row(
+                                                                SizedBox(
+                                                                  width: 0,
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right: 0),
+                                                                  child: Row(
                                                                     children: [
                                                                       Image
                                                                           .asset(
-                                                                        "assets/heart.png",
-                                                                        color: Color(
-                                                                            4290118716),
-                                                                        scale:
-                                                                            10,
+                                                                        "assets/wow.png",
+                                                                        width:
+                                                                            20,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
                                                                       ),
                                                                       Text(
-                                                                        "${course["likes"]}",
-                                                                        style: GoogleFonts.poppins(
+                                                                        "${course["wow"]}",
+                                                                        style: TextStyle(
                                                                             fontWeight:
                                                                                 FontWeight.bold,
                                                                             color: Colors.white.withOpacity(1)),
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  SizedBox(
-                                                                    width: 0,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        right:
-                                                                            0),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Image
-                                                                            .asset(
-                                                                          "assets/wow.png",
-                                                                          width:
-                                                                              20,
+                                                                ),
+                                                                auth.currentUser
+                                                                            .uid ==
+                                                                        widget
+                                                                            .uidforprofile
+                                                                    ? IconButton(
+                                                                        icon:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .delete_rounded,
+                                                                          color:
+                                                                              Colors.white,
+                                                                          size:
+                                                                              22,
                                                                         ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Text(
-                                                                          "${course["wow"]}",
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.white.withOpacity(1)),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  auth.currentUser
-                                                                              .uid ==
-                                                                          widget
-                                                                              .uidforprofile
-                                                                      ? IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.delete_rounded,
-                                                                            color:
-                                                                                Colors.white,
-                                                                            size:
-                                                                                22,
-                                                                          ),
-                                                                          onPressed:
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
                                                                               () {
-                                                                            setState(() {
-                                                                              documentid = course.documentID.toString();
-                                                                            });
-                                                                            print(documentid);
-                                                                            Firestore.instance.collection("Users").document(widget.uidforprofile).collection("posts").document(documentid).delete().then((value) {
-                                                                              Firestore.instance.collection("Feed").document(documentid).delete();
-                                                                            });
-                                                                          })
-                                                                      : Container(
-                                                                          width:
-                                                                              0,
-                                                                          height:
-                                                                              0,
-                                                                        ),
-                                                                  SizedBox(
-                                                                    width: 50,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            0),
-                                                                    child: GestureDetector(
-                                                                        onTap: () {
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"], d: i),
-                                                                              ));
-                                                                        },
-                                                                        child: Container(
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          width:
-                                                                              100,
-                                                                          height:
-                                                                              30,
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8),
-                                                                            color:
-                                                                                Colors.white.withOpacity(0.8),
-                                                                          ),
+                                                                            documentid =
+                                                                                course.documentID.toString();
+                                                                          });
+                                                                          print(
+                                                                              documentid);
+                                                                          Firestore
+                                                                              .instance
+                                                                              .collection("Users")
+                                                                              .document(widget.uidforprofile)
+                                                                              .collection("posts")
+                                                                              .document(documentid)
+                                                                              .delete()
+                                                                              .then((value) {
+                                                                            Firestore.instance.collection("Feed").document(documentid).delete();
+                                                                          });
+                                                                        })
+                                                                    : Container(
+                                                                        width:
+                                                                            0,
+                                                                        height:
+                                                                            0,
+                                                                      ),
+                                                                SizedBox(
+                                                                  width: 50,
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 0),
+                                                                  child:
+                                                                      GestureDetector( 
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.push(
+                                                                                context,
+                                                                                MaterialPageRoute(
+                                                                                  builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"], d: i),
+                                                                                ));
+                                                                          },
                                                                           child:
-                                                                              Text(
-                                                                            "Learn More",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 22,
-                                                                              fontFamily: "good",
-                                                                              fontWeight: FontWeight.w300,
-                                                                              color: Colors.blue,
+                                                                              Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            width:
+                                                                                100,
+                                                                            height:
+                                                                                30,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              borderRadius: BorderRadius.circular(8),
+                                                                              color: Colors.white.withOpacity(0.3)
                                                                             ),
-                                                                          ),
-                                                                        )),
-                                                                  )
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ])),
-                                                ),
+                                                                            child:
+                                                                                Text(
+                                                                              "Learn More",
+                                                                              style: TextStyle(
+                                                                                fontSize: 22,
+                                                                                fontFamily: "good",
+                                                                                fontWeight: FontWeight.w300,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          )),
+                                                                )
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ])),
                                               ),
                                             );
                                     })

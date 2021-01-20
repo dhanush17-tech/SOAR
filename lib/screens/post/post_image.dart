@@ -1,3 +1,4 @@
+import 'package:SOAR/screens/post/mainpaost.dart';
 import 'package:SOAR/screens/post/post_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,16 +45,15 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                       color: Colors.white),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 100, left: 15),
-                child: Form(
-                  key: key1,
+              Form(
+                key: key1,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 100, left: 15),
                   child: Container(
                     width: 360,
                     child: new TextFormField(
-                        validator: (e) {
-                           e.length == 0 ? "" : null;
-                        },
+                        validator: (value) =>
+                            value.isEmpty ? 'This field cannot be blank' : null,
                         controller: pitchname,
                         style: GoogleFonts.poppins(
                             height: 1.02,
@@ -182,6 +182,10 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
@@ -198,7 +202,6 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
   }
 }
 
- GlobalKey<FormState> key1 = GlobalKey<FormState>();
-
+final GlobalKey<FormState> key1 = GlobalKey<FormState>();
 String downloadUrl;
 File image;

@@ -49,17 +49,16 @@ class _MyHomePageState extends State<MyHomePage>
 
   final iconList = <IconData>[
     Icons.home,
+    Icons.new_releases,
     Icons.person,
-    Icons.settings,
-    Icons.chat,
+    Icons.chat
   ];
   final screen = [
     Feed(),
-    //motivation and startuppedia
+    SettingsPage(),
     Profile(
       uidforprofile: auth.currentUser.uid,
     ),
-    SettingsPage(),
     ChatScreen(),
   ];
 
@@ -97,6 +96,10 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4281941064), // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       extendBody: true,
@@ -108,11 +111,20 @@ class _MyHomePageState extends State<MyHomePage>
         scale: animation,
         child: FloatingActionButton(
           heroTag: "add",
-          elevation: 8,
-          backgroundColor: Colors.blue[800],
-          child: Icon(
-            Icons.explore,
-            color: Color(4278190106),
+          elevation: 10,
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(colors: [
+                  Color(4278232031).withOpacity(0.8),
+                  Colors.indigoAccent.withOpacity(1)
+                ], begin: Alignment.centerLeft, end: Alignment.bottomRight)),
+            child: Icon(
+              Icons.explore,
+              color: Colors.white,
+            ),
           ),
           onPressed: () {
             Navigator.push(
@@ -125,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage>
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         itemCount: iconList.length,
         tabBuilder: (int index, bool isActive) {
-          final color = isActive ? Colors.white : Color(4278190106);
+          final color = isActive ? Colors.blue : Colors.grey.withOpacity(1);
           return Stack(
             children: [
               Padding(
@@ -144,10 +156,10 @@ class _MyHomePageState extends State<MyHomePage>
                         width: 2,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white,
+                            color: Colors.blue,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.white,
+                                color: Colors.blue,
                                 blurRadius: 6.0,
                                 spreadRadius: 10.0,
                                 offset: Offset(
@@ -166,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage>
             ],
           );
         },
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color(4281941064),
         activeIndex: _bottomNavIndex,
         notchAndCornersAnimation: animation,
         splashSpeedInMilliseconds: 00,

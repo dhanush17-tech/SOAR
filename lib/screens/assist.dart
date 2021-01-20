@@ -79,12 +79,14 @@ class _Assist extends State<Assist> {
                           height: 40,
                           width: 40,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(4278190106),
-                          ),
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(colors: [
+                                Colors.blue[400],
+                                Colors.blueAccent[700]
+                              ])),
                           child: Icon(
                             Icons.send,
-                            color: Color(4278228470),
+                            color: Colors.white,
                             size: 20,
                           ),
                         ),

@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
-
+import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:fade/fade.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
@@ -268,12 +269,13 @@ class _StoriesAddState extends State<StoriesAdd> {
                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 10),
-                        child: Text(
-                          "Upload Your Quick Pitch",
-                          style: TextStyle(
-                              fontFamily: "good",
-                              fontSize: 50,
-                              color: Color(4278228470)),
+                        child: GradientText(
+                          text: "Add Story",
+                          colors: [Colors.blue[400], Colors.blue[700]],
+                          style: GoogleFonts.poppins(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
@@ -282,7 +284,7 @@ class _StoriesAddState extends State<StoriesAdd> {
                         : Padding(
                             padding: const EdgeInsets.only(bottom: 150),
                             child: Container(
-                              height: MediaQuery.of(context).size.height*0.78,
+                              height: MediaQuery.of(context).size.height * 0.78,
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: ((thumbnail.length) / 2).round(),
@@ -312,8 +314,8 @@ class _StoriesAddState extends State<StoriesAdd> {
                                                                       BorderRadius
                                                                           .circular(
                                                                               10),
-                                                                  border:
-                                                                      Border.all(
+                                                                  border: Border
+                                                                      .all(
                                                                     color: Color(
                                                                         4278228470),
                                                                   )),
@@ -322,11 +324,13 @@ class _StoriesAddState extends State<StoriesAdd> {
                                                           child: ClipRRect(
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(10),
+                                                                    .circular(
+                                                                        10),
                                                             child: Image.file(
                                                                 File(thumbnail[
                                                                     i * 2]),
-                                                                fit: BoxFit.fill),
+                                                                fit: BoxFit
+                                                                    .fill),
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -351,15 +355,15 @@ class _StoriesAddState extends State<StoriesAdd> {
                                                               BorderRadius
                                                                   .circular(10),
                                                           border: Border.all(
-                                                            color:
-                                                                Color(4278228470),
+                                                            color: Color(
+                                                                4278228470),
                                                           )),
                                                       height: 200,
                                                       width: 150,
                                                       child: ClipRRect(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         child: Image.file(
                                                             File(thumbnail[
                                                                 i * 2 + 1]),
@@ -452,41 +456,45 @@ class _StoriesAddState extends State<StoriesAdd> {
                       elevation: 50,
                       child: RaisedButton(
                         onPressed: issubmitted == false
-                            ? () async {
-                                setState(() {
-                                  issubmitted = true;
-                                  man = true;
-                                });
-                                await uploadProfilePicture()
-                                    .then((value) async {
-                                  await Firestore.instance
-                                      .collection("stories")
-                                      .add({
-                                    "storie_images": imgeurls,
-                                    "usertype": usertype,
-                                    "name": name,
-                                    "location": location,
-                                    "uid": auth.currentUser.uid,
-                                    "duration": duration
-                                  }).then((value) {
-                                    print("done");
-
+                            ? imageList.length != 0
+                                ? () async {
                                     setState(() {
-                                      show = true;
+                                      issubmitted = true;
+                                      man = true;
                                     });
-                                    Future.delayed(Duration(seconds: 3), () {
-                                      setState(() {
-                                        show = false;
+                                    await uploadProfilePicture()
+                                        .then((value) async {
+                                      await Firestore.instance
+                                          .collection("stories")
+                                          .add({
+                                        "storie_images": imgeurls,
+                                        "usertype": usertype,
+                                        "name": name,
+                                        "location": location,
+                                        "timeago": DateTime.now().toString(),
+                                        "uid": auth.currentUser.uid,
+                                        "duration": duration
+                                      }).then((value) {
+                                        print("done");
+
+                                        setState(() {
+                                          show = true;
+                                        });
+                                        Future.delayed(Duration(seconds: 3),
+                                            () {
+                                          setState(() {
+                                            show = false;
+                                          });
+                                          setState(() {
+                                            man = false;
+                                          });
+                                        }).then((value) {
+                                          Navigator.pop(context);
+                                        });
                                       });
-                                      setState(() {
-                                        man = false;
-                                      });
-                                    }).then((value) {
-                                      Navigator.pop(context);
                                     });
-                                  });
-                                });
-                              }
+                                  }
+                                : null
                             : null,
                         color: Colors.white.withOpacity(0.23),
                         textColor: Color(4278228470),

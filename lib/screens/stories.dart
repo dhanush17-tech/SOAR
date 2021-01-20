@@ -4,7 +4,7 @@ import 'package:SOAR/screens/stories_add.dart';
 import 'package:SOAR/storiesvie.dart';
 import 'package:fade/fade.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_gradient_text/easy_gradient_text.dart  ';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +45,7 @@ class _StoriesState extends State<Stories> {
   List uidList = [];
   List dpurl = [];
   List duration = [];
+  
 
   Future man() async {
     QuerySnapshot _query = await Firestore.instance
@@ -83,6 +84,22 @@ class _StoriesState extends State<Stories> {
     return result;
   }
 
+  istoday(DateTime date) {
+    final now = DateTime.now();
+    final diff = now.difference(date).inDays;
+    if (diff == 0 && now.day == date.day) {
+      setState(() {
+        istodaycheck = true;
+      });
+    } else {
+      setState(() {
+        istodaycheck = false;
+      });
+    }
+  }
+
+  bool istodaycheck;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -104,12 +121,13 @@ class _StoriesState extends State<Stories> {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      "Trending",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 65,
-                          fontFamily: "good"),
+                    child: GradientText(
+                      text: "Stories",
+                      colors: [Colors.blue[400], Colors.blue[700]],
+                      style: GoogleFonts.poppins(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Align(
@@ -346,6 +364,7 @@ class _StoriesState extends State<Stories> {
                                                                                     child: CircleAvatar(
                                                                                       backgroundColor: Color(4278272638),
                                                                                       backgroundImage: NetworkImage(snapshot.data["location"]),
+                                                                                      radius: 20,
                                                                                     ),
                                                                                   )
                                                                                 : GestureDetector(
@@ -360,6 +379,7 @@ class _StoriesState extends State<Stories> {
                                                                                     child: CircleAvatar(
                                                                                       backgroundColor: Color(4278272638),
                                                                                       backgroundImage: AssetImage("assets/unknown.png"),
+                                                                                      radius: 20,
                                                                                     ),
                                                                                   ),
                                                                             SizedBox(

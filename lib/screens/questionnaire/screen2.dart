@@ -7,6 +7,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 import 'screen3.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:SOAR/screens/post/mainpaost.dart';
 
 class Page2 extends StatefulWidget {
   @override
@@ -25,11 +26,10 @@ class _Page2State extends State<Page2> {
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 10),
+                  SizedBox(height: 0),
                   Padding(
-                    padding: const EdgeInsets.only(top: 40, left: 0),
+                    padding: const EdgeInsets.only(top: 0, left: 0),
                     child: Text(
                       'Select your current progress of your product',
                       style: TextStyle(
@@ -164,27 +164,27 @@ class _Page2State extends State<Page2> {
                     height: 10,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      imagepic();
-                    },
-                    child: thumbnail == null
-                        ? Center(
-                            child: Container(
-                                padding: EdgeInsets.all(20),
-                                width: 350,
-                                height: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Colors.blue.withOpacity(0.5),
-                                ),
-                                child: Center(
-                                  child: Image.asset(
-                                    "assets/uploadsign.png",
+                      onTap: () {
+                        imagepic();
+                      },
+                      child: thumbnail == null
+                          ? Center(
+                              child: Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: 350,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.blue.withOpacity(0.5),
                                   ),
-                                )),
-                          )
-                        : Center(
-                            child: Container(
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/uploadsign.png",
+                                    ),
+                                  )),
+                            )
+                          : Center(
+                              child: Container(
                                 alignment: Alignment.center,
                                 width: 250,
                                 height: 350,
@@ -193,9 +193,9 @@ class _Page2State extends State<Page2> {
                                     image: DecorationImage(
                                         image: FileImage(File(thumbnail)),
                                         fit: BoxFit.cover)),
-                            ),
-                          )
-                  ),
+                              ),
+                            )),
+                                    SizedBox(height: 10)
                 ],
               ),
             ),
@@ -243,6 +243,7 @@ class _Page2State extends State<Page2> {
           ),
         ],
       ),
+       
     );
   }
 

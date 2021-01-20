@@ -2,6 +2,7 @@ import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/search_screen.dart';
 import 'package:SOAR/services/search_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -213,19 +214,20 @@ class _ChatScreenState extends State<ChatScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.55),
+                          left: MediaQuery.of(context).size.width * 0.535),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 0),
+                        padding: EdgeInsets.only(left: 20),
                         child: GestureDetector(
                           onTap: () {
                             _signOut();
                           },
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Icon(
                                 Icons.exit_to_app_outlined,
                                 color: Colors.redAccent,
-                                size: 35,
+                                size: 31,
                               ),
                               SizedBox(
                                 width: 15,
@@ -244,7 +246,7 @@ class _ChatScreenState extends State<ChatScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.569,
+                          left: MediaQuery.of(context).size.width * 0.595,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -256,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen>
                           children: [
                             Image.asset(
                               "assets/faq.png",
-                              scale: 15,
+                              scale: 17,
                               color: Colors.white,
                             ),
                             SizedBox(
@@ -292,7 +294,7 @@ class _ChatScreenState extends State<ChatScreen>
 
     return usertype == "entrepreneur"
         ? Scaffold(
-            backgroundColor: Color(4278716491),
+            backgroundColor: Color(4278190106),
             body: Stack(
               children: [
                 menu(context),
@@ -309,7 +311,7 @@ class _ChatScreenState extends State<ChatScreen>
                       borderRadius: BorderRadius.circular(20),
                       elevation: 8,
                       child: Container(
-                        height: MediaQuery.of(context).size.height,
+                        height: MediaQuery.of(context).size.height, 
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: isCollapsed
@@ -329,176 +331,35 @@ class _ChatScreenState extends State<ChatScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 7.0),
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                            child: StreamBuilder(
-                                          stream: Firestore.instance
-                                              .collection("Users")
-                                              .document(auth.currentUser.uid)
-                                              .snapshots(),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot snapshot) {
-                                            return snapshot.data != null
-                                                ? snapshot.data["location"] !=
-                                                        null
-                                                    ? GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              PageRouteBuilder(
-                                                                  transitionDuration:
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              500),
-                                                                  pageBuilder: (ctx,
-                                                                          ani,
-                                                                          i) =>
-                                                                      Profile(
-                                                                        uidforprofile: auth
-                                                                            .currentUser
-                                                                            .uid,
-                                                                      )));
-                                                        },
-                                                        child: CircleAvatar(
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                                  snapshot.data[
-                                                                      "location"]),
-                                                          backgroundColor:
-                                                              Color(4278272638),
-                                                          radius: 25,
-                                                        ),
-                                                      )
-                                                    : GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              PageRouteBuilder(
-                                                                  transitionDuration:
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              500),
-                                                                  pageBuilder: (ctx,
-                                                                          ani,
-                                                                          i) =>
-                                                                      Profile(
-                                                                        uidforprofile: auth
-                                                                            .currentUser
-                                                                            .uid,
-                                                                      )));
-                                                        },
-                                                        child: CircleAvatar(
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  "assets/unknown.png"),
-                                                          backgroundColor:
-                                                              Color(4278272638),
-                                                          radius: 25,
-                                                        ),
-                                                      )
-                                                : GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          PageRouteBuilder(
-                                                              transitionDuration:
-                                                                  Duration(
-                                                                      milliseconds:
-                                                                          500),
-                                                              pageBuilder: (ctx,
-                                                                      ani, i) =>
-                                                                  Profile(
-                                                                    uidforprofile: auth
-                                                                        .currentUser
-                                                                        .uid,
-                                                                  )));
-                                                    },
-                                                    child: CircleAvatar(
-                                                      backgroundImage: AssetImage(
-                                                          "assets/unknown.png"),
-                                                      backgroundColor:
-                                                          Color(4278272638),
-                                                      radius: 20,
-                                                    ),
-                                                  );
-                                          },
-                                        )),
+                                      padding: const EdgeInsets.only(
+                                        top: 0,
                                       ),
+                                      child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: GradientText(
+                                            text: "Connections",
+                                            colors: [
+                                              Colors.blue[400],
+                                              Colors.blue[700]
+                                            ],
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )),
                                     ),
                                     isCollapsed
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 50, right: 0),
-                                            child: IconButton(
-                                              icon: Icon(
-                                                Icons.menu,
-                                                size: 30,
-                                                color: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (isCollapsed)
-                                                    _controller.forward();
-                                                  else
-                                                    _controller.reverse();
-
-                                                  isCollapsed = !isCollapsed;
-                                                });
-                                              },
-                                            ))
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 0, right: 0),
-                                            child: IconButton(
-                                              icon: Icon(
-                                                Icons.arrow_back_ios,
-                                                color: Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (isCollapsed)
-                                                    _controller.forward();
-                                                  else
-                                                    _controller.reverse();
-
-                                                  isCollapsed = !isCollapsed;
-                                                });
-                                              },
-                                            )),
+                                        ? Container(
+                                            width: 0,
+                                            height: 0,
+                                          )
+                                        : Container(
+                                            width: 0,
+                                            height: 0,
+                                          )
                                   ],
                                 ),
                               ),
-                              usertype == "entrepreneur"
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(left: 30),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          'Talk to \nyour investor',
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              height: 1.2,
-                                              fontSize: 42,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(left: 30),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          'Talk to \nyour entrepreneur',
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              height: 1.2,
-                                              fontSize: 42,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
                               Hero(
                                 tag: "key",
                                 child: GestureDetector(
@@ -509,7 +370,8 @@ class _ChatScreenState extends State<ChatScreen>
                                             builder: (_) => Search()));
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 30),
+                                    padding: const EdgeInsets.only(
+                                        top: 30, left: 10, right: 10),
                                     child: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:
@@ -518,15 +380,17 @@ class _ChatScreenState extends State<ChatScreen>
                                       width: 350,
                                       height: 60,
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 20.0, right: 20, top: 2),
                                         child: Row(
                                           children: [
                                             Icon(
                                               Icons.search,
                                               size: 30,
+                                              color: Colors.white,
                                             ),
                                             SizedBox(
-                                              width: 10,
+                                              width: 15,
                                             ),
                                             Material(
                                               type: MaterialType.transparency,
@@ -547,6 +411,9 @@ class _ChatScreenState extends State<ChatScreen>
                                     ),
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 20,
                               ),
                               usertype == "investor"
                                   ? StreamBuilder(
@@ -864,41 +731,90 @@ class _ChatScreenState extends State<ChatScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 30, left: 15, right: 15),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                            child: StreamBuilder(
-                          stream: Firestore.instance
-                              .collection("Users")
-                              .document(auth.currentUser.uid)
-                              .snapshots(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            return snapshot.data != null
-                                ? snapshot.data["location"] != null
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                      milliseconds: 500),
-                                                  pageBuilder: (ctx, ani, i) =>
-                                                      Profile(
-                                                        uidforprofile: auth
-                                                            .currentUser.uid,
-                                                      )));
-                                        },
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              snapshot.data["location"]),
-                                          backgroundColor: Color(4278272638),
-                                          radius: 20,
-                                        ),
-                                      )
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 30,
+                            left: 15,
+                          ),
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: GradientText(
+                                text: "Connections",
+                                colors: [Colors.blue[400], Colors.blue[700]],
+                                style: GoogleFonts.poppins(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 30, left: 15, right: 15),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                                child: StreamBuilder(
+                              stream: Firestore.instance
+                                  .collection("Users")
+                                  .document(auth.currentUser.uid)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                return snapshot.data != null
+                                    ? snapshot.data["location"] != null
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                      transitionDuration:
+                                                          Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                      pageBuilder:
+                                                          (ctx, ani, i) =>
+                                                              Profile(
+                                                                uidforprofile: auth
+                                                                    .currentUser
+                                                                    .uid,
+                                                              )));
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  snapshot.data["location"]),
+                                              backgroundColor:
+                                                  Color(4278272638),
+                                              radius: 20,
+                                            ),
+                                          )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  PageRouteBuilder(
+                                                      transitionDuration:
+                                                          Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                      pageBuilder:
+                                                          (ctx, ani, i) =>
+                                                              Profile(
+                                                                uidforprofile: auth
+                                                                    .currentUser
+                                                                    .uid,
+                                                              )));
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundImage: AssetImage(
+                                                  "assets/unknown.png"),
+                                              backgroundColor:
+                                                  Color(4278272638),
+                                              radius: 20,
+                                            ),
+                                          )
                                     : GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -918,56 +834,15 @@ class _ChatScreenState extends State<ChatScreen>
                                           backgroundColor: Color(4278272638),
                                           radius: 20,
                                         ),
-                                      )
-                                : GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          PageRouteBuilder(
-                                              transitionDuration:
-                                                  Duration(milliseconds: 500),
-                                              pageBuilder: (ctx, ani, i) =>
-                                                  Profile(
-                                                    uidforprofile:
-                                                        auth.currentUser.uid,
-                                                  )));
-                                    },
-                                    child: CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("assets/unknown.png"),
-                                      backgroundColor: Color(4278272638),
-                                      radius: 20,
-                                    ),
-                                  );
-                          },
-                        )),
-                      ),
+                                      );
+                              },
+                            )),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: usertype == "investor"
-                            ? Text(
-                                'Talk to \nentrepreneurs',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    height: 1.2,
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.w500),
-                              )
-                            : Text(
-                                'Talk to \ninvestors',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    height: 1.2,
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                      ),
                     ),
                     Hero(
                       tag: "key",
@@ -977,7 +852,8 @@ class _ChatScreenState extends State<ChatScreen>
                               MaterialPageRoute(builder: (_) => Search()));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 30),
+                          padding: const EdgeInsets.only(
+                              top: 30, left: 10, right: 10),
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -985,15 +861,14 @@ class _ChatScreenState extends State<ChatScreen>
                             width: 350,
                             height: 60,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 15.0, right: 15, top: 2),
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.search,
-                                    size: 30,
-                                  ),
+                                  Icon(Icons.search,
+                                      size: 30, color: Colors.white),
                                   SizedBox(
-                                    width: 10,
+                                    width: 15,
                                   ),
                                   Material(
                                     type: MaterialType.transparency,
@@ -1013,6 +888,9 @@ class _ChatScreenState extends State<ChatScreen>
                           ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     usertype == "investor"
                         ? StreamBuilder(

@@ -14,8 +14,10 @@ import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 import '../feed.dart';
 import '../start_entrepreneur.dart';
+import 'package:get/get.dart';
+import 'package:SOAR/screens/post/mainpaost.dart';
 
-class Page3 extends StatefulWidget {
+class Page3 extends StatefulWidget  {
   @override
   _Page3State createState() => _Page3State();
 }
@@ -52,6 +54,7 @@ class _Page3State extends State<Page3> {
     // TODO: implement initState
     super.initState();
     id = new DateTime.now().millisecondsSinceEpoch.toString();
+    print(summaryController.text);
   }
 
   @override
@@ -204,151 +207,33 @@ class _Page3State extends State<Page3> {
                       ],
                     ),
                   ),
-                  Hero(
-                    tag: "uplaod",
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, bottom: 20),
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: GestureDetector(
-                          onTap: issubmitted == true
-                              ? null
-                              : () async {
-                                  setState(() {
-                                    issubmitted = true;
-                                    man = true;
-                                  });
-                                  String url;
-                                  await uploadImage();
-                                  final Reference storageRef =
-                                      FirebaseStorage.instance.ref().child(
-                                          "${DateTime.now().toString() + auth.currentUser.uid}");
-
-                                  UploadTask uploadTask = await storageRef
-                                      .putFile(video)
-                                      .then((val) async {
-                                    String imageUrl =
-                                        await storageRef.getDownloadURL();
-                                    setState(() {
-                                      url = imageUrl;
-                                    });
-                                    print(url);
-                                  });
-                                  print(downloadUrl);
-                                  final postsRef = Firestore.instance;
-                                  await postsRef
-                                      .collection("Feed")
-                                      .document(id)
-                                      .setData({
-                                    "owener": name,
-                                    "summury": summaryController.text,
-                                    "title": pitchname.text,
-                                    "uid": auth.currentUser.uid,
-                                    "date": id,
-                                    "postimage": downloadUrl,
-                                    "features": friendsList.toList(),
-                                    "titles": titleList.toList(),
-                                    "likes": 0,
-                                    "location": dpurl,
-                                    "wow": 0,
-                                    "timeago": DateTime.now().toString(),
-                                    "day": DateFormat('d')
-                                        .format(time), // prints Tuesday,
-                                    "month": formatter.format(time),
-                                    "value_propotion": "${lowPrice.text}",
-                                    "currency": "$currencycode",
-                                    "how_it_helps": pitchController.text,
-                                    "target_audience": companyController.text,
-                                    "company_progress": value_First,
-                                    "revenue_model": value_radiobutton,
-                                    "video_url": url
-                                  });
-
-                                  final addtouser = Firestore.instance;
-                                  await addtouser
-                                      .collection("Users")
-                                      .document(auth.currentUser.uid)
-                                      .collection("posts")
-                                      .document(id)
-                                      .set({
-                                    "owener": name,
-                                    "summury": summaryController.text,
-                                    "title": pitchname.text,
-                                    "uid": auth.currentUser.uid,
-                                    "date": id,
-                                    "postimage": downloadUrl,
-                                    "features": friendsList.toList(),
-                                    "titles": titleList.toList(),
-                                    "likes": 0,
-                                    "location": dpurl,
-                                    "timeago": DateTime.now().toString(),
-                                    "currency": "$currencycode",
-                                    "wow": 0,
-                                    "day": DateFormat('d').format(time),
-                                    "month": formatter.format(time),
-                                    "value_propotion":
-                                        "${lowPrice.text}" + "$currencycode",
-                                    "how_it_helps": pitchController.text,
-                                    "target_audience": companyController.text,
-                                    "company_progress": value_First,
-                                    "revenue_model": value_radiobutton,
-                                    "video_url": url
-                                  });
-                                  print("done");
-
-                                  print(friendsList);
-                                  print(titleList);
-                                  setState(() {
-                                    show = true;
-                                  });
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    setState(() {
-                                      show = false;
-                                    });
-                                    setState(() {
-                                      man = false;
-                                      issubmitted = false;
-                                    });
-                                  }).then((value) {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => StartEnt()),
-                                        (route) => false);
-
-                                    print("hurrayyyyy");
-                                  });
-                                  print(currencycode);
-                                },
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 50),
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(4278228470),
-                                  ),
-                                  color: Color(4278228470),
-                                  borderRadius: BorderRadius.circular(11)),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Material(
-                                  type: MaterialType.transparency,
-                                  child: Text(
-                                    "Uplaod Post",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 45,
-                                        letterSpacing: 1,
-                                        fontFamily: "good",
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(4278197050)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15, bottom: 20, top: 30, right: 15),
+                    child: GestureDetector(
+                      onTap: issubmitted == true
+                          ? null
+                          : () async {
+                              if (image != null) {
+                                if (video != null) {
+                                  await submit();
+                                }
+                              }
+                            },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(11)),
+                        child: Text(
+                          "Uplaod Post",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Color(4278228470)),
                         ),
                       ),
                     ),
@@ -400,6 +285,103 @@ class _Page3State extends State<Page3> {
         ],
       ),
     );
+  }
+
+  Future submit() async {
+    setState(() {
+      issubmitted = true;
+      man = true;
+    });
+    String url;
+    await uploadImage();
+    final Reference storageRef = FirebaseStorage.instance
+        .ref()
+        .child("${DateTime.now().toString() + auth.currentUser.uid}");
+
+    UploadTask uploadTask = await storageRef.putFile(video).then((val) async {
+      String imageUrl = await storageRef.getDownloadURL();
+      setState(() {
+        url = imageUrl;
+      });
+      print(url);
+    });
+    print(downloadUrl);
+    final postsRef = Firestore.instance;
+    await postsRef.collection("Feed").document(id).setData({
+      "owener": name,
+      "summury": summaryController.text,
+      "title": pitchname.text,
+      "uid": auth.currentUser.uid,
+      "date": id,
+      "postimage": downloadUrl,
+      "features": friendsList.toList(),
+      "titles": titleList.toList(),
+      "likes": 0,
+      "location": dpurl,
+      "wow": 0,
+      "timeago": DateTime.now().toString(),
+      "day": DateFormat('d').format(time), // prints Tuesday,
+      "month": formatter.format(time),
+      "value_propotion": "${lowPrice.text}",
+      "currency": "$currencycode",
+      "how_it_helps": pitchController.text,
+      "target_audience": companyController.text,
+      "company_progress": value_First,
+      "revenue_model": value_radiobutton,
+      "video_url": url
+    });
+
+    final addtouser = Firestore.instance;
+    await addtouser
+        .collection("Users")
+        .document(auth.currentUser.uid)
+        .collection("posts")
+        .document(id)
+        .set({
+      "owener": name,
+      "summury": summaryController.text,
+      "title": pitchname.text,
+      "uid": auth.currentUser.uid,
+      "date": id,
+      "postimage": downloadUrl,
+      "features": friendsList.toList(),
+      "titles": titleList.toList(),
+      "likes": 0,
+      "location": dpurl,
+      "timeago": DateTime.now().toString(),
+      "currency": "$currencycode",
+      "wow": 0,
+      "day": DateFormat('d').format(time),
+      "month": formatter.format(time),
+      "value_propotion": "${lowPrice.text}" + "$currencycode",
+      "how_it_helps": pitchController.text,
+      "target_audience": companyController.text,
+      "company_progress": value_First,
+      "revenue_model": value_radiobutton,
+      "video_url": url
+    });
+    print("done");
+
+    print(friendsList);
+    print(titleList);
+    setState(() {
+      show = true;
+    });
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        show = false;
+      });
+      setState(() {
+        man = false;
+        issubmitted = false;
+      });
+    }).then((value) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (_) => StartEnt()), (route) => false);
+
+      print("hurrayyyyy");
+    });
+    print(currencycode);
   }
 
   bool show;
