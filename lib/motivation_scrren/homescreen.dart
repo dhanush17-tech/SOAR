@@ -40,123 +40,147 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              color: Color(0xFFE6EDFA),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 40),
+      backgroundColor: Color(0xFFE6EDFA),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: Color(0xFFE6EDFA),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+                  child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 40, left: 15, right: 15),
+                child: Container(
+                  height: 130,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        Color(0xFF4E82E8).withOpacity(1),
+                        Color(0xFF5894FA).withOpacity(1)
+                      ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 15),
+                                child: Text(
+                                  "Hello Dhanush",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(height: 5),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  "Soar high with soar throw!",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              )),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Container(
+                          alignment: Alignment.bottomCenter,
+                          height: 140,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/hello.png",
+                                  ),
+                                  fit: BoxFit.cover)))
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: GradientText(
+                    text: "Trending",
+                    colors: [Colors.indigo, Colors.blue],
+                    style: GoogleFonts.poppins(
+                        fontSize: 28, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.separated(
+                    itemCount: 3,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (ctx, i) => Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 15),
                       child: Container(
-                        height: 130,
-                        width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF4E82E8).withOpacity(1),
-                                  Color(0xFF5894FA).withOpacity(1)
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 15),
-                                      child: Text(
-                                        "Hello Dhanush",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    )),
-                                SizedBox(height: 5),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Text(
-                                        "Soar high with soar throw!",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            SizedBox(width: 30,),
-                              Container( alignment: Alignment.bottomCenter,
-                        height: 140,
-                        width: 130,
-                        
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage("assets/hello.png",),
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF4E82E8), Colors.blue]
+                          ),
+                          image: DecorationImage(image: AssetImage("assets/carousel1.jpeg",
+                          ),
                           fit: BoxFit.cover)
-                        ))
-                          ],
                         ),
+                        width: 250.0,
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    separatorBuilder: (context, index) => SizedBox(width: 20),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30,),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: GradientText(
+                    text: "Categories",
+                    colors: [Colors.indigo, Colors.blue],
+                    style: GoogleFonts.poppins(
+                        fontSize: 28, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              Container(
+                height: 100,
+                child: PageView.builder(
+                  itemBuilder: (ctx,i) =>
                     Container(
-                      alignment: Alignment.topLeft,
-                      child: GradientText(text: "Trending",
-                      colors: [Colors.indigo, Colors.blue],
-                      style: GoogleFonts.poppins(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600
-                      ),),
-                    ),
-                    Container(
-                      child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(
-                width: 160.0,
-                color: Colors.red,
-              ),
-              Container(
-                width: 160.0,
-                color: Colors.blue,
-              ),
-              Container(
-                width: 160.0,
-                color: Colors.green,
-              ),
-              Container(
-                width: 160.0,
-                color: Colors.yellow,
-              ),
-              Container(
-                width: 160.0,
-                color: Colors.orange,
-              ),
+                      width: 100,
+                      height: 60,
+                      color: Colors.pink,
+                    )
+                ),
+              )
             ],
           ),
-                    )
-
-                  ],
-                ),
-
-
-              ),
-            
-          ),
-
-        )
-        );
+        ),
+      ),
+    );
   }
 }
