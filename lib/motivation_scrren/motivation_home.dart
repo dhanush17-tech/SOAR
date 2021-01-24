@@ -113,7 +113,161 @@ class _SettingsPageState extends State<SettingsPage>
 
   bool isDrawerOpen = false;
 
-
+  Widget menu(context) {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: ScaleTransition(
+        scale: _menuScaleAnimation,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Padding(
+            padding: EdgeInsets.only(top: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                StreamBuilder(
+                  stream: Firestore.instance
+                      .collection("Users")
+                      .document(auth.currentUser.uid)
+                      .snapshots(),
+                  builder: (ctx, sn) {
+                    return location != null
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 190),
+                                  child: CircleAvatar(
+                                    backgroundColor: Color(4278190106),
+                                    backgroundImage: NetworkImage(
+                                      location,
+                                    ),
+                                    radius: 40,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 190),
+                                child: Text(
+                                  sn.data["name"],
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 20, color: Color(4278228470)),
+                                ),
+                              )
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 190),
+                                child: CircleAvatar(
+                                  backgroundColor: Color(4278272638),
+                                  backgroundImage:
+                                      AssetImage("assets/unknown.png"),
+                                  radius: 40,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 190),
+                                child: Text(
+                                  sn.data["name"],
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 20, color: Color(4278228470)),
+                                ),
+                              )
+                            ],
+                          );
+                  },
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.535),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await _signOut();
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.exit_to_app_outlined,
+                                color: Colors.redAccent,
+                                size: 31,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Sign Out",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.red),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.595,
+                          top: 30),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Assist()));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Image.asset(
+                              "assets/faq.png",
+                              scale: 17,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Support",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +277,10 @@ class _SettingsPageState extends State<SettingsPage>
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-      backgroundColor: Color(0xFFE6EDFA).withOpacity(1),
+        backgroundColor: Color(0xFFE6EDFA).withOpacity(1),
         body: Stack(
           children: [
-            usertype == "entrepreneur" ? (context) : Container(),
+            usertype == "entrepreneur" ? menu(context) : Container(),
             AnimatedPositioned(
               duration: duration,
               top: 0,
@@ -163,10 +317,7 @@ class _SettingsPageState extends State<SettingsPage>
                                     alignment: Alignment.topLeft,
                                     child: GradientText(
                                       text: "Hello there",
-                                      colors: [
-                                        Colors.indigo,
-                                        Colors.blue
-                                      ],
+                                      colors: [Colors.indigo, Colors.blue],
                                       style: GoogleFonts.poppins(
                                         fontSize: 35,
                                         fontWeight: FontWeight.w600,
@@ -174,46 +325,48 @@ class _SettingsPageState extends State<SettingsPage>
                                     )),
                                 Align(
                                   alignment: Alignment.topRight,
-                                  child:   usertype == "entrepreneur" ? isCollapsed
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 0, right: 0),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.menu,
-                                              size: 30,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                if (isCollapsed)
-                                                  _controller.forward();
-                                                else
-                                                  _controller.reverse();
+                                  child: usertype == "entrepreneur"
+                                      ? isCollapsed
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0, right: 0),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.menu,
+                                                  size: 30,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (isCollapsed)
+                                                      _controller.forward();
+                                                    else
+                                                      _controller.reverse();
 
-                                                isCollapsed = !isCollapsed;
-                                              });
-                                            },
-                                          ))
-                                      : Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 0, right: 0),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_back_ios,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                if (isCollapsed)
-                                                  _controller.forward();
-                                                else
-                                                _controller.reverse();
+                                                    isCollapsed = !isCollapsed;
+                                                  });
+                                                },
+                                              ))
+                                          : Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0, right: 0),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.arrow_back_ios,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (isCollapsed)
+                                                      _controller.forward();
+                                                    else
+                                                      _controller.reverse();
 
-                                                isCollapsed = !isCollapsed;
-                                              });
-                                            },
-                                          )):Container(),
+                                                    isCollapsed = !isCollapsed;
+                                                  });
+                                                },
+                                              ))
+                                      : Container(),
                                 ),
                               ],
                             ),
