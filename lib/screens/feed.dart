@@ -461,21 +461,19 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                       child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            gradient:
-                                                                LinearGradient(
-                                                                    
-                                                                    begin: Alignment
-                                                                        .topLeft,
-                                                                    end: Alignment
-                                                                        .bottomRight,
-                                                                    colors: [
-                                                                      Color(4280311451)
-                                                                          .withOpacity(
-                                                                              0.4),
-                                                                      Color(4278547942)
-                                                                          .withOpacity(
-                                                                              0.4),
-                                                                    ]),
+                                                            gradient: LinearGradient(
+                                                                begin: Alignment
+                                                                    .topLeft,
+                                                                end: Alignment
+                                                                    .bottomRight,
+                                                                colors: [
+                                                                  Color(4280311451)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  Color(4278547942)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                ]),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -483,6 +481,22 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                           ),
                                                           child: Stack(
                                                               children: [
+                                                                ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  child: ImageFiltered(
+                                                                      imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                                                      child: Container(
+                                                                          height: 390,
+                                                                          decoration: BoxDecoration(
+                                                                            color:
+                                                                                Colors.blue,
+                                                                            image:
+                                                                                DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill),
+                                                                          ))),
+                                                                ),
                                                                 Padding(
                                                                   padding:
                                                                       const EdgeInsets
@@ -826,7 +840,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.white.withOpacity(.3)),
                                                                                     child: Text(
                                                                                       "Learn More",
-                                                                                      style: TextStyle( 
+                                                                                      style: TextStyle(
                                                                                         fontSize: 22,
                                                                                         fontFamily: "good",
                                                                                         fontWeight: FontWeight.w500,

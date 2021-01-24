@@ -202,8 +202,8 @@ class _SettingsPageState extends State<SettingsPage>
                       child: Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: GestureDetector(
-                          onTap: ()async {
-                         await   _signOut();
+                          onTap: () async {
+                            await _signOut();
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -277,7 +277,7 @@ class _SettingsPageState extends State<SettingsPage>
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-      backgroundColor: Color(4278190106).withOpacity(0.9),
+        backgroundColor: Color(4278190106).withOpacity(0.9),
         body: Stack(
           children: [
             usertype == "entrepreneur" ? menu(context) : Container(),
@@ -328,46 +328,48 @@ class _SettingsPageState extends State<SettingsPage>
                                     )),
                                 Align(
                                   alignment: Alignment.topRight,
-                                  child:   usertype == "entrepreneur" ? isCollapsed
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 0, right: 0),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.menu,
-                                              size: 30,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                if (isCollapsed)
-                                                  _controller.forward();
-                                                else
-                                                  _controller.reverse();
+                                  child: usertype == "entrepreneur"
+                                      ? isCollapsed
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0, right: 0),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.menu,
+                                                  size: 30,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (isCollapsed)
+                                                      _controller.forward();
+                                                    else
+                                                      _controller.reverse();
 
-                                                isCollapsed = !isCollapsed;
-                                              });
-                                            },
-                                          ))
-                                      : Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: 0, right: 0),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.arrow_back_ios,
-                                              color: Colors.white,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                if (isCollapsed)
-                                                  _controller.forward();
-                                                else
-                                                _controller.reverse();
+                                                    isCollapsed = !isCollapsed;
+                                                  });
+                                                },
+                                              ))
+                                          : Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0, right: 0),
+                                              child: IconButton(
+                                                icon: Icon(
+                                                  Icons.arrow_back_ios,
+                                                  color: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (isCollapsed)
+                                                      _controller.forward();
+                                                    else
+                                                      _controller.reverse();
 
-                                                isCollapsed = !isCollapsed;
-                                              });
-                                            },
-                                          )):Container(),
+                                                    isCollapsed = !isCollapsed;
+                                                  });
+                                                },
+                                              ))
+                                      : Container(),
                                 ),
                               ],
                             ),
@@ -488,3 +490,4 @@ class _SettingsPageState extends State<SettingsPage>
     });
   }
 }
+  

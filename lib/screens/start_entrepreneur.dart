@@ -87,11 +87,11 @@ class _StartEntrepreneurState extends State<StartEntrepreneur>
     ChatScreen(),
   ];
   @override
-  Widget build(BuildContext context) { SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Color(4281941064), // navigation bar color
-        statusBarColor: Colors.transparent, // status bar color
-
-  ));
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4281941064), // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
