@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "466912315257",
+    "project_id": "the-final-soar",
+    "storage_bucket": "the-final-soar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466912315257:android:5537b7763d1fecc25991a8",
+        "android_client_info": {
+          "package_name": "com.example.SOAR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466912315257-ln0ance7986i9vsjot8kb0r80c7oe3to.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.SOAR",
+            "certificate_hash": "e02f71a3a323589255d7b197d724e96a8a47f3cc"
+          }
+        },
+        {
+          "client_id": "466912315257-vov0bes4v219ku7gcqgtjtqlosupmplb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [                                        
+        {
+          "current_key": "AIzaSyD1yEnO7y-UZui0uu9kE8H5X-VHqUwzY1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466912315257-vov0bes4v219ku7gcqgtjtqlosupmplb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
