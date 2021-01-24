@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage>
         alignment: Alignment.bottomCenter,
         children: [
           PageView(
+            physics: NeverScrollableScrollPhysics(),
             controller: _pageController,
             onPageChanged: (index) {
               setState(() => _currentIndex = index);
