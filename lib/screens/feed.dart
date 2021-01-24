@@ -348,10 +348,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                           child: Align(
                                               alignment: Alignment.topLeft,
                                               child: Row(children: [
-                                                
                                                 Icon(Icons.campaign,
-                                                size: 40,
-                                                color: Colors.indigo),
+                                                    size: 40,
+                                                    color: Colors.indigo),
                                                 SizedBox(width: 10),
                                                 GradientText(
                                                   text: "Pitches",
@@ -376,9 +375,11 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                               SizedBox(height: 25),
                                               Row(
                                                 children: [
-                                                  IconButton(icon: Icon(Icons.search,
-                                                  size: 30,
-                                                  color: Colors.blue), onPressed: null),
+                                                  IconButton(
+                                                      icon: Icon(Icons.search,
+                                                          size: 30,
+                                                          color: Colors.blue),
+                                                      onPressed: null),
                                                   IconButton(
                                                     icon: Icon(
                                                       Icons.menu,
@@ -392,7 +393,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                         else
                                                           _controller.reverse();
 
-                                                        isCollapsed = !isCollapsed;
+                                                        isCollapsed =
+                                                            !isCollapsed;
                                                       });
                                                     },
                                                   ),
@@ -462,6 +464,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                               top: 0),
                                                       child: Material(
                                                         elevation: 10,
+                                                        color:
+                                                            Colors.transparent,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(30),
@@ -492,48 +496,51 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                             child: Stack(
                                                                 children: [
                                                                   Material(
-                                                                           elevation: 3,
-                                                                           borderRadius: BorderRadius.circular(20),
-                                                                                                                                      child: Opacity(
-                                                                                                                                        opacity: 0.7, //Overall Background opacity
-                                                                                                                                                                                                                                                                              child: Container(
-                                                                      decoration: BoxDecoration(
-                                                                          gradient:
-                                                                              LinearGradient(
-                                                                                  colors: [
-                                                                                Color(0xFF4E82E8).withOpacity(0.3), // Card gradients
-                                                                                Color(0xFF5690F6).withOpacity(0.7)
-                                                                              ],
-                                                                            begin: Alignment.topLeft, // Gradient scheme
-                                                                            end: Alignment.bottomRight
-                                                                              ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20)),
+                                                                    elevation:
+                                                                        3,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20),
+                                                                    child:
+                                                                        Opacity(
+                                                                      opacity:
+                                                                          0.7, //Overall Background opacity
                                                                       child:
-                                                                          Opacity(
-                                                                        opacity:
-                                                                            0.35,
+                                                                          Container(
+                                                                        decoration: BoxDecoration(
+                                                                            gradient: LinearGradient(
+                                                                                colors: [
+                                                                                  Color(0xFF4E82E8).withOpacity(0.3), // Card gradients
+                                                                                  Color(0xFF5690F6).withOpacity(0.7)
+                                                                                ],
+                                                                                begin: Alignment.topLeft, // Gradient scheme
+                                                                                end: Alignment.bottomRight),
+                                                                            borderRadius: BorderRadius.circular(20)),
                                                                         child:
-                                                                            ClipRRect(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                          child: ImageFiltered(
-                                                                              imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                                                                              child: Container(
-                                                                                decoration: BoxDecoration(                    color: Colors.grey.shade200.withOpacity(0.5)),
-                                                                                child: Opacity(
-                                                                                  opacity: 0.45,
-                                                                                  child: Container(
-                                                                                      height: 370,
-                                                                                      decoration: BoxDecoration(
-                                                                                        image: DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill),
-                                                                                      )),
-                                                                                ),
-                                                                              )),
+                                                                            Opacity(
+                                                                          opacity:
+                                                                              0.35,
+                                                                          child:
+                                                                              ClipRRect(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(20),
+                                                                            child: ImageFiltered(
+                                                                                imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                                                                                child: Container(
+                                                                                  decoration: BoxDecoration(color: Colors.grey.shade200.withOpacity(0.5)),
+                                                                                  child: Opacity(
+                                                                                    opacity: 1,
+                                                                                    child: Container(
+                                                                                        height: 370,
+                                                                                        decoration: BoxDecoration(
+                                                                                          image: DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.fill),
+                                                                                        )),
+                                                                                  ),
+                                                                                )),
+                                                                          ),
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                                                                                      ),
                                                                   ),
                                                                   Padding(
                                                                     padding:
