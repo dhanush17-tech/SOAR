@@ -1,5 +1,6 @@
 import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/search_screen.dart';
+import 'package:SOAR/screens/video_conferencing.dart';
 import 'package:SOAR/services/search_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
@@ -809,19 +810,14 @@ class _ChatScreenState extends State<ChatScreen>
                                                                   500),
                                                       pageBuilder:
                                                           (ctx, ani, i) =>
-                                                              Profile(
-                                                                uidforprofile: auth
-                                                                    .currentUser
-                                                                    .uid,
-                                                              )));
+                                                              VideoCon()));
                                             },
-                                            child: CircleAvatar(
-                                              backgroundImage: AssetImage(
-                                                  "assets/unknown.png"),
-                                              backgroundColor:
-                                                  Color(4278272638),
-                                              radius: 20,
-                                            ),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(100),
+                                                                                          child: Icon(Icons.video_call,
+                                              color: Colors.indigo,
+                                              size: 30,),
+                                            )
                                           )
                                     : GestureDetector(
                                         onTap: () {
@@ -831,10 +827,7 @@ class _ChatScreenState extends State<ChatScreen>
                                                   transitionDuration: Duration(
                                                       milliseconds: 500),
                                                   pageBuilder: (ctx, ani, i) =>
-                                                      Profile(
-                                                        uidforprofile: auth
-                                                            .currentUser.uid,
-                                                      )));
+                                                      VideoCon()));
                                         },
                                         child: CircleAvatar(
                                           backgroundImage:

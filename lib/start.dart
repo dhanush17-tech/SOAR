@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:SOAR/motivation_scrren/cards.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
@@ -51,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage>
   ];
   final screen = [
     HomeScreen(),
-    Feed(),
+    HomeCard(),
     ChatScreen(),
     Profile(
       uidforprofile: auth.currentUser.uid,

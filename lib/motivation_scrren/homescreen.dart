@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Color(0xFFE6EDFA),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-                child: Column(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 40, left: 15, right: 15),
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
                       Color(0xFF4E82E8).withOpacity(1),
-                      Color(0xFF5894FA).withOpacity(1)
+                      Color(0xFF5894FA).withOpacity(1),
                     ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                     borderRadius: BorderRadius.circular(20)),
                 child: Row(
@@ -91,18 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     SizedBox(
-                      width: 50,
+                      width: 70,
                     ),
-                    Container(
-                        alignment: Alignment.bottomCenter,
-                        height: 140,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  "assets/hello.png",
-                                ),
-                                fit: BoxFit.cover)))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Image.asset("assets/hello.png"),
+                    )
                   ],
                 ),
               ),
@@ -123,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 8.0, left: 10),
               child: Container(
                 height: 300,
                 width: MediaQuery.of(context).size.width,
@@ -132,25 +126,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (ctx, i) => Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 15),
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          colors: [Color(0xFF4E82E8), Colors.blue]
-                        ),
-                        image: DecorationImage(image: AssetImage("assets/carousel1.jpeg",
-                        ),
-                        fit: BoxFit.cover)
-                      ),
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF4E82E8), Colors.blue]),
+                          image: DecorationImage(
+                              image: AssetImage(
+                                "assets/carousel1.jpeg",
+                              ),
+                              fit: BoxFit.cover)),
                       width: 250.0,
                     ),
                   ),
-                  separatorBuilder: (context, index) => SizedBox(width: 20),
+                  separatorBuilder: (context, index) => SizedBox(width: 10),
                 ),
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Container(
@@ -163,26 +159,248 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            SizedBox(height: 15,),
             Container(
-              height: 100,
-              child: PageView(
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  Container(
-                    width: 1000,
-                    height: 60,
-                    color: Colors.pink,
-                  ),
-                  Container(
-                    height: 1000,
-                    width: 600,
-                    color: Colors.black,
-                  )
-                ]),
-            )
+              height: 50,
+              child: ListView(
+                
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                            children: [
+                    GestureDetector(
+                      onTap: () => controller.jumpToPage(1),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Container(height: 50,
+                        decoration: BoxDecoration(color: Color(0xFF5894FA).withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(15)),
+                        child: Center(child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text("Motivational",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600
+                          ),),
+                        )),),
+                      ),
+                    ),
+                    SizedBox(width:10),
+                    GestureDetector(
+                      onTap: () => controller.jumpToPage(1),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0.0),
+                        child: Container(height: 50,
+                        decoration: BoxDecoration(color: Colors.green[300],
+                        borderRadius: BorderRadius.circular(15)),
+                        child: Center(child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text("Sucess stories",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600
+                          ),),
+                        )),),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => controller.jumpToPage(1),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Container(height: 50,
+                        decoration: BoxDecoration(color: Colors.red[300],
+                        borderRadius: BorderRadius.circular(15)),
+                        child: Center(child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text("Promotional",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600
+                          ),),
+                        )),),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => controller.jumpToPage(1),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Container(height: 50,
+                        decoration: BoxDecoration(color: Colors.pinkAccent[100],
+                        borderRadius: BorderRadius.circular(15)),
+                        child: Center(child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text("Tips",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600
+                          ),),
+                        )),),
+                      ),
+                    ),
+                    SizedBox(width: 15)
+                             ] ),
+            ),
+            Container(
+              height: 1000,
+              child: PageView(controller: controller, children: [
+                Container(height: 160, child: BuildHomeCard(context)),
+                Container(height: 160, child: BuildHomeCard(context))
+              ]),
+            ),
+            SizedBox(height: 100)
           ],
         ),
       ),
     );
   }
+
+  PageController controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller = PageController();
+  }
+}
+
+Widget BuildHomeCard(context) {
+  return ListView(
+    children: [
+      Padding(
+        padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+        child: Container(
+          height: 160,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Color(0xFF4E82E8).withOpacity(1),
+                Color(0xFF5894FA).withOpacity(1)
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, top: 30),
+                    child: Text(
+                      "Title",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5, left: 20),
+                    child: SingleChildScrollView(
+                      child: Expanded(
+                        child: Container(
+                          height: 90,
+                          width: 200,
+                          child: Text(
+                            "Descriptionsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 25,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Image.asset("assets/cool.png")),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+        child: Container(
+          height: 160,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Color(0xFF4E82E8).withOpacity(1),
+                Color(0xFF5894FA).withOpacity(1)
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, top: 30),
+                    child: Text(
+                      "Title",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5, left: 20),
+                    child: SingleChildScrollView(
+                      child: Expanded(
+                        child: Container(
+                          height: 90,
+                          width: 200,
+                          child: Text(
+                            "Descriptionsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 25,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Image.asset("assets/cool.png")),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ],
+    scrollDirection: Axis.vertical,
+    physics: NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+  );
 }
