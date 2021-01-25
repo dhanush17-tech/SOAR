@@ -348,8 +348,100 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 ),
                 Column(
                   children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.595,
+                          top: 30),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Assist()));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Image.asset(
+                              "assets/faq.png",
+                              scale: 19,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Support",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.595,
+                          top: 30),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Assist()));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.assignment,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Privacy policy",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.595,
+                          top: 30),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Assist()));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.brightness_2,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Dark Theme",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                      height: 50,
+                      height: 25,
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -366,7 +458,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               Icon(
                                 Icons.exit_to_app_outlined,
                                 color: Colors.redAccent,
-                                size: 31,
+                                size: 25,
                               ),
                               SizedBox(
                                 width: 15,
@@ -374,43 +466,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               Text(
                                 "Sign Out",
                                 style: GoogleFonts.poppins(
-                                    fontSize: 20,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.red),
                               )
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.595,
-                          top: 30),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => Assist()));
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Image.asset(
-                              "assets/faq.png",
-                              scale: 17,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              "Support",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            )
-                          ],
                         ),
                       ),
                     ),
