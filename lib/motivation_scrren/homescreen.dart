@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 40, left: 15, right: 15),
+              padding: EdgeInsets.only(top: 40, left: 5, right: 15),
               child: Container(
                 height: 130,
                 width: MediaQuery.of(context).size.width,
@@ -93,9 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 70,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Image.asset("assets/hello.png"),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Image.asset("assets/hello.png"),
+                      ),
                     )
                   ],
                 ),
@@ -121,27 +124,37 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 height: 300,
                 width: MediaQuery.of(context).size.width,
-                child: ListView.separated(
-                  itemCount: 3,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (ctx, i) => Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF4E82E8), Colors.blue]),
-                          image: DecorationImage(
-                              image: AssetImage(
-                                "assets/carousel1.jpeg",
-                              ),
-                              fit: BoxFit.cover)),
-                      width: 250.0,
-                    ),
-                  ),
-                  separatorBuilder: (context, index) => SizedBox(width: 10),
-                ),
+                child: StreamBuilder(
+                    stream:
+                        Firestore.instance.collection("trending").snapshots(),
+                    builder: (context, snapshot) {
+                      return ListView.separated(
+                        itemCount: snapshot.data.documents.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (ctx, i) {
+                          DocumentSnapshot trending =
+                              snapshot.data.documents[i];
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: LinearGradient(
+                                      colors: [Color(0xFF4E82E8), Colors.blue]),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                        trending["url"],
+                                      ),
+                                      fit: BoxFit.fill)),
+                              width: 250.0,
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 10),
+                      );
+                    }),
               ),
             ),
             SizedBox(
@@ -159,94 +172,124 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               height: 50,
               child: ListView(
-                
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                            children: [
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: [
                     GestureDetector(
-                      onTap: () => controller.jumpToPage(1),
+                      onTap: () => controller.animateToPage(0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
-                        child: Container(height: 50,
-                        decoration: BoxDecoration(color: Color(0xFF5894FA).withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(15)),
-                        child: Center(child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Motivational",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600
-                          ),),
-                        )),),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF5894FA).withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              "Motivational",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                        ),
                       ),
                     ),
-                    SizedBox(width:10),
+                    SizedBox(width: 10),
                     GestureDetector(
-                      onTap: () => controller.jumpToPage(1),
+                      onTap: () => controller.animateToPage(1,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 0.0),
-                        child: Container(height: 50,
-                        decoration: BoxDecoration(color: Colors.green[300],
-                        borderRadius: BorderRadius.circular(15)),
-                        child: Center(child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Sucess stories",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600
-                          ),),
-                        )),),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.green[300],
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              "Sucess stories",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                        ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => controller.jumpToPage(1),
+                      onTap: () => controller.animateToPage(2,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
-                        child: Container(height: 50,
-                        decoration: BoxDecoration(color: Colors.red[300],
-                        borderRadius: BorderRadius.circular(15)),
-                        child: Center(child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Promotional",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600
-                          ),),
-                        )),),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.red[300],
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              "Promotional",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                        ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => controller.jumpToPage(1),
+                      onTap: () => controller.animateToPage(3,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
-                        child: Container(height: 50,
-                        decoration: BoxDecoration(color: Colors.pinkAccent[100],
-                        borderRadius: BorderRadius.circular(15)),
-                        child: Center(child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Tips",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600
-                          ),),
-                        )),),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.pinkAccent[100],
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              "Tips",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                        ),
                       ),
                     ),
                     SizedBox(width: 15)
-                             ] ),
+                  ]),
             ),
             Container(
-              height: 1000,
+              height: 500,
               child: PageView(controller: controller, children: [
-                Container(height: 160, child: BuildHomeCard(context)),
-                Container(height: 160, child: BuildHomeCard(context))
+                BuildHomeCardMotivational(context),
+                BuildHomeCardSuccess(context),
+                BuildHomeCardPoromotional(context),
+                BuildHomeCardTips(context)
               ]),
             ),
-            SizedBox(height: 100)
           ],
         ),
       ),
@@ -261,146 +304,366 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget BuildHomeCard(context) {
-  return ListView(
-    children: [
-      Padding(
-        padding: EdgeInsets.only(top: 0, left: 15, right: 15),
-        child: Container(
-          height: 160,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xFF4E82E8).withOpacity(1),
-                Color(0xFF5894FA).withOpacity(1)
-              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, top: 30),
-                    child: Text(
-                      "Title",
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5, left: 20),
-                    child: SingleChildScrollView(
-                      child: Expanded(
-                        child: Container(
-                          height: 90,
-                          width: 200,
-                          child: Text(
-                            "Descriptionsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
+Widget BuildHomeCardSuccess(context) {
+  return StreamBuilder(
+      stream: Firestore.instance.collection("success").snapshots(),
+      builder: (context, snapshot) {
+        return snapshot.data == null
+            ? Container()
+            : ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (ctx, i) {
+                  var success = snapshot.data.documents[i];
+
+                  return Padding(
+                    padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.green[300],
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 30),
+                                child: Text(
+                                  success["Title"],
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5, left: 20, bottom: 10),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    height: 90,
+                                    width: 200,
+                                    child: Text(
+                                      success["sub"],
+                                      style: GoogleFonts.poppins(
+                                        height: 1.2,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image:
+                                            NetworkImage(success["lcation"]))),
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 20,
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                      height: 120,
+                  );
+                },
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+              );
+      });
+}
+
+Widget BuildHomeCardMotivational(context) {
+  return StreamBuilder(
+      stream: Firestore.instance.collection("motivation").snapshots(),
+      builder: (context, snapshot) {
+        return snapshot.data == null
+            ? Container()
+            : ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (ctx, i) {
+                  var success = snapshot.data.documents[i];
+
+                  return Padding(
+                    padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
+                          color: Color(0xFF5894FA).withOpacity(0.9),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Image.asset("assets/cool.png")),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-        child: Container(
-          height: 160,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xFF4E82E8).withOpacity(1),
-                Color(0xFF5894FA).withOpacity(1)
-              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, top: 30),
-                    child: Text(
-                      "Title",
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5, left: 20),
-                    child: SingleChildScrollView(
-                      child: Expanded(
-                        child: Container(
-                          height: 90,
-                          width: 200,
-                          child: Text(
-                            "Descriptionsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 30),
+                                child: Text(
+                                  success["Title"],
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5, left: 20, bottom: 10),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    height: 90,
+                                    width: 200,
+                                    child: Text(
+                                      success["sub"],
+                                      style: GoogleFonts.poppins(
+                                        height: 1.2,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image:
+                                            NetworkImage(success["lcation"]))),
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 20,
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                      height: 120,
+                  );
+                },
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+              );
+      });
+}
+
+Widget BuildHomeCardPoromotional(context) {
+  return StreamBuilder(
+      stream: Firestore.instance.collection("promo").snapshots(),
+      builder: (context, snapshot) {
+        return snapshot.data == null
+            ? Container()
+            : ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (ctx, i) {
+                  var success = snapshot.data.documents[i];
+
+                  return Padding(
+                    padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
+                          color: Colors.red[300],
                           borderRadius: BorderRadius.circular(20)),
-                      child: Image.asset("assets/cool.png")),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    ],
-    scrollDirection: Axis.vertical,
-    physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-  );
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 30),
+                                child: Text(
+                                  success["Title"],
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5, left: 20, bottom: 10),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    height: 90,
+                                    width: 200,
+                                    child: Text(
+                                      success["sub"],
+                                      style: GoogleFonts.poppins(
+                                        height: 1.2,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image:
+                                            NetworkImage(success["lcation"]))),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+              );
+      });
+}
+
+Widget BuildHomeCardTips(context) {
+  return StreamBuilder(
+      stream: Firestore.instance.collection("tips").snapshots(),
+      builder: (context, snapshot) {
+        return snapshot.data == null
+            ? Container()
+            : ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (ctx, i) {
+                  var success = snapshot.data.documents[i];
+
+                  return Padding(
+                    padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.pinkAccent[100],
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, top: 30),
+                                child: Text(
+                                  success["Title"],
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 5, left: 20, bottom: 10),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    height: 90,
+                                    width: 200,
+                                    child: Text(
+                                      success["sub"],
+                                      style: GoogleFonts.poppins(
+                                        height: 1.2,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 95,
+                                width: 95,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image:
+                                            NetworkImage(success["lcation"]))),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+              );
+      });
 }
