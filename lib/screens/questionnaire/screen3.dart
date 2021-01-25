@@ -78,7 +78,7 @@ class _Page3State extends State<Page3> {
                           fontSize: 35,
                           fontWeight: FontWeight.w400,
                           fontFamily: "good",
-                          color: Colors.white),
+                          color: Colors.black),
                     ),
                   ),
                   Theme(

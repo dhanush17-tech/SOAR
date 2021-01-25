@@ -81,7 +81,8 @@ class _MyHomePageState extends State<MyHomePage>
       systemNavigationBarIconBrightness: Brightness.dark, // navigation bar color
       statusBarColor: Colors.transparent, // status bar color
     ));
-    return Scaffold(
+    return Scaffold(  resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [

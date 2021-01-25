@@ -15,7 +15,6 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:SOAR/motivation_scrren/homescreen.dart';
 import 'package:SOAR/screens/post/mainpaost.dart';
 
-
 void main() => runApp(HomeEnt());
 
 class HomeEnt extends StatelessWidget {
@@ -78,10 +77,13 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
     ));
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -95,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage>
               HomeScreen(),
               MainPost(),
               ChatScreen(),
+              Stories(),
               Profile(
                 uidforprofile: auth.currentUser.uid,
               ),
@@ -113,26 +116,42 @@ class _MyHomePageState extends State<MyHomePage>
                 BottomNavyBarItem(
                     title: Text('Home'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.home,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.home,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Add pitch'),
-                    activeColor: Color(0xFF4E81EA),                    
-                    icon: Icon(Icons.campaign,
-                    color: Color(0xFF4E81EA),),
-                    textAlign: TextAlign.center),                  
+                    activeColor: Color(0xFF4E81EA),
+                    icon: Icon(
+                      Icons.campaign,
+                      color: Color(0xFF4E81EA),
+                    ),
+                    textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Chat'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.chat_bubble_rounded,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Color(0xFF4E81EA),
+                    ),
+                    textAlign: TextAlign.center),
+                BottomNavyBarItem(
+                    title: Text('Stories'),
+                    activeColor: Color(0xFF4E81EA),
+                    icon: Icon(
+                      Icons.explore,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Profile'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.person,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.person,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
               ],
             ),

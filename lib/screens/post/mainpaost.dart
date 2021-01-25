@@ -126,7 +126,7 @@ class _MainPostState extends State<MainPost> {
         future: Future.value(true),
         builder: (context, snapshot) {
           return Padding(
-            padding: const EdgeInsets.only(left: 10.0, bottom: 10, right: 10),
+            padding: const EdgeInsets.only(left: 10.0, bottom: 70, right: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
