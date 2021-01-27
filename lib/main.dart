@@ -2,7 +2,6 @@ import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/feed_details.dart';
 import 'package:SOAR/screens/post/post_details.dart';
-import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:SOAR/splashscreen.dart';
 import 'package:SOAR/start.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _seletedItem = 0;
-  var _pages = [Feed(), Profile(), PostImage(), SettingsPage()];
+  var _pages = [Feed(), Profile(), PostImage()];
   GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override

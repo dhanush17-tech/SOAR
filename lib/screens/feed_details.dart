@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:countup/countup.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
-import '../motivation_scrren/motivation_home.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,7 +67,7 @@ class _FeedDetailsState extends State<FeedDetails> {
 
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     return Scaffold(
-      backgroundColor: Color(4278190106),
+      backgroundColor: Color(0xFFE6EDFA),
       body: StreamBuilder(
           stream: Firestore.instance
               .collection("Feed")
@@ -181,7 +180,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                                     FontWeight
                                                                         .w600,
                                                                 color: Colors
-                                                                    .white,
+                                                                    .black
                                                               ),
                                                             )),
                                                       ),
@@ -307,7 +306,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       style: GoogleFonts.poppins(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(4290229943)),
+                                          color: Colors.black),
                                     ),
                                   ],
                                 ),
@@ -332,7 +331,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       style: GoogleFonts.poppins(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(4290229943)),
+                                          color: Colors.black),
                                     ),
                                   ],
                                 ),
@@ -384,9 +383,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 feed["summury"],
                                 style: TextStyle(
                                     fontSize: 25,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                     fontFamily: "good",
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                             ),
                           ),
@@ -514,8 +513,8 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 feed["target_audience"],
                                 style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
@@ -547,8 +546,8 @@ class _FeedDetailsState extends State<FeedDetails> {
                                   Text(feed["value_propotion"],
                                       style: GoogleFonts.poppins(
                                           fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400)),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -561,8 +560,8 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       : Text(feed["currency"] ?? "",
                                           style: GoogleFonts.poppins(
                                               fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold)),
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400)),
                                 ],
                               ),
                             ),
@@ -594,8 +593,8 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 feed["revenue_model"],
                                 style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
@@ -608,7 +607,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                               padding:
                                   const EdgeInsets.only(left: 20.0, top: 10),
                               child: Text(
-                                'Poster',
+                                'Images',
                                 style: TextStyle(
                                     fontSize: 43,
                                     fontWeight: FontWeight.w500,

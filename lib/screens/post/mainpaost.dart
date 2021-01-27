@@ -11,7 +11,6 @@ import 'package:progress_timeline/progress_timeline.dart';
 import 'package:get/get.dart';
 import '../feed.dart';
 import '../profile.dart';
-import '../../motivation_scrren/motivation_home.dart';
 
 class MainPost extends StatefulWidget {
   @override
@@ -94,7 +93,6 @@ class _MainPostState extends State<MainPost> {
                         ],
                       );
                     },
-                    physics: NeverScrollableScrollPhysics(),
                     itemCount: 5,
                     controller: controller,
                     onPageChanged: (int position) {
@@ -103,7 +101,6 @@ class _MainPostState extends State<MainPost> {
                         screenProgress.state.setState(() {});
                       });
                     }),
-                button()
               ],
             ),
           ),
@@ -130,32 +127,32 @@ class _MainPostState extends State<MainPost> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-          Align(
-                        alignment: Alignment.bottomLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              controller.previousPage(
-                                  duration: Duration(milliseconds: 500),
-                                  curve: Curves.easeIn);
-                            });
-                          },
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.redAccent,
-                            ),
-                            child: Icon(
-                              Icons.arrow_back_rounded,
-                              size: 30,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      )
-,                pagee == 4
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        controller.previousPage(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeIn);
+                      });
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.redAccent,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                pagee == 4
                     ? Container()
                     : FutureBuilder(
                         future: Future.value(true),

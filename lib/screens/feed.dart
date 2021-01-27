@@ -7,7 +7,6 @@ import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/post/post_image.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/see_more.dart';
-import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
@@ -24,7 +23,7 @@ import 'post/post_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart ' as timeago;
 
 class Feed extends StatefulWidget {
   @override
@@ -492,13 +491,12 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                       color: Colors.blue,
                                                     ),
                                                     onPressed: () {
-                                                      Navigator
-                                                          .pushAndRemoveUntil(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (_) =>
-                                                                      Stories()),
-                                                              (route) => false);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                Stories()),
+                                                      );
                                                     },
                                                   ),
                                                 ],

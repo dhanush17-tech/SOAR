@@ -82,7 +82,7 @@ class _SearchState extends State<Search> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return new Scaffold(
-        backgroundColor: Color(4278190106),
+        backgroundColor: Color(0xFFE6EDFA),
         body: Column(children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
@@ -93,7 +93,8 @@ class _SearchState extends State<Search> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Color(4280099132)),
+                    border: Border.all(color: Color(0xFF5894FA)),
+                    color: Color(0xFF5894FA).withOpacity(0.4)),
                 height: 60,
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Align(
@@ -104,7 +105,7 @@ class _SearchState extends State<Search> {
                       Icon(
                         Icons.search,
                         size: 30,
-                        color: Colors.white,
+                        color: Color(4278228470),
                       ),
                       SizedBox(
                         width: 10,
@@ -261,7 +262,7 @@ class _SearchState extends State<Search> {
                                                                         .bold,
                                                                 fontSize: 23,
                                                                 color: Colors
-                                                                    .white,
+                                                                    .black,
                                                               ))),
                                                     ),
                                                   ),
@@ -414,7 +415,7 @@ class _SearchState extends State<Search> {
                                                                     fontSize:
                                                                         23,
                                                                     color: Colors
-                                                                        .white,
+                                                                        .black,
                                                                   ))),
                                                         ),
                                                       ),

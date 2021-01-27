@@ -357,7 +357,31 @@ class _ChatScreenState extends State<ChatScreen>
                                         : Container(
                                             width: 0,
                                             height: 0,
-                                          )
+                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                    transitionDuration:
+                                                        Duration(
+                                                            milliseconds: 500),
+                                                    pageBuilder:
+                                                        (ctx, ani, i) =>
+                                                            VideoCon()));
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Icon(
+                                              Icons.video_call,
+                                              color: Colors.blue,
+                                              size: 30,
+                                            ),
+                                          )),
+                                    )
                                   ],
                                 ),
                               ),
@@ -377,7 +401,10 @@ class _ChatScreenState extends State<ChatScreen>
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
-                                          color: Color(4280099132)),
+                                          border: Border.all(
+                                              color: Color(0xFF5894FA)),
+                                          color: Color(0xFF5894FA)
+                                              .withOpacity(0.4)),
                                       width: 350,
                                       height: 60,
                                       child: Padding(
@@ -388,7 +415,7 @@ class _ChatScreenState extends State<ChatScreen>
                                             Icon(
                                               Icons.search,
                                               size: 30,
-                                              color: Colors.white,
+                                              color: Color(4278228470),
                                             ),
                                             SizedBox(
                                               width: 15,
@@ -813,12 +840,14 @@ class _ChatScreenState extends State<ChatScreen>
                                                               VideoCon()));
                                             },
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(100),
-                                                                                          child: Icon(Icons.video_call,
-                                              color: Colors.blue,
-                                              size: 30,),
-                                            )
-                                          )
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              child: Icon(
+                                                Icons.video_call,
+                                                color: Colors.blue,
+                                                size: 30,
+                                              ),
+                                            ))
                                     : GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -846,57 +875,54 @@ class _ChatScreenState extends State<ChatScreen>
                       height: 10,
                     ),
                     Hero(
-                                tag: "key",
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => Search()));
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 30, left: 10, right: 10),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Color(4280099132)),
-                                      width: 350,
-                                      height: 60,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20.0, right: 20, top: 2),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.search,
-                                              size: 30,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Material(
-                                              type: MaterialType.transparency,
-                                              child: Text(
-                                                'Search',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 20,
-                                                    color: Color(
-                                                      4278228470,
-                                                    ),
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                      tag: "key",
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => Search()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 30, left: 10, right: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Color(0xFF5894FA)),
+                                color: Color(0xFF5894FA).withOpacity(0.4)),
+                            width: 350,
+                            height: 60,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20.0, right: 20, top: 2),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    size: 30,
+                                    color: Color(4278228470),
                                   ),
-                                ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Material(
+                                    type: MaterialType.transparency,
+                                    child: Text(
+                                      'Search',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 20,
+                                          color: Color(
+                                            4278228470,
+                                          ),
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )
+                                ],
                               ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -962,8 +988,10 @@ class _ChatScreenState extends State<ChatScreen>
                                                                 left: 10),
                                                         child: Material(
                                                           elevation: 5,
-                                                          borderRadius: BorderRadius.circular(20),
-                                                                                                                  child: Container(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          child: Container(
                                                             padding:
                                                                 EdgeInsets.only(
                                                                     right: 10,
@@ -971,7 +999,8 @@ class _ChatScreenState extends State<ChatScreen>
                                                             height: 80,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: Colors.white
+                                                              color: Colors
+                                                                  .white
                                                                   .withOpacity(
                                                                       1),
                                                               borderRadius:
@@ -982,7 +1011,8 @@ class _ChatScreenState extends State<ChatScreen>
                                                             child: Row(
                                                               children: [
                                                                 Hero(
-                                                                  tag: "good+$i",
+                                                                  tag:
+                                                                      "good+$i",
                                                                   child:
                                                                       Container(
                                                                     height: 60,
@@ -1010,7 +1040,8 @@ class _ChatScreenState extends State<ChatScreen>
                                                                           .start,
                                                                   children: [
                                                                     Container(
-                                                                      height: 50,
+                                                                      height:
+                                                                          50,
                                                                       width: MediaQuery.of(context)
                                                                               .size
                                                                               .width *
@@ -1021,8 +1052,7 @@ class _ChatScreenState extends State<ChatScreen>
                                                                             Axis.horizontal,
                                                                         child: Padding(
                                                                             padding: const EdgeInsets.only(
-                                                                              top:
-                                                                                  13,
+                                                                              top: 13,
                                                                             ),
                                                                             child: Text(man["name"],
                                                                                 style: GoogleFonts.poppins(
@@ -1036,10 +1066,10 @@ class _ChatScreenState extends State<ChatScreen>
                                                                       man["tagline"],
                                                                       style: GoogleFonts
                                                                           .poppins(
-                                                                            height: 0.7,
+                                                                        height:
+                                                                            0.7,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w400,
+                                                                            FontWeight.w400,
                                                                         fontSize:
                                                                             15,
                                                                         color:

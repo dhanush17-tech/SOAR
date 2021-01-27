@@ -86,7 +86,7 @@ class _PostDetailsState extends State<PostDetails> {
                           children: [
                             TextFormField(
                               controller: summaryController,
-                              validator: (value) => value.length > 20
+                              validator: (value) => value.length < 20
                                   ? "Your summary should be more than 20"
                                   : null,
                               style: TextStyle(

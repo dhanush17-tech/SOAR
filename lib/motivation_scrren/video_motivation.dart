@@ -1,56 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
-import 'motivation_home.dart';
 import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MotivationHome extends StatefulWidget {
-  String url;
+  String text;
   String id;
-  MotivationHome(this.url, this.id);
+
+  MotivationHome(this.text, this.id);
   @override
   _MotivationHomeState createState() => _MotivationHomeState();
 }
 
-class _MotivationHomeState extends State<MotivationHome> {  
+class _MotivationHomeState extends State<MotivationHome> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller = VideoPlayerController.network(widget.url)
-      ..initialize().then((_) {
-        _controller.play();
-        setState(() {});
-      });
-    _controller.addListener(() {
-      checkVideo();
-    });
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  bool isvideoended = false;
-
-  void checkVideo() {
-    // Implement your calls inside these conditions' bodies :
-    if (_controller.value.position ==
-        Duration(seconds: 0, minutes: 0, hours: 0)) {
-      setState(() {
-        isvideoended = false;
-      });
-    }
-
-    if (_controller.value.position == _controller.value.duration) {
-      print('video Ended');
-      setState(() {
-        isvideoended = true;
-      });
-    }
-    print(isvideoended);
+    print(widget.id);
   }
 
   VideoPlayerController _controller;
@@ -58,146 +25,161 @@ class _MotivationHomeState extends State<MotivationHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: StreamBuilder(
-            stream: Firestore.instance
-                .collection("motivation")
-                .document(widget.id)
-                .snapshots(),
-            builder: (context, snapshot) {
-              return ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 1,
-                itemBuilder: (BuildContext context, int index) {
-                  var moti = snapshot.data;
+          backgroundColor: Color(0xFFE6EDFA),
+          body: Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: StreamBuilder(
+                stream: Firestore.instance
+                    .collection("all")
+                    .document(widget.id)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      var success = snapshot.data;
 
-                  return Stack(
-                    alignment: Alignment.bottomLeft,
-                    children: [
-                      if (isvideoended == false)
-                        Hero(
-                          tag: "dd+$index",
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(),
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height,
-                                child: VideoPlayer(_controller),
-                              ),
-                            ),
-                          ),
-                        ),
-                      Material(
-                        type: MaterialType.transparency,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, bottom: 50),
-                            child: Text(
-                              moti["title"],
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 30,
-                                  color: Colors.blue),
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (isvideoended == true)
-                        TweenAnimationBuilder<double>(
-                          duration: const Duration(milliseconds: 500),
-                          tween: Tween(end: 1, begin: 0),
-                          builder: (BuildContext context, dynamic value,
-                              Widget child) {
-                            return Opacity(
-                              opacity: value,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height,
-                                color: Colors.black.withOpacity(0.8),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 200.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Share your experience with us",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 50,
-                                            color: Colors.blue,
-                                            fontFamily: "good"),
-                                      ),
-                                      SizedBox(
-                                        height: 60,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 30.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Firestore.instance
-                                                    .collection("motivation")
-                                                    .document(widget.id)
-                                                    .updateData({
-                                                  "dislikes":
-                                                      FieldValue.increment(1)
-                                                }).then((value) =>
-                                                        Navigator.pop(context));
-                                              },
-                                              child: Transform.rotate(
-                                                angle: 180 * math.pi / 180,
-                                                child: Image.asset(
-                                                  "assets/thumbs_up.png",
-                                                  scale: 4,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 100,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Firestore.instance
-                                                  .collection("motivation")
-                                                  .document(widget.id)
-                                                  .updateData({
-                                                "likes": FieldValue.increment(1)
-                                              }).then((value) =>
-                                                      Navigator.pop(context));
-                                            },
-                                            child: Image.asset(
-                                              "assets/thumbs_up.png",
-                                              scale: 4,
-                                              color: Colors.blue,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.indigo,
+                                        ),
+                                        child: Icon(
+                                          Icons.arrow_back_rounded,
+                                          color: Colors.white,
+                                          size: 25,
+                                        )),
                                   ),
                                 ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.23,
+                                ),
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Text(widget.text,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                            color: Colors.black)))
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(success["name"],
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 24,
+                                            
+                                            color: Colors.indigo,
+                                            fontWeight: FontWeight.w500)),
+                                    Text(success["years"],
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500))
+                                  ],
+                                ),
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(success["lcation"]),
+                                      )),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Icon(
+                                  Icons.bookmark_border_rounded,
+                                  size: 25,
+                                  color: Colors.indigo,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.thumb_up_alt_outlined,
+                                      size: 25,
+                                      color: Colors.indigo,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.share_outlined,
+                                      size: 25,
+                                      color: Colors.indigo,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              success["sub"],
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17,
                               ),
-                            );
-                          },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: Text(
+                                  success["handle"],
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color: Colors.blue[900], fontSize: 15),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                    ],
+                      );
+                    },
                   );
-                },
-              );
-            }),
-      ),
+                }),
+          )),
     );
   }
 }
+
+String d =
+    "ffffffffffffffffffffffffffffffffffffffffssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";

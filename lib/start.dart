@@ -4,7 +4,6 @@ import 'package:SOAR/motivation_scrren/cards.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
-import 'package:SOAR/motivation_scrren/motivation_home.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:SOAR/screens/stories_add.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
