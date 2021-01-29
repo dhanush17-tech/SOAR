@@ -724,10 +724,8 @@ Widget BuildHomeCardSuccess(context) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => MotivationHome(
-                                    "Success Stories",
-                                    success.id,
-                                  )));
+                              builder: (c) =>
+                                  MotivationHome("Tips", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -735,7 +733,7 @@ Widget BuildHomeCardSuccess(context) {
                         decoration: BoxDecoration(
                             color: Colors.green[300],
                             borderRadius: BorderRadius.circular(20)),
-                        child: Row(
+                        child: Stack(
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -759,7 +757,7 @@ Widget BuildHomeCardSuccess(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          220,  
+                                          220,
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(
@@ -774,25 +772,23 @@ Widget BuildHomeCardSuccess(context) {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 350,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.32,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              success["lcation"]))),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15.0, right: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                                success["lcation"]))),
+                                  ),
                                 ),
                               ),
                             ),
@@ -829,7 +825,7 @@ Widget BuildHomeCardMotivational(context) {
                           context,
                           MaterialPageRoute(
                               builder: (c) =>
-                                  MotivationHome("Motivational", success.id)));
+                                  MotivationHome("Tips", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -837,7 +833,7 @@ Widget BuildHomeCardMotivational(context) {
                         decoration: BoxDecoration(
                             color: Color(0xFF5894FA).withOpacity(0.9),
                             borderRadius: BorderRadius.circular(20)),
-                        child: Row(
+                        child: Stack(
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -876,25 +872,23 @@ Widget BuildHomeCardMotivational(context) {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 350,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.32,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              success["lcation"]))),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15.0, right: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                                success["lcation"]))),
+                                  ),
                                 ),
                               ),
                             ),
@@ -931,7 +925,7 @@ Widget BuildHomeCardPoromotional(context) {
                           context,
                           MaterialPageRoute(
                               builder: (c) =>
-                                  MotivationHome("Promotional", success.id)));
+                                  MotivationHome("Tips", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -939,7 +933,7 @@ Widget BuildHomeCardPoromotional(context) {
                         decoration: BoxDecoration(
                             color: Colors.red[300],
                             borderRadius: BorderRadius.circular(20)),
-                        child: Row(
+                        child: Stack(
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -978,25 +972,23 @@ Widget BuildHomeCardPoromotional(context) {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 350,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.32,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              success["lcation"]))),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15.0, right: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                                success["lcation"]))),
+                                  ),
                                 ),
                               ),
                             ),
@@ -1041,7 +1033,7 @@ Widget BuildHomeCardTips(context) {
                         decoration: BoxDecoration(
                             color: Colors.pinkAccent[100],
                             borderRadius: BorderRadius.circular(20)),
-                        child: Row(
+                        child: Stack(
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1080,25 +1072,23 @@ Widget BuildHomeCardTips(context) {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 350,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.32,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              success["lcation"]))),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15.0, right: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                                success["lcation"]))),
+                                  ),
                                 ),
                               ),
                             ),
@@ -1131,8 +1121,8 @@ Widget BuildHomeCardAll(context) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => MotivationHome(
-                                  "Success Stories", success.id)));
+                              builder: (c) =>
+                                  MotivationHome("Tips", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -1140,7 +1130,7 @@ Widget BuildHomeCardAll(context) {
                         decoration: BoxDecoration(
                             color: Colors.blue[300],
                             borderRadius: BorderRadius.circular(20)),
-                        child: Row(
+                        child: Stack(
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1179,25 +1169,23 @@ Widget BuildHomeCardAll(context) {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 350,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10.0, bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.32,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(
-                                              success["lcation"]))),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15.0, right: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                                success["lcation"]))),
+                                  ),
                                 ),
                               ),
                             ),
