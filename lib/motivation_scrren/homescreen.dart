@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                               children: [
                                 Center(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 190),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: CircleAvatar(
                                       backgroundColor: Color(4278272638),
                                       backgroundImage: NetworkImage(
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   height: 10,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 190),
+                                  padding: const EdgeInsets.only(left: 10),
                                   child: Text(
                                     sn.data["name"],
                                     textAlign: TextAlign.center,
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 200),
+                                padding: const EdgeInsets.only(left: 190),
                                 child: CircleAvatar(
                                   backgroundColor: Color(4278272638),
                                   backgroundImage:
@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 height: 10,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 206),
+                                padding: const EdgeInsets.only(left: 196),
                                 child: Text(
                                   sn.data["name"],
                                   textAlign: TextAlign.center,
@@ -211,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen>
                               color: Colors.black,
                             ),
                             SizedBox(
-                              width: 15,
+                              width: 5,
                             ),
                             Text(
                               "Support",
@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen>
                               color: Colors.black,
                             ),
                             SizedBox(
-                              width: 15,
+                              width: 5,
                             ),
                             Text(
                               "Privacy policy",
@@ -271,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen>
                               color: Colors.black,
                             ),
                             SizedBox(
-                              width: 15,
+                              width: 5,
                             ),
                             Text(
                               "Dark Theme",
@@ -305,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 size: 25,
                               ),
                               SizedBox(
-                                width: 15,
+                                width: 5,
                               ),
                               Text(
                                 "Sign Out",
@@ -759,7 +759,7 @@ Widget BuildHomeCardSuccess(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          170,
+                                          220,  
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(
@@ -861,7 +861,7 @@ Widget BuildHomeCardMotivational(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          170,
+                                          220,
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(
@@ -963,7 +963,7 @@ Widget BuildHomeCardPoromotional(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          170,
+                                          220,
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(
@@ -1065,7 +1065,7 @@ Widget BuildHomeCardTips(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          170,
+                                          220,
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(
@@ -1164,7 +1164,7 @@ Widget BuildHomeCardAll(context) {
                                     child: Container(
                                       height: 90,
                                       width: MediaQuery.of(context).size.width -
-                                          170,
+                                          220,
                                       child: Text(
                                         success["sub"],
                                         style: GoogleFonts.poppins(

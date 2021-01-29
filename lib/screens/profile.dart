@@ -131,6 +131,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   TextEditingController nameChange = TextEditingController();
   TextEditingController websiteUrlChnage = TextEditingController();
+
+  @override
+  void dispose() {
+    taglineChange.dispose();
+    websiteUrlChnage.dispose();
+    nameChange.dispose();
+    super.dispose();
+  }
+
   TextEditingController taglineChange = TextEditingController();
 
   Future<void> _edit() async {
@@ -822,7 +831,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15.0, top: 8),
+                                                            left: 11.0, top: 8),
                                                     child: Text(
                                                       userDocument["tagline"] ??
                                                           "It may take some time....",
@@ -831,8 +840,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                         color: Color(0xFF3D4254)
                                                             .withOpacity(1),
                                                         fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15,
+                                                            FontWeight.w500,
+                                                        fontSize: 17,
                                                       ),
                                                     ),
                                                   ),
@@ -915,35 +924,48 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               : 0,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0, left: 12),
+                          padding: const EdgeInsets.only(top: 8.0, left: 0),
                           child: Row(
                             children: [
-                              Image.asset("assets/web.png"),
                               SizedBox(
-                                width: 5,
+                                width:
+                                    auth.currentUser.uid == widget.uidforprofile
+                                        ? 0
+                                        : 10,
                               ),
                               auth.currentUser.uid != widget.uidforprofile
-                                  ? StreamBuilder(
-                                      stream: Firestore.instance
-                                          .collection('Users')
-                                          .document("${widget.uidforprofile}")
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        var userDocument = snapshot.data;
-                                        return snapshot.data == null
-                                            ? CircularProgressIndicator()
-                                            : Text(
-                                                userDocument["websiteurl"],
-                                                style: TextStyle(
-                                                  color: Color(0xFF3D4254)
-                                                      .withOpacity(1),
-                                                  fontSize: 15,
-                                                ),
-                                              );
-                                      })
+                                  ? Image.asset("assets/web.png")
                                   : Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          45,
+                                      width: 0,
+                                      height: 0,
+                                    ),
+                              auth.currentUser.uid != widget.uidforprofile
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 15.0),
+                                      child: StreamBuilder(
+                                          stream: Firestore.instance
+                                              .collection('Users')
+                                              .document(
+                                                  "${widget.uidforprofile}")
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            var userDocument = snapshot.data;
+                                            return snapshot.data == null
+                                                ? CircularProgressIndicator()
+                                                : Text(
+                                                    userDocument["websiteurl"],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Color(0xFF3D4254)
+                                                          .withOpacity(1),
+                                                      fontSize: 15,
+                                                    ),
+                                                  );
+                                          }),
+                                    )
+                                  : Container(
+                                      width: MediaQuery.of(context).size.width,
                                       child: TextFormField(
                                         textAlign: TextAlign.center,
                                         controller: websiteUrlChnage,
@@ -1029,6 +1051,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                           child: Text(
                                             "Connections",
                                             style: TextStyle(
+                                              fontWeight: FontWeight.w500,
                                               color: Color(0xFF3D4254),
                                             ),
                                           )),
@@ -1066,6 +1089,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                             "Pitches",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
+                                              fontWeight: FontWeight.w500,
                                               color: Color(0xFF3D4254),
                                             ),
                                           )),
@@ -1081,20 +1105,26 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       SizedBox(
                         height: 20,
                       ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 5, bottom: 0),
-                          child: GradientText(
-                            text: " Pitches",
-                            colors: [Colors.blue[400], Colors.blue[700]],
-                            style: TextStyle(
-                                fontSize: 55,
-                                fontFamily: "good",
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
+                      usertype == "entrepreneur"
+                          ? Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5, bottom: 0),
+                                child: GradientText(
+                                  text: " Pitches",
+                                  colors: [Colors.blue[400], Colors.blue[700]],
+                                  style: TextStyle(
+                                      fontSize: 55,
+                                      fontFamily: "good",
+                                      color: Colors.white),
+                                ),
+                              ),
+                            )
+                          : Container(
+                              width: 0,
+                              height: 0,
+                            ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: StreamBuilder(

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:SOAR/auth/login.dart';
 import 'package:SOAR/screens/chat/text_screen.dart';
-import 'package:SOAR/services/search_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -15,38 +14,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  var queryResultSet = [];
-  var tempSearchStore = [];
-
-  initiateSearch(value) {
-    if (value.length == 0) {
-      setState(() {
-        queryResultSet = [];
-        tempSearchStore = [];
-      });
-    }
-
-    var capitalizedValue =
-        value.substring(0, 1).toUpperCase() + value.substring(1);
-
-    if (queryResultSet.length == 0 && value.length == 1) {
-      SearchIndex().serachByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; ++i) {
-          queryResultSet.add(docs.documents[i].data);
-        }
-      });
-    } else {
-      tempSearchStore = [];
-      queryResultSet.forEach((element) {
-        if (element['name'].startsWith(capitalizedValue)) {
-          setState(() {
-            tempSearchStore.add(element);
-          });
-        }
-      });
-    }
-  }
-
   String searchString;
   TextEditingController _searchController;
 

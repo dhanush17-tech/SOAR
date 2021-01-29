@@ -22,6 +22,7 @@ import 'package:fade/fade.dart';
 import 'post/post_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
+import 'package:SOAR/onboarding/screens/search_users_Screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:timeago/timeago.dart ' as timeago;
 
@@ -483,7 +484,13 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                       icon: Icon(Icons.search,
                                                           size: 30,
                                                           color: Colors.blue),
-                                                      onPressed: null),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (ctx) =>
+                                                                    UserSearch()));
+                                                      }),
                                                   IconButton(
                                                     icon: Icon(
                                                       Icons.explore,

@@ -1,7 +1,6 @@
 import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/search_screen.dart';
 import 'package:SOAR/screens/video_conferencing.dart';
-import 'package:SOAR/services/search_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:flutter/material.dart';
@@ -83,32 +82,6 @@ class _ChatScreenState extends State<ChatScreen>
   var queryResult = [];
   var tempResult = [];
 
-  initateSearch(value) {
-    if (value.length == 0) {
-      setState(() {
-        queryResult = [];
-        tempResult = [];
-      });
-    }
-    var capitalizedLetter =
-        value.substring(0, 1).toUpperCase() + value.substring(1);
-
-    if (queryResult.length == 0 && value.length == 1) {
-      SearchIndex().serachByName(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.documents.length; i++) {
-          queryResult.add(docs.documents[i].data);
-        }
-      });
-    } else
-      (tempResult = []);
-    queryResult.forEach((element) {
-      if (element["name"].startsWith(capitalizedLetter)) {
-        setState(() {
-          tempResult.add(element);
-        });
-      }
-    });
-  }
 
   Future _signOut() async {
     _logoutUser().then((value) {
@@ -785,89 +758,6 @@ class _ChatScreenState extends State<ChatScreen>
                                   ),
                                 )),
                           ]),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 30, left: 15, right: 15),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                                child: StreamBuilder(
-                              stream: Firestore.instance
-                                  .collection("Users")
-                                  .document(auth.currentUser.uid)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                return snapshot.data != null
-                                    ? snapshot.data["location"] != null
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                      transitionDuration:
-                                                          Duration(
-                                                              milliseconds:
-                                                                  500),
-                                                      pageBuilder:
-                                                          (ctx, ani, i) =>
-                                                              Profile(
-                                                                uidforprofile: auth
-                                                                    .currentUser
-                                                                    .uid,
-                                                              )));
-                                            },
-                                            child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  snapshot.data["location"]),
-                                              backgroundColor:
-                                                  Color(4278272638),
-                                              radius: 20,
-                                            ),
-                                          )
-                                        : GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                      transitionDuration:
-                                                          Duration(
-                                                              milliseconds:
-                                                                  500),
-                                                      pageBuilder:
-                                                          (ctx, ani, i) =>
-                                                              VideoCon()));
-                                            },
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              child: Icon(
-                                                Icons.video_call,
-                                                color: Colors.blue,
-                                                size: 30,
-                                              ),
-                                            ))
-                                    : GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                      milliseconds: 500),
-                                                  pageBuilder: (ctx, ani, i) =>
-                                                      VideoCon()));
-                                        },
-                                        child: CircleAvatar(
-                                          backgroundImage:
-                                              AssetImage("assets/unknown.png"),
-                                          backgroundColor: Color(4278272638),
-                                          radius: 20,
-                                        ),
-                                      );
-                              },
-                            )),
-                          ),
                         ),
                       ],
                     ),

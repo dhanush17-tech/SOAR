@@ -55,7 +55,7 @@ class _FeedDetailsState extends State<FeedDetails> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.pause();
     super.dispose();
   }
 
@@ -173,15 +173,13 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                             ),
                                                             child: Text(
                                                               feed["title"],
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                fontSize: 30,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Colors
-                                                                    .black
-                                                              ),
+                                                              style: GoogleFonts.poppins(
+                                                                  fontSize: 30,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .black),
                                                             )),
                                                       ),
                                                     ),
@@ -349,7 +347,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       size: 30,
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (_) => SeeMore(
@@ -623,6 +621,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                             alignment: Alignment.topLeft,
                             child: Padding(
                               padding: const EdgeInsets.only(
+                                
                                   left: 19.0, top: 0, right: 25),
                               child: Container(
                                 width: 200,
@@ -631,7 +630,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         image: NetworkImage(feed["postimage"]),
-                                        fit: BoxFit.fill)),
+                                        fit: BoxFit.contain)),
                               ),
                             ),
                           ),
