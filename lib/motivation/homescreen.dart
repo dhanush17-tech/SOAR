@@ -10,15 +10,13 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'video_promotion.dart';
 import 'package:SOAR/auth/login.dart';
-import 'package:SOAR/motivation_scrren/video_motivation.dart';
+import 'bookmark.dart';
+import 'package:SOAR/motivation/video_motivation.dart';
 import "dart:ui";
 import 'package:SOAR/screens/assist.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
-import 'dart:math' as math;
-import 'video_promotion.dart';
-import 'package:video_thumbnail_generator/video_thumbnail_generator.dart';
 
 void _enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -331,6 +329,12 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -530,17 +534,46 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         height: 30,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: Container(
-                          alignment: Alignment.topLeft,
-                          child: GradientText(
-                            text: "Categories",
-                            colors: [Colors.indigo, Colors.blue],
-                            style: GoogleFonts.poppins(
-                                fontSize: 28, fontWeight: FontWeight.w600),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: GradientText(
+                                text: "Categories",
+                                colors: [Colors.indigo, Colors.blue],
+                                style: GoogleFonts.poppins(
+                                    fontSize: 28, fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => BookMarkPage()));
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, right: 10),
+                              child: Container(
+                                width: 33,
+                                height: 33,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.indigo),
+                                child: Icon(
+                                  Icons.bookmark_border_rounded,
+                                  size: 22,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 15,
@@ -709,7 +742,7 @@ Widget BuildHomeCardSuccess(context) {
   return StreamBuilder(
       stream: Firestore.instance
           .collection("all")
-          .where("type", isEqualTo: "success")
+          .where("type", isEqualTo: "Success Stories")
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.data == null
@@ -724,8 +757,8 @@ Widget BuildHomeCardSuccess(context) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) =>
-                                  MotivationHome("Tips", success.id)));
+                              builder: (c) => MotivationHome(
+                                  "Success Stories", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -809,7 +842,7 @@ Widget BuildHomeCardMotivational(context) {
   return StreamBuilder(
       stream: Firestore.instance
           .collection("all")
-          .where("type", isEqualTo: "motivation")
+          .where("type", isEqualTo: "Motivational")
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.data == null
@@ -825,7 +858,7 @@ Widget BuildHomeCardMotivational(context) {
                           context,
                           MaterialPageRoute(
                               builder: (c) =>
-                                  MotivationHome("Tips", success.id)));
+                                  MotivationHome("Motivational", success.id)));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -909,7 +942,7 @@ Widget BuildHomeCardPoromotional(context) {
   return StreamBuilder(
       stream: Firestore.instance
           .collection("all")
-          .where("type", isEqualTo: "promo")
+          .where("type", isEqualTo: "Promotional")
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.data == null
@@ -924,8 +957,10 @@ Widget BuildHomeCardPoromotional(context) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) =>
-                                  MotivationHome("Tips", success.id)));
+                              builder: (c) => PromoVideo(
+                                    id: success.id,
+                                    url: success["video_url"],
+                                  )));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),
@@ -1009,7 +1044,7 @@ Widget BuildHomeCardTips(context) {
   return StreamBuilder(
       stream: Firestore.instance
           .collection("all")
-          .where("type", isEqualTo: "tips")
+          .where("type", isEqualTo: "Tips")
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.data == null
@@ -1118,11 +1153,21 @@ Widget BuildHomeCardAll(context) {
 
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (c) =>
-                                  MotivationHome("Tips", success.id)));
+                      if (success["type"] == "Promotional") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => PromoVideo(
+                                      id: success.id,
+                                      url: success["video_url"],
+                                    )));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => MotivationHome(
+                                    success["type"], success.id)));
+                      }
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 0, left: 5, right: 5),

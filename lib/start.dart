@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:SOAR/motivation_scrren/cards.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
@@ -11,9 +10,8 @@ import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:SOAR/motivation/homescreen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:SOAR/motivation_scrren/homescreen.dart';
-
 
 void main() => runApp(Home());
 
@@ -59,10 +57,15 @@ class _MyHomePageState extends State<MyHomePage>
     ),
   ];
 
+  an() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    an();
   }
 
   @override
@@ -75,12 +78,9 @@ class _MyHomePageState extends State<MyHomePage>
   PageController _pageController;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
-    return Scaffold(  resizeToAvoidBottomInset: false,
+  
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -113,26 +113,34 @@ class _MyHomePageState extends State<MyHomePage>
                 BottomNavyBarItem(
                     title: Text('Home'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.home,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.home,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Pitches'),
-                    activeColor: Color(0xFF4E81EA),                    
-                    icon: Icon(Icons.campaign,
-                    color: Color(0xFF4E81EA),),
-                    textAlign: TextAlign.center),                  
+                    activeColor: Color(0xFF4E81EA),
+                    icon: Icon(
+                      Icons.campaign,
+                      color: Color(0xFF4E81EA),
+                    ),
+                    textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Chat'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.chat_bubble_rounded,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.chat_bubble_rounded,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
                 BottomNavyBarItem(
                     title: Text('Profile'),
                     activeColor: Color(0xFF4E81EA),
-                    icon: Icon(Icons.person,
-                    color: Color(0xFF4E81EA),),
+                    icon: Icon(
+                      Icons.person,
+                      color: Color(0xFF4E81EA),
+                    ),
                     textAlign: TextAlign.center),
               ],
             ),

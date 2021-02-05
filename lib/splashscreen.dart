@@ -9,7 +9,6 @@ import 'package:SOAR/screens/feed.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
-import 'motivation_scrren/homescreen.dart';
 
 class Man extends StatelessWidget {
   @override

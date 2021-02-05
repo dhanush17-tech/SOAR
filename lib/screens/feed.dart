@@ -22,7 +22,7 @@ import 'package:fade/fade.dart';
 import 'post/post_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'package:SOAR/onboarding/screens/search_users_Screen.dart';
+import 'package:SOAR/screens/search_users_Screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:timeago/timeago.dart ' as timeago;
 

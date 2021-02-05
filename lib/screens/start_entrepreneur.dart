@@ -1,17 +1,11 @@
-import 'dart:async';
-import 'package:SOAR/motivation_scrren/cards.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:SOAR/screens/stories.dart';
-import 'package:SOAR/screens/stories_add.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:SOAR/motivation_scrren/homescreen.dart';
+import 'package:SOAR/motivation/homescreen.dart';
 import 'package:SOAR/screens/post/mainpaost.dart';
 
 void main() => runApp(HomeEnt());
@@ -74,12 +68,7 @@ class _MyHomePageState extends State<MyHomePage>
   PageController _pageController;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-    ));
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
