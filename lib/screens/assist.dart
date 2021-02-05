@@ -28,6 +28,7 @@ class Assist extends StatefulWidget {
 class _Assist extends State<Assist> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   Widget _buildTextComposer() {
     return new IconTheme(
@@ -48,6 +49,7 @@ class _Assist extends State<Assist> {
                 Align(
                   alignment: Alignment.center,
                   child: Form(
+                    key: _key,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: Container(
@@ -119,30 +121,46 @@ class _Assist extends State<Assist> {
   }
 
   void _handleSubmitted(String text) {
-    _textController.clear();
-    ChatMessage message = new ChatMessage(
-      text: text,
-      name: "You",
-      byme: true,
-    );
-    setState(() {
-      _messages.insert(0, message);
-    });
-    Response(text);
+    if (_key.currentState.validate()) {
+      _textController.clear();
+      ChatMessage message = new ChatMessage(
+        text: text,
+        name: "You",
+        byme: true,
+      );
+      setState(() {
+        _messages.insert(0, message);
+      });
+      Response(text);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Color(0xFFE6EDFA),
       appBar: new AppBar(
-        backgroundColor: Color(4278190106),
+        backgroundColor: Color(0xFFE6EDFA),
+        elevation: 0,
         centerTitle: true,
-        title: new Text("Customer Support"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.indigo,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: new Text(
+          "Customer Support",
+          style: TextStyle(color: Colors.indigo),
+        ),
         actions: [
           IconButton(
               icon: Icon(
                 Icons.help_outline,
-                color: Colors.white,
+                color: Colors.indigo,
               ),
               onPressed: () => {
                     showDialog(
@@ -155,22 +173,23 @@ class _Assist extends State<Assist> {
                               title: Text(
                                 "Hi, I'm a Bot!",
                                 style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.indigo),
                               ),
                               description: Text(
                                 "All the replies you get here are automated by an AI. Please contact us at contact@soarthrow.com for further assistance",
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(),
+                                style: GoogleFonts.poppins(
+                                    color: Color(4278228470)),
                               ),
                             ))
                   })
         ],
       ),
-      body: Container(
-        color: Color(4278190106),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Align(
+      body: Scaffold(
+        backgroundColor: Color(0xFFE6EDFA),
+        body: Align(
           alignment: Alignment.bottomRight,
           child: Stack(
             children: [
@@ -206,11 +225,13 @@ class _Assist extends State<Assist> {
                               "Bot",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: Colors.indigo),
                             ),
                             Text(
                               "Hi, how may I help you ? ",
-                              style: TextStyle(color: Color(4278228470)),
+                              style: TextStyle(
+                                  color: Color(4278228470),
+                                  fontWeight: FontWeight.w500),
                             )
                           ],
                         ),
@@ -242,7 +263,6 @@ class _Assist extends State<Assist> {
                   ),
                 ]),
               ),
-              new Divider(height: 1.0),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: new Container(
@@ -275,7 +295,11 @@ class ChatMessage extends StatelessWidget {
     return <Widget>[
       new Container(
         margin: const EdgeInsets.only(right: 16.0),
-        child: new CircleAvatar(child: Icon(Icons.person)),
+        child: new CircleAvatar(
+            child: Icon(
+          Icons.person,
+          color: Colors.white,
+        )),
       ),
       new Expanded(
         child: new Column(
@@ -283,12 +307,13 @@ class ChatMessage extends StatelessWidget {
           children: <Widget>[
             new Text(this.name,
                 style: new TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white)),
+                    fontWeight: FontWeight.w500, color: Colors.indigo)),
             new Container(
               margin: const EdgeInsets.only(top: 5.0),
               child: new Text(
                 text,
-                style: GoogleFonts.poppins(color: Color(4278228470)),
+                style: GoogleFonts.poppins(
+                    color: Color(4278228470), fontWeight: FontWeight.w500),
               ),
             ),
           ],
@@ -331,10 +356,17 @@ class ChatMessage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(this.name, style: TextStyle(color: Colors.white)),
+                      Text(this.name,
+                          style: TextStyle(
+                              color: Colors.indigo,
+                              fontWeight: FontWeight.w500)),
                       Text(
                         text,
-                        style: GoogleFonts.poppins(color: Color(4278228470)),
+                        style: GoogleFonts.poppins(
+                            color: Color(
+                              4278228470,
+                            ),
+                            fontWeight: FontWeight.w500),
                       )
                     ],
                   ),

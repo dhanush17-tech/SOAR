@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.595,
+                          left: MediaQuery.of(context).size.width * 0.592,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.595,
+                          left: MediaQuery.of(context).size.width * 0.585,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen>
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Icon(
-                              Icons.assignment,
+                              Icons.assignment_outlined,
                               color: Colors.black,
                             ),
                             SizedBox(
@@ -254,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.595,
+                          left: MediaQuery.of(context).size.width * 0.585,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen>
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Icon(
-                              Icons.brightness_2,
+                              Icons.brightness_2_outlined,
                               color: Colors.black,
                             ),
                             SizedBox(

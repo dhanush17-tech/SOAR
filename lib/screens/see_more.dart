@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'feed.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SeeMore extends StatefulWidget {
   String seemore;
@@ -57,7 +58,7 @@ class _SeeMoreState extends State<SeeMore> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-        backgroundColor: Color(4278190106),
+        backgroundColor: Color(0xFFE6EDFA),
         body: Stack(children: [
           Column(children: [
             Padding(
@@ -137,8 +138,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                     fontSize: 25,
                                                     height: 0.3,
                                                     fontFamily: "good",
-                                                    color: Colors.white
-                                                        .withOpacity(0.5)),
+                                                    color: Colors.indigo),
                                               ),
                                             ],
                                           ),
@@ -253,7 +253,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                                     man["name"],
                                                                     style: TextStyle(
                                                                         color: Colors
-                                                                            .white,
+                                                                            .indigo,
                                                                         fontWeight:
                                                                             FontWeight.bold),
                                                                   ),
@@ -261,7 +261,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                                       comment[
                                                                           "comment"],
                                                                       style: TextStyle(
-                                                                          color: Colors.white.withOpacity(
+                                                                          color: Color(4278228470).withOpacity(
                                                                               0.7),
                                                                           fontFamily:
                                                                               "good",
@@ -293,82 +293,91 @@ class _SeeMoreState extends State<SeeMore> {
           usertype == "entrepreneur"
               ? Container()
               : Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
-                        color: Colors.white),
-                    child: Align(
-                      alignment: Alignment.center,
+                  alignment: Alignment.bottomLeft,
+                  child: Form(
+                    key: _key,
+                    child: Container(
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20)),
+                          color: Colors.white),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Form(
-                              key: _key,
-                              child: Container(
-                                  height: 35,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.83,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: Color(4278228470))),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Form(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Container(
+                                  width: 280,
                                   child: TextFormField(
-                                    style: TextStyle(
-                                      color: Color(4278190106),
-                                    ),
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
                                     controller: _comment,
                                     validator: (value) =>
                                         value.length == 0 ? "" : null,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
-                                        contentPadding: EdgeInsets.only(
-                                            left: 10, right: 10, bottom: 10)),
-                                  ))),
-                                  SizedBox(width: 8,),
-                          GestureDetector(
-                            onTap: () {
-                              if (_key.currentState.validate()) {
-                                Firestore.instance
-                                    .collection("Feed")
-                                    .document(widget.seemore)
-                                    .collection("comments")
-                                    .add({
-                                  "comment": _comment.text,
-                                  "uid": auth.currentUser.uid,
-                                  "date": DateTime.now().toString(),
-                                  "location": dpurl,
-                                  "name": name,
-                                  "tagline": tagline
-                                }).then((value) => _comment.clear());
-                              }
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                            gradient: LinearGradient(colors: [Colors.blue[400], Colors.blueAccent[700]])                                  ),
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                                size: 20,
+                                        hintText: "Type your message here",
+                                        hintStyle: GoogleFonts.poppins(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                10,
+                              ),
+                              child: FittedBox(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_key.currentState.validate()) {
+                                      Firestore.instance
+                                          .collection("Feed")
+                                          .document(widget.seemore)
+                                          .collection("comments")
+                                          .add({
+                                        "comment": _comment.text,
+                                        "uid": auth.currentUser.uid,
+                                        "date": DateTime.now().toString(),
+                                        "location": dpurl,
+                                        "name": name,
+                                        "tagline": tagline
+                                      }).then((value) => _comment.clear());
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(colors: [
+                                          Colors.blue[400],
+                                          Colors.blueAccent[700]
+                                        ])),
+                                    child: Icon(
+                                      Icons.send,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  )),
+                  ),
+                )
         ]));
   }
 }
