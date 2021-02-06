@@ -6,8 +6,9 @@ import 'package:video_player/video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
-import 'package:drop_cap_text/drop_cap_text.dart';
+import 'package:lottie/lottie.dart';
 import 'package:flutter/rendering.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:SOAR/web.dart';
 
@@ -23,6 +24,7 @@ class PromoVideo extends StatefulWidget {
 
 class _PromoVideoState extends State<PromoVideo> {
   VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
 
   final double _initFabHeight = 120.0;
   double _fabHeight;
@@ -35,10 +37,12 @@ class _PromoVideoState extends State<PromoVideo> {
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         _controller.play();
+        _controller.setLooping(true);
+        _initializeVideoPlayerFuture = _controller.initialize();
+
         setState(() {});
       });
 
-    _controller.addListener(() {});
     _fabHeight = _initFabHeight;
   }
 
@@ -60,27 +64,15 @@ class _PromoVideoState extends State<PromoVideo> {
     _panelHeightOpen = MediaQuery.of(context).size.height * .7;
     return Scaffold(
         body: Stack(
-      alignment: Alignment.bottomRight,
       children: [
-        Container(
-          alignment: Alignment.center,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: VideoPlayer(_controller),
-          ),
-        ),
         SlidingUpPanel(
           maxHeight: _panelHeightOpen,
           minHeight: _panelHeightClosed,
           parallaxEnabled: true,
           parallaxOffset: 0.1,
-          body: _body(),
           backdropColor: Color(4280032553),
           color: Color(4280032553),
+          body: _body(),
           panelBuilder: (sc) => _panel(sc, context, widget.id),
           borderRadius: BorderRadius.only(topRight: Radius.circular(40)),
           onPanelSlide: (double pos) => setState(() {
@@ -97,17 +89,46 @@ class _PromoVideoState extends State<PromoVideo> {
   int index = 1;
 
   Widget _body() {
-    return Hero(
-      tag: "dd+$index",
+    return GestureDetector(
+      onTap: () {
+        if (_controller.value.isPlaying) {
+          _controller.pause();
+        } else {
+          // If the video is paused, play it.
+          _controller.play();
+        }
+      },
       child: Container(
-        alignment: Alignment.center,
-        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: VideoPlayer(_controller),
+        height: MediaQuery.of(context).size.height,
+        child: VisibilityDetector(
+          key: Key("unique key"),
+          onVisibilityChanged: (VisibilityInfo info) {
+            debugPrint("${info.visibleFraction} of my widget is visible");
+            if (info.visibleFraction == 0) {
+              _controller.pause();
+            } else {
+              _controller.play();
+            }
+          },
+          child: FutureBuilder(
+            future: _initializeVideoPlayerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: VideoPlayer(_controller),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.blue,
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -162,7 +183,7 @@ class _PromoVideoState extends State<PromoVideo> {
                                             moti["Title"] ?? "",
                                             style: GoogleFonts.poppins(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 25,
+                                                fontSize: 27,
                                                 color: Colors.blue),
                                           ),
                                   ),
@@ -414,20 +435,46 @@ class _PromoVideoState extends State<PromoVideo> {
                                               itemBuilder: (ctx, i) {
                                                 return Row(
                                                   children: <Widget>[
-                                                    Container(
-                                                      width: 160,
-                                                      height: 210,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          image: DecorationImage(
-                                                              image: NetworkImage(
-                                                                  snapshot.data[
-                                                                          "images"]
-                                                                      [i]),
-                                                              fit: BoxFit
-                                                                  .cover)),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        showDialog(
+                                                          barrierDismissible:
+                                                              true,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Dialog(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              child: Container(
+                                                                  height: 410,
+                                                                  decoration: BoxDecoration(
+                                                                      image: DecorationImage(
+                                                                          image: NetworkImage(snapshot.data["images"]
+                                                                              [
+                                                                              i]),
+                                                                          fit: BoxFit
+                                                                              .contain))),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        width: 160,
+                                                        height: 210,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(
+                                                                    snapshot.data[
+                                                                            "images"]
+                                                                        [i]),
+                                                                fit: BoxFit
+                                                                    .cover)),
+                                                      ),
                                                     ),
                                                     SizedBox(
                                                       width: 10,

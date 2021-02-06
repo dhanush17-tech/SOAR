@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:progress_timeline/progress_timeline.dart';
-import 'package:get/get.dart';
 import '../feed.dart';
 import '../profile.dart';
 

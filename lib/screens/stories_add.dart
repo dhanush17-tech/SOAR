@@ -17,7 +17,6 @@ import 'feed.dart';
 import 'package:video_compress/video_compress.dart';
 import 'dart:io';
 import 'package:flutter_video_info/flutter_video_info.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 

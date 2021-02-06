@@ -6,6 +6,7 @@ import 'feed.dart';
 import 'package:video_player/video_player.dart';
 import 'profile.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'see_more.dart';
 
 class FeedDetilsForEntrepreneurs extends StatefulWidget {
@@ -22,6 +23,7 @@ class FeedDetilsForEntrepreneurs extends StatefulWidget {
 class _FeedDetilsForEntrepreneursState
     extends State<FeedDetilsForEntrepreneurs> {
   VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
 
   final double _initFabHeight = 130.0;
   double _fabHeight;
@@ -39,6 +41,8 @@ class _FeedDetilsForEntrepreneursState
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         _controller.play();
+        _initializeVideoPlayerFuture = _controller.initialize();
+        _controller.setLooping(true);
 
         setState(() {});
       });
@@ -302,7 +306,45 @@ class _FeedDetilsForEntrepreneursState
                                         child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            child: VideoPlayer(_controller)),
+                                            child: VisibilityDetector(
+                                              key: Key("unique key"),
+                                              onVisibilityChanged:
+                                                  (VisibilityInfo info) {
+                                                debugPrint(
+                                                    "${info.visibleFraction} of my widget is visible");
+                                                if (info.visibleFraction == 0) {
+                                                  _controller.pause();
+                                                } else {
+                                                  _controller.play();
+                                                }
+                                              },
+                                              child: FutureBuilder(
+                                                future:
+                                                    _initializeVideoPlayerFuture,
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    return Center(
+                                                      child: AspectRatio(
+                                                        aspectRatio: _controller
+                                                            .value.aspectRatio,
+                                                        child: VideoPlayer(
+                                                            _controller),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Colors.blue,
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            )),
                                       ),
                                     ),
                                   ),
@@ -672,21 +714,41 @@ class _FeedDetilsForEntrepreneursState
                                 SizedBox(
                                   height: 15,
                                 ),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 19.0, top: 0, right: 25),
-                                    child: Container(
-                                      width: 200,
-                                      height: 300,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  feed["postimage"]),
-                                              fit: BoxFit.fill)),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      barrierDismissible: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          backgroundColor: Colors.transparent,
+                                          child: Container(
+                                              height: 410,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          feed["postimage"]),
+                                                      fit: BoxFit.contain))),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 19.0, top: 0, right: 25),
+                                      child: Container(
+                                        width: 200,
+                                        height: 300,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    feed["postimage"]),
+                                                fit: BoxFit.fill)),
+                                      ),
                                     ),
                                   ),
                                 ),

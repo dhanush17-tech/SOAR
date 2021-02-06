@@ -14,7 +14,6 @@ import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 import '../feed.dart';
 import '../start_entrepreneur.dart';
-import 'package:get/get.dart';
 import 'package:SOAR/screens/post/mainpaost.dart';
 
 class Page3 extends StatefulWidget  {

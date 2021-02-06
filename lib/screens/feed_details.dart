@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class FeedDetails extends StatefulWidget {
@@ -21,6 +22,8 @@ class FeedDetails extends StatefulWidget {
 
 class _FeedDetailsState extends State<FeedDetails> {
   final double _initFabHeight = 120.0;
+  Future<void> _initializeVideoPlayerFuture;
+
   double _fabHeight;
   double _panelHeightOpen;
   double _panelHeightClosed = 130.0;
@@ -34,6 +37,8 @@ class _FeedDetailsState extends State<FeedDetails> {
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         _controller.play();
+        _initializeVideoPlayerFuture = _controller.initialize();
+        _controller.setLooping(true);
 
         setState(() {});
       });
@@ -282,7 +287,40 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     color: Color(4278190106)),
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: VideoPlayer(_controller)),
+                                    child: VisibilityDetector(
+                                      key: Key("unique key"),
+                                      onVisibilityChanged:
+                                          (VisibilityInfo info) {
+                                        debugPrint(
+                                            "${info.visibleFraction} of my widget is visible");
+                                        if (info.visibleFraction == 0) {
+                                          _controller.pause();
+                                        } else {
+                                          _controller.play();
+                                        }
+                                      },
+                                      child: FutureBuilder(
+                                        future: _initializeVideoPlayerFuture,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            return Center(
+                                              child: AspectRatio(
+                                                aspectRatio: _controller
+                                                    .value.aspectRatio,
+                                                child: VideoPlayer(_controller),
+                                              ),
+                                            );
+                                          } else {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: Colors.blue,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    )),
                               ),
                             ),
                           ),
@@ -617,20 +655,40 @@ class _FeedDetailsState extends State<FeedDetails> {
                           SizedBox(
                             height: 15,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                
-                                  left: 19.0, top: 0, right: 25),
-                              child: Container(
-                                width: 200,
-                                height: 300,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: NetworkImage(feed["postimage"]),
-                                        fit: BoxFit.contain)),
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    child: Container(
+                                        height: 410,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    feed["postimage"]),
+                                                fit: BoxFit.contain))),
+                                  );
+                                },
+                              );
+                            },
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 19.0, top: 0, right: 25),
+                                child: Container(
+                                  width: 200,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage(feed["postimage"]),
+                                          fit: BoxFit.cover)),
+                                ),
                               ),
                             ),
                           ),
