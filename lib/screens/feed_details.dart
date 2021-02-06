@@ -314,7 +314,6 @@ class _FeedDetailsState extends State<FeedDetails> {
                                           } else {
                                             return Center(
                                               child: CircularProgressIndicator(
-                                                backgroundColor: Colors.blue,
                                               ),
                                             );
                                           }

@@ -4,6 +4,7 @@ import 'package:SOAR/screens/feed.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'video_motivation.dart';
+import 'package:SOAR/motivation/video_promotion.dart';
 
 class BookMarkPage extends StatefulWidget {
   @override
@@ -51,11 +52,20 @@ class _BookMarkPageState extends State<BookMarkPage> {
                           var success = snapshot.data.documents[i];
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (c) => MotivationHome(
-                                          success["type"], success.id)));
+                              if (success["type"] == "Promotional") {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => PromoVideo(
+                                              id: success.id,
+                                              url: success["video_url"],
+                                            )));
+                              } else
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => MotivationHome(
+                                            success["type"], success.id)));
                             },
                             child: Padding(
                               padding:

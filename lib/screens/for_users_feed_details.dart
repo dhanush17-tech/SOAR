@@ -337,8 +337,7 @@ class _FeedDetilsForEntrepreneursState
                                                     return Center(
                                                       child:
                                                           CircularProgressIndicator(
-                                                        backgroundColor:
-                                                            Colors.blue,
+                                               
                                                       ),
                                                     );
                                                   }

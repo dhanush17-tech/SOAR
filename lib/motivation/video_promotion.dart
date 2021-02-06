@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:SOAR/screens/feed.dart';
 import 'package:flutter/rendering.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -28,12 +29,32 @@ class _PromoVideoState extends State<PromoVideo> {
 
   final double _initFabHeight = 120.0;
   double _fabHeight;
+  bool isfill;
+
+  checkifbookmarked() async {
+    QuerySnapshot _query = await Firestore.instance
+        .collection("Users")
+        .document(auth.currentUser.uid)
+        .collection("bookmarked")
+        .where("document id for all", isEqualTo: widget.id)
+        .getDocuments();
+    if (_query.documents.length > 0) {
+      setState(() {
+        isfill = false;
+      });
+    } else {
+      setState(() {
+        isfill = true;
+      });
+      print("${isfill}man");
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    checkifbookmarked();
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         _controller.play();
@@ -122,9 +143,7 @@ class _PromoVideoState extends State<PromoVideo> {
                 );
               } else {
                 return Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
-                  ),
+                  child: CircularProgressIndicator(),
                 );
               }
             },
@@ -275,19 +294,70 @@ class _PromoVideoState extends State<PromoVideo> {
                                       )
                                     ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          ctx,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  View(moti["handle"])));
-                                    },
-                                    child: Image.asset(
-                                      "assets/share.png",
-                                      scale: 5,
-                                      color: Colors.blue,
-                                    ),
+                                  Row(
+                                    children: [
+                                      isfill == false
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isfill = true;
+                                                });
+                                                Firestore.instance
+                                                    .collection("Users")
+                                                    .doc(auth.currentUser.uid)
+                                                    .collection("bookmarked")
+                                                    .document(widget.id)
+                                                    .delete();
+                                              },
+                                              child: Icon(
+                                                Icons.bookmark_rounded,
+                                                size: 25,
+                                                color: Colors.indigo,
+                                              ))
+                                          : GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isfill = false;
+                                                });
+                                                Firestore.instance
+                                                    .collection("Users")
+                                                    .doc(auth.currentUser.uid)
+                                                    .collection("bookmarked")
+                                                    .document(widget.id)
+                                                    .setData({
+                                                  "document id for all":
+                                                      moti.id,
+                                                  "Title": moti["Title"],
+                                                  "handle": moti["handle"],
+                                                  "lcation": moti["lcation"],
+                                                  "name": moti["name"],
+                                                  "sub": moti["sub"],
+                                                  "type": moti["type"],
+                                                  "years": moti["years"],
+                                                  "images": images,
+                                                  "video_url": widget.url
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.bookmark_border_outlined,
+                                                size: 25,
+                                                color: Colors.indigo,
+                                              )),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              ctx,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      View(moti["handle"])));
+                                        },
+                                        child: Image.asset(
+                                          "assets/share.png",
+                                          scale: 5,
+                                          color: Colors.blue,
+                                        ),
+                                      )
+                                    ],
                                   )
                                 ],
                               ),
@@ -425,6 +495,7 @@ class _PromoVideoState extends State<PromoVideo> {
                                         .snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot snapshot) {
+                                      images = snapshot.data["images"];
                                       return snapshot.data == null
                                           ? Container()
                                           : ListView.builder(
@@ -496,4 +567,6 @@ class _PromoVideoState extends State<PromoVideo> {
           )),
     );
   }
+
+  List images;
 }
