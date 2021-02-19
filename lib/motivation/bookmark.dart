@@ -5,6 +5,8 @@ import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'video_motivation.dart';
 import 'package:SOAR/motivation/video_promotion.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class BookMarkPage extends StatefulWidget {
   @override
@@ -13,9 +15,32 @@ class BookMarkPage extends StatefulWidget {
 
 class _BookMarkPageState extends State<BookMarkPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    getman();
+    super.initState();
+  }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +50,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 18, top: 18),
                 child: GradientText(
-                  text: "Bookmarked",
+                  text: "Bookmarks",
                   colors: [Colors.indigo, Colors.blue],
                   style: GoogleFonts.poppins(
                     fontSize: 35,
@@ -72,7 +97,15 @@ class _BookMarkPageState extends State<BookMarkPage> {
                                   EdgeInsets.only(top: 0, left: 5, right: 5),
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: Color(0xFF5894FA).withOpacity(0.9),
+                                    gradient: man == false
+                                        ? LinearGradient(colors: [
+                                            Color(0xFF5894FA).withOpacity(0.9),
+                                            Color(0xFF5894FA).withOpacity(0.9),
+                                          ])
+                                        : LinearGradient(colors: [
+                                            Colors.white.withOpacity(0.25),
+                                            Colors.white.withOpacity(0.25)
+                                          ]),
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Stack(
                                   children: [

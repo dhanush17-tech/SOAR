@@ -235,6 +235,17 @@ class _StoriesAddState extends State<StoriesAdd> {
     super.initState();
     imagepic();
     _nowuserdetails();
+    pri();
+  }
+
+  pri() {
+    if (DateTime.parse("2021-01-28 19:33:25.033027")
+            .difference(DateTime.now())
+            .inHours <
+        24) {
+      print("yes");
+    } else
+      print("no");
   }
 
   void setStateIfMounted() {

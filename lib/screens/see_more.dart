@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'feed.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:SOAR/main_constraints.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SeeMore extends StatefulWidget {
   String seemore;
@@ -46,8 +48,26 @@ class _SeeMoreState extends State<SeeMore> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getman();
     _fetchUserinfoForSettingsPage();
   }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
 
   TextEditingController _comment = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -58,7 +78,7 @@ class _SeeMoreState extends State<SeeMore> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: Stack(children: [
           Column(children: [
             Padding(
@@ -138,7 +158,9 @@ class _SeeMoreState extends State<SeeMore> {
                                                     fontSize: 25,
                                                     height: 0.3,
                                                     fontFamily: "good",
-                                                    color: Colors.indigo),
+                                                    color: man == false
+                                                        ? sub_heading_light
+                                                        : sub_heading_dark),
                                               ),
                                             ],
                                           ),
@@ -252,8 +274,10 @@ class _SeeMoreState extends State<SeeMore> {
                                                                   Text(
                                                                     man["name"],
                                                                     style: TextStyle(
-                                                                        color: Colors
-                                                                            .indigo,
+                                                                        color: man ==
+                                                                                false
+                                                                            ? sub_heading_light
+                                                                            : sub_heading_dark,
                                                                         fontWeight:
                                                                             FontWeight.bold),
                                                                   ),

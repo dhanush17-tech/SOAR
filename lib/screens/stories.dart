@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart  ';
 import 'package:http/http.dart' as http;
 import 'package:story_view/story_view.dart';
 
@@ -22,8 +24,11 @@ class _StoriesState extends State<Stories> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    now = DateTime.now();
 
-    man();
+    getstory();
+
+    getman();
 
     setState(() {});
 
@@ -45,19 +50,33 @@ class _StoriesState extends State<Stories> {
   List uidList = [];
   List dpurl = [];
   List duration = [];
-  
 
-  Future man() async {
+  Future getstory() async {
     QuerySnapshot _query = await Firestore.instance
         .collection("stories")
         .getDocuments()
         .then((snapshot) {
-      imgList
-          .addAll(snapshot.documents.map((e) => e.data()["storie_images"][0]));
-      duration.addAll(snapshot.documents.map((e) => e.data()["duration"][0]));
-      documentidList
-          .addAll(snapshot.documents.map((e) => e.documentID.toString()));
-      uidList.addAll(snapshot.documents.map((e) => e.data()["uid"]));
+      imgList.addAll(snapshot.documents
+          .where((element) =>
+              now.difference(DateTime.parse(element["timeago"])).abs().inHours <
+              24)
+          .map((e) => e.data()["storie_images"][0]));
+
+      duration.addAll(snapshot.documents
+          .where((element) =>
+              now.difference(DateTime.parse(element["timeago"])).abs().inHours <
+              24)
+          .map((e) => e.data()["duration"][0]));
+      documentidList.addAll(snapshot.documents
+          .where((element) =>
+              now.difference(DateTime.parse(element["timeago"])).abs().inHours <
+              24)
+          .map((e) => e.documentID.toString()));
+      uidList.addAll(snapshot.documents
+          .where((element) =>
+              now.difference(DateTime.parse(element["timeago"])).abs().inHours <
+              24)
+          .map((e) => e.data()["uid"]));
       print(uidList);
       print(imgList);
       print(documentidList);
@@ -84,34 +103,43 @@ class _StoriesState extends State<Stories> {
     return result;
   }
 
-  istoday(DateTime date) {
-    final now = DateTime.now();
-    final diff = now.difference(date).inDays;
-    if (diff == 0 && now.day == date.day) {
-      setState(() {
-        istodaycheck = true;
-      });
-    } else {
-      setState(() {
-        istodaycheck = false;
-      });
-    }
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
   }
 
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
   bool istodaycheck;
+  DateTime now = DateTime.now();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xFFE6EDFA),
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xFFE6EDFA),
+        color: man == false ? light_background : dark_background,
         child: Column(
           children: [
             Padding(
@@ -237,10 +265,10 @@ class _StoriesState extends State<Stories> {
                                           )
                                         : Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 10,
+                                                top: 20,
                                                 left: 10,
                                                 right: 10,
-                                                bottom: 10),
+                                                bottom: 20),
                                             child: GestureDetector(
                                               onTap: () {},
                                               child: Container(
@@ -267,14 +295,17 @@ class _StoriesState extends State<Stories> {
                                                         child: StoryView(
                                                           storyItems: [
                                                             StoryItem.pageVideo(
-                                                                imgUrl,
-                                                                shown: true,
-                                                                controller:
-                                                                    storyController,
-                                                                duration: Duration(
-                                                                    milliseconds:
-                                                                        duration[0]
-                                                                            .round()))
+                                                              imgUrl,
+                                                              ismute: true,
+                                                              shown: true,
+                                                              controller:
+                                                                  storyController,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      duration[
+                                                                              0]
+                                                                          .round()),
+                                                            )
                                                           ],
                                                           onStoryShow: (s) {
                                                             print(

@@ -73,7 +73,7 @@ class _FeedDetilsForEntrepreneursState
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-      backgroundColor: Color(4278190106),
+      backgroundColor: Color(0xFFE6EDFA),
       body: StreamBuilder(
           stream: Firestore.instance
               .collection("Users")
@@ -204,7 +204,7 @@ class _FeedDetilsForEntrepreneursState
                                                                           FontWeight
                                                                               .w600,
                                                                       color: Colors
-                                                                          .white,
+                                                                          .indigo,
                                                                     ),
                                                                   )),
                                                             ),
@@ -283,68 +283,62 @@ class _FeedDetilsForEntrepreneursState
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Hero(
-                                    tag: "dssd+${widget.d}",
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          // If the video is playing, pause it.
-                                          if (_controller.value.isPlaying) {
-                                            _controller.pause();
-                                          } else {
-                                            // If the video is paused, play it.
-                                            _controller.play();
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        height: 250,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            color: Color(4278190106)),
-                                        child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: VisibilityDetector(
-                                              key: Key("unique key"),
-                                              onVisibilityChanged:
-                                                  (VisibilityInfo info) {
-                                                debugPrint(
-                                                    "${info.visibleFraction} of my widget is visible");
-                                                if (info.visibleFraction == 0) {
-                                                  _controller.pause();
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        // If the video is playing, pause it.
+                                        if (_controller.value.isPlaying) {
+                                          _controller.pause();
+                                        } else {
+                                          // If the video is paused, play it.
+                                          _controller.play();
+                                        }
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 250,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Color(4278190106)),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: VisibilityDetector(
+                                            key: Key("unique key"),
+                                            onVisibilityChanged:
+                                                (VisibilityInfo info) {
+                                              debugPrint(
+                                                  "${info.visibleFraction} of my widget is visible");
+                                              if (info.visibleFraction == 0) {
+                                                _controller.pause();
+                                              } else {
+                                                _controller.play();
+                                              }
+                                            },
+                                            child: FutureBuilder(
+                                              future:
+                                                  _initializeVideoPlayerFuture,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.done) {
+                                                  return Center(
+                                                    child: AspectRatio(
+                                                      aspectRatio: _controller
+                                                          .value.aspectRatio,
+                                                      child: VideoPlayer(
+                                                          _controller),
+                                                    ),
+                                                  );
                                                 } else {
-                                                  _controller.play();
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
                                                 }
                                               },
-                                              child: FutureBuilder(
-                                                future:
-                                                    _initializeVideoPlayerFuture,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    return Center(
-                                                      child: AspectRatio(
-                                                        aspectRatio: _controller
-                                                            .value.aspectRatio,
-                                                        child: VideoPlayer(
-                                                            _controller),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                               
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            )),
-                                      ),
+                                            ),
+                                          )),
                                     ),
                                   ),
                                 ),
@@ -465,7 +459,7 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 25,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Colors.white),
+                                          color: Colors.indigo),
                                     ),
                                   ),
                                 ),
@@ -605,7 +599,7 @@ class _FeedDetilsForEntrepreneursState
                                       feed["target_audience"],
                                       style: GoogleFonts.poppins(
                                           fontSize: 20,
-                                          color: Colors.white,
+                                          color: Colors.indigo,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -638,7 +632,7 @@ class _FeedDetilsForEntrepreneursState
                                         Text(feed["value_propotion"],
                                             style: GoogleFonts.poppins(
                                                 fontSize: 20,
-                                                color: Colors.white,
+                                                color: Colors.indigo,
                                                 fontWeight: FontWeight.bold)),
                                         SizedBox(
                                           width: 10,
@@ -647,13 +641,13 @@ class _FeedDetilsForEntrepreneursState
                                             ? Text("",
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 20,
-                                                    color: Colors.white,
+                                                    color: Colors.indigo,
                                                     fontWeight:
                                                         FontWeight.bold))
                                             : Text(feed["currency"] ?? "",
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 20,
-                                                    color: Colors.white,
+                                                    color: Colors.indigo,
                                                     fontWeight:
                                                         FontWeight.bold)),
                                       ],
@@ -687,7 +681,7 @@ class _FeedDetilsForEntrepreneursState
                                       feed["revenue_model"],
                                       style: GoogleFonts.poppins(
                                           fontSize: 20,
-                                          color: Colors.white,
+                                          color: Colors.indigo,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),

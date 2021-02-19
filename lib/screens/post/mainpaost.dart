@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:progress_timeline/progress_timeline.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 import '../feed.dart';
 import '../profile.dart';
 
@@ -35,11 +37,29 @@ class _MainPostState extends State<MainPost> {
       textStyle: TextStyle(fontSize: 0),
     );
     controller = PreloadPageController(initialPage: 0);
+    getman();
 
     super.initState();
   }
 
-  List man = [PostImage(), PostDetails(), Questionnaire(), Page2(), Page3()];
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
+  List can = [PostImage(), PostDetails(), Questionnaire(), Page2(), Page3()];
 
   GlobalKey<FormState> cool = GlobalKey<FormState>();
   @override
@@ -47,7 +67,7 @@ class _MainPostState extends State<MainPost> {
     rebuildAllChildren(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       body: Column(
         children: [
           Container(
@@ -88,7 +108,7 @@ class _MainPostState extends State<MainPost> {
                     itemBuilder: (BuildContext context, int position) {
                       return Stack(
                         children: [
-                          man[position],
+                          can[position],
                         ],
                       );
                     },

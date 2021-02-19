@@ -1,5 +1,5 @@
-import 'package:SOAR/screens/feed.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -26,6 +26,13 @@ class Assist extends StatefulWidget {
 }
 
 class _Assist extends State<Assist> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getman();
+  }
+
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -135,18 +142,33 @@ class _Assist extends State<Assist> {
     }
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       appBar: new AppBar(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: Colors.indigo,
+            color: man == false ? post_title_light : post_title_dark,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -154,18 +176,20 @@ class _Assist extends State<Assist> {
         ),
         title: new Text(
           "Customer Support",
-          style: TextStyle(color: Colors.indigo),
+          style: TextStyle(
+              color: man == false ? post_title_light : post_title_dark),
         ),
         actions: [
           IconButton(
               icon: Icon(
                 Icons.help_outline,
-                color: Colors.indigo,
+                color: man == false ? post_title_light : post_title_dark,
               ),
               onPressed: () => {
                     showDialog(
                         context: context,
                         builder: (_) => NetworkGiffyDialog(
+                          
                               image: Image.asset(
                                 'assets/tenor.gif',
                                 fit: BoxFit.cover,
@@ -188,7 +212,7 @@ class _Assist extends State<Assist> {
         ],
       ),
       body: Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: Align(
           alignment: Alignment.bottomRight,
           child: Stack(
@@ -225,7 +249,9 @@ class _Assist extends State<Assist> {
                               "Bot",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.indigo),
+                                  color: man == false
+                                      ? post_title_light
+                                      : post_title_dark),
                             ),
                             Text(
                               "Hi, how may I help you ? ",
@@ -307,7 +333,8 @@ class ChatMessage extends StatelessWidget {
           children: <Widget>[
             new Text(this.name,
                 style: new TextStyle(
-                    fontWeight: FontWeight.w500, color: Colors.indigo)),
+                    fontWeight: FontWeight.w500,
+                    color: man == false ? post_title_light : post_title_dark)),
             new Container(
               margin: const EdgeInsets.only(top: 5.0),
               child: new Text(
@@ -358,7 +385,9 @@ class ChatMessage extends StatelessWidget {
                     children: [
                       Text(this.name,
                           style: TextStyle(
-                              color: Colors.indigo,
+                              color: man == false
+                                  ? post_title_light
+                                  : post_title_dark,
                               fontWeight: FontWeight.w500)),
                       Text(
                         text,
@@ -393,3 +422,5 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+
+bool man;

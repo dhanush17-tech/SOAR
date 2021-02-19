@@ -5,11 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:SOAR/screens/feed.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_size_getter/file_input.dart';
-import 'package:image_size_getter/image_size_getter.dart';
-import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class PostImage extends StatefulWidget {
   @override
@@ -17,6 +14,29 @@ class PostImage extends StatefulWidget {
 }
 
 class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    getman();
+  }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
   TabController _nestedTabController;
 
   @override
@@ -25,12 +45,13 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xFFE6EDFA),
+        color: man == false ? light_background : dark_background,
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,7 +63,7 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                       fontSize: 50,
                       fontWeight: FontWeight.w500,
                       fontFamily: "good",
-                      color: Colors.black),
+                      color: man == false ? post_title_light : post_title_dark),
                 ),
               ),
               Form(
@@ -57,19 +78,29 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                         controller: pitchname,
                         style: GoogleFonts.poppins(
                             height: 1.02,
-                            color: Color(4284376682),
+                            color:
+                                man == false ? post_sub_light : post_sub_dark,
                             fontSize: 27,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.5),
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
+                            borderSide: BorderSide(
+                              color:
+                                  man == false ? post_sub_dark : post_sub_light,
+                            ),
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
+                            borderSide: BorderSide(
+                              color:
+                                  man == false ? post_sub_dark : post_sub_light,
+                            ),
                           ),
                           border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(4278228470)),
+                            borderSide: BorderSide(
+                              color:
+                                  man == false ? post_sub_dark : post_sub_light,
+                            ),
                           ),
                         )),
                   ),
@@ -86,19 +117,17 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                       fontSize: 50,
                       fontWeight: FontWeight.w500,
                       fontFamily: "good",
-                      color: Colors.black),
+                      color: man == false ? post_title_light : post_title_dark),
                 ),
               ),
-              Opacity(
-                opacity: 0.5,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Make sure you uplaod a vetical poster",
-                    style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Text(
+                  "Make sure you uplaod a vetical poster",
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(4278228470),
                   ),
                 ),
               ),
@@ -182,10 +211,7 @@ class _PostImageState extends State<PostImage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 100),
             ],
           ),
         ),

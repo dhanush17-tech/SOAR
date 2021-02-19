@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../video_conferencing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class TextScreen extends StatefulWidget {
   String id;
@@ -77,6 +79,7 @@ class _TextScreenState extends State<TextScreen>
     print(widget.id);
     fetchnam();
     print(widget.uid);
+    getman();
 
     print(name);
     _usertype();
@@ -105,6 +108,23 @@ class _TextScreenState extends State<TextScreen>
     super.dispose();
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
   TextEditingController _message = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
@@ -118,7 +138,9 @@ class _TextScreenState extends State<TextScreen>
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xFF4E82E8),
+        color: man == false
+            ? text_screen_background_light
+            : text_screen_background_dark,
         child: Stack(
           children: [
             Align(
@@ -172,6 +194,9 @@ class _TextScreenState extends State<TextScreen>
                                       height: 70,
                                       width: 70,
                                       decoration: BoxDecoration(
+                                          color: man == false
+                                              ? image_background_light
+                                              : image_background_dark,
                                           image: DecorationImage(
                                               image: AssetImage(
                                                   "assets/unknown.png"),
@@ -235,18 +260,19 @@ class _TextScreenState extends State<TextScreen>
                   height: 0.83 * size.height,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35),
-                          topRight: Radius.circular(35)),
-                      color: Color(0xFFE6EDFA)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
+                    color: man == false ? light_background : dark_background,
+                  ),
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 100),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(35),
-                            topRight: Radius.circular(35)),
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25)),
                         child: SingleChildScrollView(
                           reverse: true,
                           scrollDirection: Axis.vertical,

@@ -36,6 +36,31 @@ class _RootState extends State<Root> {
     super.initState();
     getFlagInfo();
     getTimerWid();
+    setData();
+  }
+
+  String password ="keys";
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(password);
+  }
+
+  setData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    loadpass().then((value) {
+      if (value == null) {
+        setState(() {
+          isdarktheme = false;
+          preferences.setBool(password, false);
+        });
+      }
+
+      setState(() {
+        isdarktheme = value;
+      });
+    });
   }
 
   String usertype;
@@ -78,17 +103,13 @@ class _RootState extends State<Root> {
         if (isAuth == true) {
           await _usertype();
           if (usertype == "investor") {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => Home()),
-                (route) => false);
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (_) => Home()), (route) => false);
           }
 
           if (usertype == "entrepreneur") {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => HomeEnt()),
-                (route) => false);
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (_) => HomeEnt()), (route) => false);
           }
 
           if (usertype == null) {
@@ -119,6 +140,8 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -202,3 +225,5 @@ class _RootState extends State<Root> {
     });
   }
 }
+
+bool isdarktheme;

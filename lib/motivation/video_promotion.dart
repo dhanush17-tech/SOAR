@@ -104,7 +104,7 @@ class _PromoVideoState extends State<PromoVideo> {
 
         // the fab
       ],
-    ));
+    )); 
   }
 
   int index = 1;

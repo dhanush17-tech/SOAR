@@ -6,7 +6,8 @@ import 'package:countup/countup.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:SOAR/main_constraints.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -22,17 +23,19 @@ class FeedDetails extends StatefulWidget {
 
 class _FeedDetailsState extends State<FeedDetails> {
   final double _initFabHeight = 120.0;
-  Future<void> _initializeVideoPlayerFuture;
 
   double _fabHeight;
   double _panelHeightOpen;
   double _panelHeightClosed = 130.0;
+
+  Future<void> _initializeVideoPlayerFuture;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _fabHeight = _initFabHeight;
     print("${widget.documnetid}");
+    getman();
     getname();
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
@@ -46,23 +49,42 @@ class _FeedDetailsState extends State<FeedDetails> {
 
   VideoPlayerController _controller;
 
-  String name;
+  String name = "";
   getname() {
     Firestore.instance
         .collection("Users")
         .document(auth.currentUser.uid)
         .get()
         .then((value) {
-      name = value.data()["name"];
+      setState(() {
+        name = value.data()["name"];
+      });
       print(name);
     });
   }
 
   @override
   void dispose() {
-    _controller.pause();
+    _controller.dispose();
     super.dispose();
   }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
 
   ScrollController sc;
   @override
@@ -72,7 +94,7 @@ class _FeedDetailsState extends State<FeedDetails> {
 
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     return Scaffold(
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       body: StreamBuilder(
           stream: Firestore.instance
               .collection("Feed")
@@ -183,8 +205,10 @@ class _FeedDetailsState extends State<FeedDetails> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  color: Colors
-                                                                      .black),
+                                                                  color: man ==
+                                                                          false
+                                                                      ? feed_details_sub_light
+                                                                      : feed_details_sub_dark),
                                                             )),
                                                       ),
                                                     ),
@@ -313,8 +337,8 @@ class _FeedDetailsState extends State<FeedDetails> {
                                             );
                                           } else {
                                             return Center(
-                                              child: CircularProgressIndicator(
-                                              ),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             );
                                           }
                                         },
@@ -341,7 +365,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       style: GoogleFonts.poppins(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black),
+                                          color: man == false
+                                              ? sub_heading_light
+                                              : sub_heading_dark),
                                     ),
                                   ],
                                 ),
@@ -366,7 +392,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       style: GoogleFonts.poppins(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black),
+                                          color: man == false
+                                              ? sub_heading_light
+                                              : sub_heading_dark),
                                     ),
                                   ],
                                 ),
@@ -380,7 +408,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 IconButton(
                                     icon: Icon(
                                       Icons.message_outlined,
-                                      color: Color(4278228470).withOpacity(0.8),
+                                      color: Color(4278228470),
                                       size: 30,
                                     ),
                                     onPressed: () {
@@ -405,7 +433,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontSize: 40,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "good",
-                                    color: Color(4283848280)),
+                                    color: man == false
+                                        ? feed_details_title_light
+                                        : feed_details_title_dark),
                               ),
                             ),
                           ),
@@ -417,10 +447,11 @@ class _FeedDetailsState extends State<FeedDetails> {
                               child: Text(
                                 feed["summury"],
                                 style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "good",
-                                    color: Colors.black),
+                                    fontSize: 20,
+                                    color: man == false
+                                        ? feed_details_sub_light
+                                        : feed_details_sub_dark,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -436,7 +467,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontSize: 40,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "good",
-                                    color: Color(4283848280)),
+                                    color: man == false
+                                        ? feed_details_title_light
+                                        : feed_details_title_dark),
                               ),
                             ),
                           ),
@@ -535,7 +568,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontSize: 40,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "good",
-                                    color: Color(4283848280)),
+                                    color: man == false
+                                        ? feed_details_title_light
+                                        : feed_details_title_dark),
                               ),
                             ),
                           ),
@@ -548,8 +583,10 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 feed["target_audience"],
                                 style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
+                                    color: man == false
+                                        ? feed_details_sub_light
+                                        : feed_details_sub_dark,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -567,7 +604,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontSize: 40,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "good",
-                                    color: Color(4283848280)),
+                                    color: man == false
+                                        ? feed_details_title_light
+                                        : feed_details_title_dark),
                               ),
                             ),
                           ),
@@ -581,8 +620,10 @@ class _FeedDetailsState extends State<FeedDetails> {
                                   Text(feed["value_propotion"],
                                       style: GoogleFonts.poppins(
                                           fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400)),
+                                          color: man == false
+                                              ? feed_details_sub_light
+                                              : feed_details_sub_dark,
+                                          fontWeight: FontWeight.w500)),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -595,8 +636,10 @@ class _FeedDetailsState extends State<FeedDetails> {
                                       : Text(feed["currency"] ?? "",
                                           style: GoogleFonts.poppins(
                                               fontSize: 20,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400)),
+                                              color: man == false
+                                                  ? feed_details_sub_light
+                                                  : feed_details_sub_dark,
+                                              fontWeight: FontWeight.w500)),
                                 ],
                               ),
                             ),
@@ -609,14 +652,14 @@ class _FeedDetailsState extends State<FeedDetails> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(left: 20.0, top: 10),
-                              child: Text(
-                                'Revenue Model',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "good",
-                                    color: Color(4283848280)),
-                              ),
+                              child: Text('Revenue Model',
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "good",
+                                      color: man == false
+                                          ? feed_details_title_light
+                                          : feed_details_title_dark)),
                             ),
                           ),
                           Align(
@@ -628,8 +671,10 @@ class _FeedDetailsState extends State<FeedDetails> {
                                 feed["revenue_model"],
                                 style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
+                                    color: man == false
+                                        ? feed_details_sub_light
+                                        : feed_details_sub_dark,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -647,7 +692,9 @@ class _FeedDetailsState extends State<FeedDetails> {
                                     fontSize: 43,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: "good",
-                                    color: Color(4283848280)),
+                                    color: man == false
+                                        ? feed_details_title_light
+                                        : feed_details_title_dark),
                               ),
                             ),
                           ),

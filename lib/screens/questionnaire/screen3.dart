@@ -7,16 +7,16 @@ import 'package:fade/fade.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_size_getter/file_input.dart';
 import 'package:image_size_getter/image_size_getter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 import '../feed.dart';
 import '../start_entrepreneur.dart';
-import 'package:SOAR/screens/post/mainpaost.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
-class Page3 extends StatefulWidget  {
+class Page3 extends StatefulWidget {
   @override
   _Page3State createState() => _Page3State();
 }
@@ -52,17 +52,37 @@ class _Page3State extends State<Page3> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getman();
+
     id = new DateTime.now().millisecondsSinceEpoch.toString();
     print(summaryController.text);
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(4278197050).withOpacity(0.1),
+      backgroundColor: man == false ? light_background : dark_background,
       body: Stack(
         children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8),
               child: Column(
@@ -77,11 +97,13 @@ class _Page3State extends State<Page3> {
                           fontSize: 35,
                           fontWeight: FontWeight.w400,
                           fontFamily: "good",
-                          color: Colors.black),
+                          color: man == false
+                              ? post_title_light
+                              : post_title_dark),
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -96,13 +118,15 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Transactional',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -117,13 +141,15 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Subsricption',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -138,13 +164,15 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Advertising',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -159,13 +187,15 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Freemium',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -180,13 +210,15 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Sales Team',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: man == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -201,7 +233,9 @@ class _Page3State extends State<Page3> {
                         Text(
                           'Other',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              fontWeight: FontWeight.w500,
+                              color: Color(4278228470),
+                              fontSize: 15),
                         )
                       ],
                     ),
@@ -237,6 +271,7 @@ class _Page3State extends State<Page3> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 200)
                 ],
               ),
             ),
@@ -244,7 +279,7 @@ class _Page3State extends State<Page3> {
           Align(
               alignment: Alignment.center,
               child: Fade(
-                visible: man,
+                visible: can,
                 duration: Duration(milliseconds: 200),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 0, left: 0),
@@ -289,7 +324,7 @@ class _Page3State extends State<Page3> {
   Future submit() async {
     setState(() {
       issubmitted = true;
-      man = true;
+      can = true;
     });
     String url;
     await uploadImage();
@@ -371,7 +406,7 @@ class _Page3State extends State<Page3> {
         show = false;
       });
       setState(() {
-        man = false;
+        can = false;
         issubmitted = false;
       });
     }).then((value) {
@@ -384,7 +419,7 @@ class _Page3State extends State<Page3> {
   }
 
   bool show;
-  bool man = false;
+  bool can = false;
   bool issubmitted = false;
 }
 

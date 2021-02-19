@@ -12,10 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:SOAR/auth/login.dart';
-import 'package:SOAR/screens/assist.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:SOAR/main_constraints.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class Profile extends StatefulWidget {
   String uidforprofile;
@@ -213,6 +212,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     _edit();
     print(widget.uidforprofile);
     noofposts();
+    getman();
     bro();
   }
 
@@ -232,6 +232,23 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   String nowuser_websiteurl;
   String nowuser_uid;
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -239,14 +256,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: Container(
           decoration: BoxDecoration(
-            color: Color(0xFFE6EDFA),
+            color: man == false ? light_background : dark_background,
           ),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Stack(
               children: [
                 Column(children: [
@@ -293,6 +311,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                       width: 150,
                                       height: 150,
                                       decoration: BoxDecoration(
+                                          color: Color(4278272638),
                                           image: DecorationImage(
                                               image: AssetImage(
                                                   "assets/unknown.png"),
@@ -345,16 +364,48 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: Hero(
                                   tag: "man +iii",
-                                  child: Container(
-                                    width: 150,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(location),
-                                            fit: BoxFit.cover),
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                  ),
+                                  child: FutureBuilder(
+                                      future: _edit(),
+                                      builder: (context, snapshot) {
+                                        return snapshot.connectionState !=
+                                                ConnectionState.done
+                                            ? Container(
+                                                width: 150,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            location),
+                                                        fit: BoxFit.cover),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                              )
+                                            : Shimmer(
+                                                duration: Duration(
+                                                    milliseconds:
+                                                        1500), //Default value
+                                                interval: Duration(
+                                                    milliseconds:
+                                                        100), //Default value: Duration(seconds: 0)
+                                                color:
+                                                    Colors.blue, //Default value
+                                                enabled: true, //Default value
+                                                direction: ShimmerDirection
+                                                    .fromLTRB(), //D
+                                                child: Container(
+                                                  width: 150,
+                                                  height: 150,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue
+                                                          .withOpacity(0.25),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                ),
+                                              );
+                                        ;
+                                      }),
                                 ),
                               ),
                               widget.uidforprofile == auth.currentUser.uid
@@ -430,8 +481,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                                   "name"] ??
                                                               "It may take some time....",
                                                           style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF3D4254),
+                                                              color: man ==
+                                                                      false
+                                                                  ? sub_heading_light
+                                                                  : sub_heading_dark,
                                                               fontSize: 55,
                                                               fontFamily:
                                                                   "good"),
@@ -522,8 +575,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                       }
                                                     },
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xFF3D4254),
+                                                        color: man == false
+                                                            ? sub_heading_light
+                                                            : sub_heading_dark,
                                                         fontSize: 55,
                                                         fontFamily: "good"),
                                                   ),
@@ -672,13 +726,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                             Alignment.center,
                                                         child: Text(
                                                           "Follow",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
                                                         ),
                                                       ),
                                                     ),
@@ -790,13 +845,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                             Alignment.center,
                                                         child: Text(
                                                           "Unfollow",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
                                                         ),
                                                       ),
                                                     ),
@@ -837,8 +893,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                           "It may take some time....",
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
-                                                        color: Color(0xFF3D4254)
-                                                            .withOpacity(1),
+                                                        color: man == false
+                                                            ? sub_heading_light
+                                                            : sub_heading_dark,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize: 17,
@@ -856,8 +913,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                             textAlign: TextAlign.center,
                                             controller: taglineChange,
                                             style: TextStyle(
-                                              color: Color(0xFF3D4254)
-                                                  .withOpacity(1),
+                                              color: man == false
+                                                  ? sub_heading_light
+                                                  : sub_heading_dark,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 15,
                                             ),
@@ -957,8 +1015,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                     userDocument["websiteurl"],
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      color: Color(0xFF3D4254)
-                                                          .withOpacity(1),
+                                                      color: man == false
+                                                          ? sub_heading_light
+                                                          : sub_heading_dark,
                                                       fontSize: 15,
                                                     ),
                                                   );
@@ -970,8 +1029,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                         textAlign: TextAlign.center,
                                         controller: websiteUrlChnage,
                                         style: TextStyle(
-                                          color:
-                                              Color(0xFF3D4254).withOpacity(1),
+                                          color: man == false
+                                              ? sub_heading_light
+                                              : sub_heading_dark,
                                           fontSize: 15,
                                         ),
                                         onChanged: (val) async {
@@ -1031,11 +1091,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             children: [
                               Container(
                                 width: 120,
+                                height: 80,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.white),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.only(
+                                      bottom: 15.0, left: 0, right: 0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -1061,11 +1123,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               ),
                               Container(
                                 width: 120,
+                                height: 80,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 15.0, left: 0, right: 0),
                                   child: Column(
                                     children: [
                                       no_ofposts == null
@@ -1106,384 +1170,352 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         height: 20,
                       ),
                       usertype == "entrepreneur"
-                          ? Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5, bottom: 0),
-                                child: GradientText(
-                                  text: " Pitches",
-                                  colors: [Colors.blue[400], Colors.blue[700]],
-                                  style: TextStyle(
-                                      fontSize: 55,
-                                      fontFamily: "good",
-                                      color: Colors.white),
+                          ? StickyHeader(
+                              header: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 5, bottom: 0),
+                                  child: Container(
+                                    height: 50,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: man == false
+                                          ? light_background
+                                          : dark_background,
+                                    ),
+                                    child: GradientText(
+                                      text: " Pitches",
+                                      colors: [
+                                        Colors.blue[400],
+                                        Colors.blue[700]
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 55,
+                                          fontFamily: "good",
+                                          color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            )
-                          : Container(
-                              width: 0,
-                              height: 0,
-                            ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: StreamBuilder(
-                            stream: Firestore.instance
-                                .collection("Users")
-                                .document(widget.uidforprofile)
-                                .collection("posts")
-                                .orderBy("date", descending: true)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData)
-                                return Text('Loading... data');
-                              return snapshot.data != null
-                                  ? ListView.separated(
-                                      reverse: true,
-                                      separatorBuilder: (ctx, i) =>
-                                          SizedBox(height: 20),
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: snapshot.data.documents.length,
-                                      itemBuilder: (ctx, i) {
-                                        DocumentSnapshot course =
-                                            snapshot.data.documents[i];
+                              content: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: StreamBuilder(
+                                      stream: Firestore.instance
+                                          .collection("Users")
+                                          .document(widget.uidforprofile)
+                                          .collection("posts")
+                                          .orderBy("date", descending: true)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData)
+                                          return Text('Loading... data');
+                                        return snapshot.data != null
+                                            ? ListView.separated(
+                                                reverse: true,
+                                                separatorBuilder: (ctx, i) =>
+                                                    SizedBox(height: 20),
+                                                shrinkWrap: true,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount: snapshot
+                                                    .data.documents.length,
+                                                itemBuilder: (ctx, i) {
+                                                  DocumentSnapshot course =
+                                                      snapshot
+                                                          .data.documents[i];
 
-                                        return snapshot.data == null
-                                            ? Container(
-                                                width: 20,
-                                                height: 20,
-                                              )
-                                            : Align(
-                                                alignment: Alignment.center,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15,
-                                                          right: 15,
-                                                          top: 20),
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient: LinearGradient(
-                                                            begin: Alignment
-                                                                .topLeft,
-                                                            end: Alignment
-                                                                .bottomRight,
-                                                            colors: [
-                                                              Color(4280311451)
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                              Color(4278547942)
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                            ]),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      child: Stack(
+                                                  return snapshot.data == null
+                                                      ? Container(
+                                                          width: 20,
+                                                          height: 20,
+                                                        )
+                                                      : Align(
                                                           alignment:
                                                               Alignment.center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Column(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        top: 1,
-                                                                        left:
-                                                                            10),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Container(
-                                                                            child:
-                                                                                Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 15,
+                                                                    right: 15,
+                                                                    top: 20),
+                                                            child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  gradient: LinearGradient(
+                                                                      begin: Alignment
+                                                                          .topLeft,
+                                                                      end: Alignment
+                                                                          .bottomRight,
+                                                                      colors: [
+                                                                        Color(4280311451)
+                                                                            .withOpacity(0.4),
+                                                                        Color(4278547942)
+                                                                            .withOpacity(0.4),
+                                                                      ]),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: Stack(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                        child:
+                                                                            Column(
                                                                           children: [
-                                                                            StreamBuilder(
-                                                                                stream: Firestore.instance.collection("Users").document(course["uid"]).snapshots(),
-                                                                                builder: (ctx, i) {
-                                                                                  return i.data == null
-                                                                                      ? Container(width: 20, height: 20)
-                                                                                      : Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                                                          children: [
-                                                                                            i.data["location"] != null
-                                                                                                ? Container(
-                                                                                                    width: 45,
-                                                                                                    height: 45,
-                                                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
-                                                                                                  )
-                                                                                                : Container(
-                                                                                                    width: 45,
-                                                                                                    height: 45,
-                                                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
-                                                                                                  ),
-                                                                                            SizedBox(
-                                                                                              width: 10,
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(bottom: 10),
-                                                                                              child: Column(
-                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  Container(
-                                                                                                    width: MediaQuery.of(context).size.width * 0.50,
-                                                                                                    child: SingleChildScrollView(
-                                                                                                      scrollDirection: Axis.horizontal,
-                                                                                                      child: Padding(
-                                                                                                          padding: const EdgeInsets.only(
-                                                                                                            top: 16,
-                                                                                                          ),
-                                                                                                          child: Text(
-                                                                                                            i.data["name"],
-                                                                                                            style: GoogleFonts.poppins(
-                                                                                                              fontSize: 17,
-                                                                                                              fontWeight: FontWeight.w600,
-                                                                                                              color: Colors.white,
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(top: 1, left: 10),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                children: [
+                                                                                  Container(
+                                                                                      child: Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                    children: [
+                                                                                      StreamBuilder(
+                                                                                          stream: Firestore.instance.collection("Users").document(course["uid"]).snapshots(),
+                                                                                          builder: (ctx, i) {
+                                                                                            return i.data == null
+                                                                                                ? Container(width: 20, height: 20)
+                                                                                                : Row(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                    children: [
+                                                                                                      i.data["location"] != null
+                                                                                                          ? Container(
+                                                                                                              width: 45,
+                                                                                                              height: 45,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: NetworkImage(i.data["location"]), fit: BoxFit.fill)),
+                                                                                                            )
+                                                                                                          : Container(
+                                                                                                              width: 45,
+                                                                                                              height: 45,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/unknown.png"), fit: BoxFit.fill)),
                                                                                                             ),
-                                                                                                          )),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Text(
-                                                                                                    i.data["tagline"],
-                                                                                                    style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
-                                                                                                  )
-                                                                                                ],
+                                                                                                      SizedBox(
+                                                                                                        width: 10,
+                                                                                                      ),
+                                                                                                      Padding(
+                                                                                                        padding: const EdgeInsets.only(bottom: 10),
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                          children: [
+                                                                                                            Container(
+                                                                                                              width: MediaQuery.of(context).size.width * 0.50,
+                                                                                                              child: SingleChildScrollView(
+                                                                                                                scrollDirection: Axis.horizontal,
+                                                                                                                child: Padding(
+                                                                                                                    padding: const EdgeInsets.only(
+                                                                                                                      top: 16,
+                                                                                                                    ),
+                                                                                                                    child: Text(
+                                                                                                                      i.data["name"],
+                                                                                                                      style: GoogleFonts.poppins(
+                                                                                                                        fontSize: 17,
+                                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                                        color: Colors.white,
+                                                                                                                      ),
+                                                                                                                    )),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                            Text(
+                                                                                                              i.data["tagline"],
+                                                                                                              style: GoogleFonts.poppins(fontSize: 13, color: Colors.white.withOpacity(0.6)),
+                                                                                                            )
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  );
+                                                                                          }),
+                                                                                    ],
+                                                                                  )),
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: Container(
+                                                                                      width: 50,
+                                                                                      height: 50,
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(10),
+                                                                                        color: Colors.white.withOpacity(0.12),
+                                                                                      ),
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.only(top: 5),
+                                                                                        child: Column(
+                                                                                          children: [
+                                                                                            Padding(
+                                                                                              padding: const EdgeInsets.only(top: 5),
+                                                                                              child: Text(
+                                                                                                course["day"],
+                                                                                                style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Colors.white),
                                                                                               ),
                                                                                             ),
+                                                                                            SizedBox(
+                                                                                              height: 3,
+                                                                                            ),
+                                                                                            Text(
+                                                                                              course["month"],
+                                                                                              style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white),
+                                                                                            )
                                                                                           ],
-                                                                                        );
-                                                                                }),
-                                                                          ],
-                                                                        )),
-                                                                        Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(8.0),
-                                                                          child:
-                                                                              Container(
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              color: Colors.white.withOpacity(0.12),
-                                                                            ),
-                                                                            child:
-                                                                                Padding(
-                                                                              padding: const EdgeInsets.only(top: 5),
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.only(top: 5),
-                                                                                    child: Text(
-                                                                                      course["day"],
-                                                                                      style: GoogleFonts.poppins(fontSize: 15, height: 1, fontWeight: FontWeight.w600, color: Colors.white),
+                                                                                        ),
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 3,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    course["month"],
-                                                                                    style: GoogleFonts.poppins(height: 1, fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white),
                                                                                   )
                                                                                 ],
                                                                               ),
                                                                             ),
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 1,
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10,
-                                                                        right:
-                                                                            10),
-                                                                    child:
-                                                                        Material(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topLeft:
-                                                                            Radius.circular(5),
-                                                                        bottomRight:
-                                                                            Radius.circular(5),
-                                                                        topRight:
-                                                                            Radius.circular(20),
-                                                                        bottomLeft:
-                                                                            Radius.circular(20),
-                                                                      ),
-                                                                      elevation:
-                                                                          3,
-                                                                      child:
-                                                                          Stack(
-                                                                        alignment:
-                                                                            Alignment.center,
-                                                                        children: [
-                                                                          Hero(
-                                                                            tag:
-                                                                                "dssd+$i",
-                                                                            child: Material(
+                                                                            SizedBox(
+                                                                              height: 1,
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(left: 10, right: 10),
+                                                                              child: Material(
                                                                                 borderRadius: BorderRadius.only(
                                                                                   topLeft: Radius.circular(5),
                                                                                   bottomRight: Radius.circular(5),
                                                                                   topRight: Radius.circular(20),
                                                                                   bottomLeft: Radius.circular(20),
                                                                                 ),
-                                                                                elevation: 20,
-                                                                                child: Container(
-                                                                                  height: 170,
-                                                                                  decoration: BoxDecoration(
-                                                                                      borderRadius: BorderRadius.only(
-                                                                                        topLeft: Radius.circular(5),
-                                                                                        bottomRight: Radius.circular(5),
-                                                                                        topRight: Radius.circular(20),
-                                                                                        bottomLeft: Radius.circular(20),
-                                                                                      ),
-                                                                                      image: course["postimage"] != null ? DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.cover) : DecorationImage(image: AssetImage("assets/unknown.png"))),
-                                                                                )),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 10,
-                                                                  ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceEvenly,
-                                                                    children: [
-                                                                      Row(
-                                                                        children: [
-                                                                          Image
-                                                                              .asset(
-                                                                            "assets/heart.png",
-                                                                            color:
-                                                                                Color(4290118716),
-                                                                            scale:
-                                                                                10,
-                                                                          ),
-                                                                          Text(
-                                                                            "${course["likes"]}",
-                                                                            style:
-                                                                                GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            0,
-                                                                      ),
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(right: 0),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Image.asset(
-                                                                              "assets/wow.png",
-                                                                              width: 20,
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: 5,
-                                                                            ),
-                                                                            Text(
-                                                                              "${course["wow"]}",
-                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      auth.currentUser.uid ==
-                                                                              widget.uidforprofile
-                                                                          ? IconButton(
-                                                                              icon: Icon(
-                                                                                Icons.delete_rounded,
-                                                                                color: Colors.white,
-                                                                                size: 22,
-                                                                              ),
-                                                                              onPressed: () {
-                                                                                setState(() {
-                                                                                  documentid = course.documentID.toString();
-                                                                                });
-                                                                                print(documentid);
-                                                                                Firestore.instance.collection("Users").document(widget.uidforprofile).collection("posts").document(documentid).delete().then((value) {
-                                                                                  Firestore.instance.collection("Feed").document(documentid).delete();
-                                                                                });
-                                                                              })
-                                                                          : Container(
-                                                                              width: 0,
-                                                                              height: 0,
-                                                                            ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            50,
-                                                                      ),
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(left: 0),
-                                                                        child: GestureDetector(
-                                                                            onTap: () {
-                                                                              Navigator.push(
-                                                                                  context,
-                                                                                  MaterialPageRoute(
-                                                                                    builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"], d: i),
-                                                                                  ));
-                                                                            },
-                                                                            child: Container(
-                                                                              alignment: Alignment.center,
-                                                                              width: 100,
-                                                                              height: 30,
-                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.white.withOpacity(0.3)),
-                                                                              child: Text(
-                                                                                "Learn More",
-                                                                                style: TextStyle(
-                                                                                  fontSize: 22,
-                                                                                  fontFamily: "good",
-                                                                                  fontWeight: FontWeight.w300,
-                                                                                  color: Colors.white,
+                                                                                elevation: 3,
+                                                                                child: Stack(
+                                                                                  alignment: Alignment.center,
+                                                                                  children: [
+                                                                                    Hero(
+                                                                                      tag: "dssd+$i",
+                                                                                      child: Material(
+                                                                                          borderRadius: BorderRadius.only(
+                                                                                            topLeft: Radius.circular(5),
+                                                                                            bottomRight: Radius.circular(5),
+                                                                                            topRight: Radius.circular(20),
+                                                                                            bottomLeft: Radius.circular(20),
+                                                                                          ),
+                                                                                          elevation: 20,
+                                                                                          child: Container(
+                                                                                            height: 170,
+                                                                                            decoration: BoxDecoration(
+                                                                                                borderRadius: BorderRadius.only(
+                                                                                                  topLeft: Radius.circular(5),
+                                                                                                  bottomRight: Radius.circular(5),
+                                                                                                  topRight: Radius.circular(20),
+                                                                                                  bottomLeft: Radius.circular(20),
+                                                                                                ),
+                                                                                                image: course["postimage"] != null ? DecorationImage(image: NetworkImage(course["postimage"]), fit: BoxFit.cover) : DecorationImage(image: AssetImage("assets/unknown.png"))),
+                                                                                          )),
+                                                                                    ),
+                                                                                  ],
                                                                                 ),
                                                                               ),
-                                                                            )),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                              children: [
+                                                                                Row(
+                                                                                  children: [
+                                                                                    Image.asset(
+                                                                                      "assets/heart.png",
+                                                                                      color: Color(4290118716),
+                                                                                      scale: 10,
+                                                                                    ),
+                                                                                    Text(
+                                                                                      "${course["likes"]}",
+                                                                                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  width: 0,
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.only(right: 0),
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      Image.asset(
+                                                                                        "assets/wow.png",
+                                                                                        width: 20,
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        "${course["wow"]}",
+                                                                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white.withOpacity(1)),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                auth.currentUser.uid == widget.uidforprofile
+                                                                                    ? IconButton(
+                                                                                        icon: Icon(
+                                                                                          Icons.delete_rounded,
+                                                                                          color: Colors.white,
+                                                                                          size: 22,
+                                                                                        ),
+                                                                                        onPressed: () {
+                                                                                          setState(() {
+                                                                                            documentid = course.documentID.toString();
+                                                                                          });
+                                                                                          print(documentid);
+                                                                                          Firestore.instance.collection("Users").document(widget.uidforprofile).collection("posts").document(documentid).delete().then((value) {
+                                                                                            Firestore.instance.collection("Feed").document(documentid).delete();
+                                                                                          });
+                                                                                        })
+                                                                                    : Container(
+                                                                                        width: 0,
+                                                                                        height: 0,
+                                                                                      ),
+                                                                                SizedBox(
+                                                                                  width: 50,
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.only(left: 0),
+                                                                                  child: GestureDetector(
+                                                                                      onTap: () {
+                                                                                        Navigator.push(
+                                                                                            context,
+                                                                                            MaterialPageRoute(
+                                                                                              builder: (_) => FeedDetilsForEntrepreneurs(documnetid: course.documentID, id: widget.uidforprofile, url: course["video_url"], d: i),
+                                                                                            ));
+                                                                                      },
+                                                                                      child: Container(
+                                                                                        alignment: Alignment.center,
+                                                                                        width: 100,
+                                                                                        height: 30,
+                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.white.withOpacity(0.3)),
+                                                                                        child: Text(
+                                                                                          "Learn More",
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 22,
+                                                                                            fontFamily: "good",
+                                                                                            fontWeight: FontWeight.w300,
+                                                                                            color: Colors.white,
+                                                                                          ),
+                                                                                        ),
+                                                                                      )),
+                                                                                )
+                                                                              ],
+                                                                            )
+                                                                          ],
+                                                                        ),
                                                                       )
-                                                                    ],
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            )
-                                                          ])),
-                                                ),
-                                              );
-                                      })
-                                  : Container(
-                                      width: 20,
-                                      height: 30,
-                                    );
-                            }),
-                      ),
+                                                                    ])),
+                                                          ),
+                                                        );
+                                                })
+                                            : Container();
+                                      })))
+                          : Container(),
                       SizedBox(
                         height: 30,
                       )

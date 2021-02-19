@@ -4,10 +4,10 @@ import 'package:fade/fade.dart';
 import 'package:flutter/material.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'screen3.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:SOAR/screens/post/mainpaost.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class Page2 extends StatefulWidget {
   @override
@@ -16,13 +16,36 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   @override
+  void initState() {
+    super.initState();
+    getman();
+  }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        can = ca;
+      });
+    });
+  }
+
+  bool can;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(4278197050).withOpacity(0.1),
+      backgroundColor: can == false ? light_background : dark_background,
       body: Stack(
         children: [
-          SingleChildScrollView(
+          SingleChildScrollView(     physics: BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8),
               child: Column(
@@ -36,11 +59,13 @@ class _Page2State extends State<Page2> {
                           fontSize: 35,
                           fontWeight: FontWeight.w400,
                           fontFamily: "good",
-                          color: Colors.black),
+                          color: can == false
+                              ? post_title_light
+                              : post_title_dark),
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data:  can==false?ThemeData.light():ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -57,13 +82,14 @@ class _Page2State extends State<Page2> {
                           style: GoogleFonts.poppins(
                             color: Color(4278228470),
                             fontSize: 15,
+                            fontWeight: FontWeight.w500
                           ),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data:  can==false?ThemeData.light():ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -78,13 +104,14 @@ class _Page2State extends State<Page2> {
                         Text(
                           'Minimal PoC',
                           style: GoogleFonts.poppins(
+                               fontWeight: FontWeight.w500,
                               color: Color(4278228470), fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: can == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -99,13 +126,13 @@ class _Page2State extends State<Page2> {
                         Text(
                           'Working PoC',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              color: Color(4278228470), fontSize: 15,   fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: can == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -120,13 +147,13 @@ class _Page2State extends State<Page2> {
                         Text(
                           'MVP',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              color: Color(4278228470), fontSize: 15,   fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
                   ),
                   Theme(
-                    data: ThemeData.dark(),
+                    data: can == false ? ThemeData.light() : ThemeData.dark(),
                     child: Row(
                       children: [
                         Radio<String>(
@@ -141,23 +168,25 @@ class _Page2State extends State<Page2> {
                         Text(
                           'Fully functional product',
                           style: GoogleFonts.poppins(
-                              color: Color(4278228470), fontSize: 15),
+                              color: Color(4278228470),   fontWeight: FontWeight.w500, fontSize: 15),
                         )
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 0,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 40, left: 0),
+                    padding: const EdgeInsets.only(top: 20, left: 0),
                     child: Text(
                       'Uplaod a demo video of your project',
                       style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.w400,
                           fontFamily: "good",
-                          color: Colors.black),
+                          color: can == false
+                              ? post_title_light
+                              : post_title_dark),
                     ),
                   ),
                   SizedBox(
@@ -195,7 +224,7 @@ class _Page2State extends State<Page2> {
                                         fit: BoxFit.cover)),
                               ),
                             )),
-                                    SizedBox(height: 10)
+                  SizedBox(height: 100)
                 ],
               ),
             ),
@@ -243,7 +272,6 @@ class _Page2State extends State<Page2> {
           ),
         ],
       ),
-       
     );
   }
 

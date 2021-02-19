@@ -1,15 +1,11 @@
-import 'package:SOAR/screens/post/post_image.dart';
-import 'package:SOAR/screens/questionnaire/screen1.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
-import 'package:SOAR/screens/start_entrepreneur.dart';
-import 'package:fade/fade.dart';
 import 'package:intl/intl.dart';
-import 'package:SOAR/screens/post/mainpaost.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class PostDetails extends StatefulWidget {
   @override
@@ -40,9 +36,27 @@ class _PostDetailsState extends State<PostDetails> {
     // TODO: implement initState
     super.initState();
     _username();
+    getman();
   }
 
   DateTime time = DateTime.now();
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +65,7 @@ class _PostDetailsState extends State<PostDetails> {
 
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: SingleChildScrollView(
           reverse: true,
           child: Form(
@@ -67,7 +81,9 @@ class _PostDetailsState extends State<PostDetails> {
                           fontSize: 50,
                           fontWeight: FontWeight.w500,
                           fontFamily: "good",
-                          color: Colors.black),
+                          color: man == false
+                              ? post_title_light
+                              : post_title_dark),
                     ),
                   ),
                   SizedBox(
@@ -116,7 +132,8 @@ class _PostDetailsState extends State<PostDetails> {
                     child: Text(
                       'Value Proposition',
                       style: TextStyle(
-                          color: Colors.black,
+                          color:
+                              man == false ? post_title_light : post_title_dark,
                           fontSize: 50,
                           fontWeight: FontWeight.w100,
                           fontFamily: 'good'),
@@ -130,11 +147,12 @@ class _PostDetailsState extends State<PostDetails> {
                 ),
                 SizedBox(height: 10),
                 SizedBox(
-                  height: 10,
+                  height: 100,
                 )
               ],
             ),
           ),
+          physics: BouncingScrollPhysics(),
         ));
   }
 

@@ -48,61 +48,61 @@ class _UserSearchState extends State<UserSearch> {
             padding: const EdgeInsets.only(
               top: 30,
             ),
-            child: Hero(
-              tag: "key",
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Color(0xFF5894FA)),
-                    color: Color(0xFF5894FA).withOpacity(0.4)),
-                height: 60,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Color(0xFF5894FA)),
+                  color: Color(0xFF5894FA).withOpacity(0.4)),
+              height: 60,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Align(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: "mannn",
+                      child: Icon(
                         Icons.search,
                         size: 30,
                         color: Color(4278228470),
                       ),
-                      SizedBox(
-                        width: 10,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: TextField(
+                            autofocus: true,
+                            style: GoogleFonts.poppins(
+                                fontSize: 20,
+                                color: Color(
+                                  4278228470,
+                                ),
+                                fontWeight: FontWeight.w500),
+                            controller: _searchController,
+                            onChanged: (val) {
+                              setState(() {
+                                searchString = val.toLowerCase();
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Search',
+                                hintStyle: GoogleFonts.poppins(
+                                    fontSize: 20,
+                                    color: Color(
+                                      4278228470,
+                                    ),
+                                    fontWeight: FontWeight.w500),
+                                contentPadding: EdgeInsets.only(top: 13))),
                       ),
-                      Container(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Material(
-                          color: Colors.transparent,
-                          child: TextField(
-                              autofocus: true,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 20,
-                                  color: Color(
-                                    4278228470,
-                                  ),
-                                  fontWeight: FontWeight.w500),
-                              controller: _searchController,
-                              onChanged: (val) {
-                                setState(() {
-                                  searchString = val.toLowerCase();
-                                });
-                              },
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Search',
-                                  hintStyle: GoogleFonts.poppins(
-                                      fontSize: 20,
-                                      color: Color(
-                                        4278228470,
-                                      ),
-                                      fontWeight: FontWeight.w500),
-                                  contentPadding: EdgeInsets.only(top: 13))),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
