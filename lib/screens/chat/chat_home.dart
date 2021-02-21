@@ -146,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       color: Colors.indigo,
                                     ),
                                     child: Image.asset(
-                                      "assets/video.png",
+                                    "assets/video.png",
                                       color: Colors.white,
                                     ),
                                   ),

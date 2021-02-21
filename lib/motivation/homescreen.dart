@@ -560,115 +560,111 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                         ),
-                        FutureBuilder(
-                            future: trending(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                return Shimmer(
-                                  duration: Duration(
-                                      milliseconds: 1500), //Default value
-                                  interval: Duration(
-                                      milliseconds:
-                                          100), //Default value: Duration(seconds: 0)
-                                  color: Colors.blue, //Default value
-                                  enabled: true, //Default value
-                                  direction: ShimmerDirection.fromLTRB(),
-                                  child: Container(
-                                    height: 200,
-                                    width: 320,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.blue.withOpacity(0.25)),
-                                  ),
-                                );
-                              } else
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8.0, left: 10),
-                                  child: Container(
-                                    height: 200,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
-                                      children: [
-                                        carouselSlider = CarouselSlider(
-                                            height: 200,
-                                            viewportFraction: 0.9,
-                                            initialPage: 0,
-                                            enlargeCenterPage: true,
-                                            autoPlay: true,
-                                            enableInfiniteScroll: true,
-                                            autoPlayAnimationDuration:
-                                                Duration(seconds: 3),
-                                            autoPlayInterval:
-                                                Duration(seconds: 3),
-                                            scrollDirection: Axis.horizontal,
-                                            onPageChanged: (index) {},
-                                            items: trending_list.map((imgUrl) {
-                                              return trending_list.length == 0
-                                                  ? Shimmer(
-                                                      duration: Duration(
-                                                          milliseconds:
-                                                              1500), //Default value
-                                                      interval: Duration(
-                                                          milliseconds:
-                                                              100), //Default value: Duration(seconds: 0)
-                                                      color: Colors
-                                                          .blue, //Default value
-                                                      enabled:
-                                                          true, //Default value
-                                                      direction:
-                                                          ShimmerDirection
-                                                              .fromLTRB(),
+                        trending_list.length == 0
+                            ? Shimmer(
+                                duration: Duration(
+                                    milliseconds: 1500), //Default value
+                                interval: Duration(
+                                    milliseconds:
+                                        100), //Default value: Duration(seconds: 0)
+                                color: Colors.blue, //Default value
+                                enabled: true, //Default value
+                                direction: ShimmerDirection.fromLTRB(),
+                                child: Container(
+                                  height: 200,
+                                  width: 320,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.blue.withOpacity(0.25)),
+                                ),
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, left: 10),
+                                child: Container(
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    children: [
+                                      carouselSlider = CarouselSlider(
+                                          height: 200,
+                                          viewportFraction: 0.9,
+                                          initialPage: 0,
+                                          enlargeCenterPage: true,
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              Duration(seconds: 3),
+                                          autoPlayInterval:
+                                              Duration(seconds: 3),
+                                          scrollDirection: Axis.horizontal,
+                                          onPageChanged: (index) {},
+                                          items: trending_list.map((imgUrl) {
+                                            return trending_list.length == 0
+                                                ? Shimmer(
+                                                    duration: Duration(
+                                                        milliseconds:
+                                                            1500), //Default value
+                                                    interval: Duration(
+                                                        milliseconds:
+                                                            100), //Default value: Duration(seconds: 0)
+                                                    color: Colors
+                                                        .blue, //Default value
+                                                    enabled:
+                                                        true, //Default value
+                                                    direction: ShimmerDirection
+                                                        .fromLTRB(),
+                                                    child: Container(
+                                                      height: 200,
+                                                      width: 320,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          color: Colors.blue
+                                                              .withOpacity(
+                                                                  0.25)),
+                                                    ),
+                                                  )
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 0,
+                                                            left: 0,
+                                                            right: 20,
+                                                            bottom: 10),
+                                                    child: GestureDetector(
+                                                      onTap: () {},
                                                       child: Container(
-                                                        height: 200,
-                                                        width: 320,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            color: Colors.blue
-                                                                .withOpacity(
-                                                                    0.25)),
+                                                        width: 350,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .blue,
+                                                                    width: 2),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                color: Color(
+                                                                    4278190106),
+                                                                image:
+                                                                    DecorationImage(
+                                                                        image:
+                                                                            NetworkImage(
+                                                                          imgUrl,
+                                                                        ),
+                                                                        fit: BoxFit
+                                                                            .fill)),
                                                       ),
-                                                    )
-                                                  : Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 0,
-                                                              left: 0,
-                                                              right: 20,
-                                                              bottom: 10),
-                                                      child: GestureDetector(
-                                                        onTap: () {},
-                                                        child: Container(
-                                                          width: 350,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .blue,
-                                                                      width: 2),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                  color: Color(
-                                                                      4278190106),
-                                                                  image: DecorationImage(
-                                                                      image: NetworkImage(
-                                                                        imgUrl,
-                                                                      ),
-                                                                      fit: BoxFit.fill)),
-                                                        ),
-                                                      ),
-                                                    );
-                                            }).toList()),
-                                      ],
-                                    ),
+                                                    ),
+                                                  );
+                                          }).toList()),
+                                    ],
                                   ),
-                                );
-                            }),
+                                ),
+                              ),
                         SizedBox(
                           height: 30,
                         ),

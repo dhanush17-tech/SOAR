@@ -1084,87 +1084,78 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 40),
+                        padding: const EdgeInsets.only(right: 5.0),
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 80,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  connectionlenght ?? "0",
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Opacity(
+                                    opacity: 0.9,
+                                    child: Text(
+                                      "Connections",
+                                      style: GoogleFonts.poppins(
+                                        letterSpacing: .6,
+                                        fontWeight: FontWeight.w500,
+                                        color: man == false
+                                            ? feed_details_title_light
+                                            : feed_details_title_dark,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            Container(
+                                width: 2,
+                                height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 15.0, left: 0, right: 0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        connectionlenght ?? "0",
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey)),
+                            Column(
+                              children: [
+                                no_ofposts == null
+                                    ? Text(
+                                        "0",
                                         style: TextStyle(
-                                            color: Color(0xFF3D4254),
-                                            fontSize: 30,
+                                            color: Colors.blue,
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    : Text(
+                                        "$no_ofposts",
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 32,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      Opacity(
-                                          opacity: 0.9,
-                                          child: Text(
-                                            "Connections",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF3D4254),
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 120,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 15.0, left: 0, right: 0),
-                                  child: Column(
-                                    children: [
-                                      no_ofposts == null
-                                          ? Text(
-                                              "0",
-                                              style: TextStyle(
-                                                  color: Color(0xFF3D4254),
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w500),
-                                            )
-                                          : Text(
-                                              "$no_ofposts",
-                                              style: TextStyle(
-                                                  color: Color(0xFF3D4254),
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                      Opacity(
-                                          opacity: 0.9,
-                                          child: Text(
-                                            "Pitches",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF3D4254),
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ]),
+                                Opacity(
+                                    opacity: 0.9,
+                                    child: Text(
+                                      "Pitches",
+                                      textAlign: TextAlign.left,
+                                      style: GoogleFonts.poppins(
+                                        letterSpacing: .6,
+                                        fontWeight: FontWeight.w500,
+                                        color: man == false
+                                            ? feed_details_title_light
+                                            : feed_details_title_dark,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 20,

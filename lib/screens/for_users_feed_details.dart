@@ -5,9 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'feed.dart';
 import 'package:video_player/video_player.dart';
 import 'profile.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'see_more.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class FeedDetilsForEntrepreneurs extends StatefulWidget {
   String documnetid;
@@ -38,6 +39,7 @@ class _FeedDetilsForEntrepreneursState
     print("${widget.documnetid}");
     print(auth.currentUser.uid);
     getname();
+    getman();
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         _controller.play();
@@ -66,6 +68,22 @@ class _FeedDetilsForEntrepreneursState
     });
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
   @override
   Widget build(BuildContext context) {
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
@@ -73,7 +91,7 @@ class _FeedDetilsForEntrepreneursState
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-      backgroundColor: Color(0xFFE6EDFA),
+      backgroundColor: man == false ? light_background : dark_background,
       body: StreamBuilder(
           stream: Firestore.instance
               .collection("Users")
@@ -96,7 +114,7 @@ class _FeedDetilsForEntrepreneursState
                               .document(feed.id)
                               .snapshots(),
                           builder: (context, snapshot) {
-                            var man = snap.data;
+                            var can = snap.data;
                             return Column(
                               children: [
                                 SizedBox(
@@ -196,16 +214,16 @@ class _FeedDetilsForEntrepreneursState
                                                                   child: Text(
                                                                     feed[
                                                                         "title"],
-                                                                    style: GoogleFonts
-                                                                        .poppins(
-                                                                      fontSize:
-                                                                          30,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: Colors
-                                                                          .indigo,
-                                                                    ),
+                                                                    style: GoogleFonts.poppins(
+                                                                        fontSize:
+                                                                            30,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        color: man ==
+                                                                                false
+                                                                            ? feed_details_sub_light
+                                                                            : feed_details_sub_dark),
                                                                   )),
                                                             ),
                                                           ),
@@ -362,7 +380,9 @@ class _FeedDetilsForEntrepreneursState
                                             style: GoogleFonts.poppins(
                                                 fontSize: 19,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(4290229943)),
+                                                color: man == false
+                                                    ? sub_heading_light
+                                                    : sub_heading_dark),
                                           ),
                                         ],
                                       ),
@@ -389,7 +409,9 @@ class _FeedDetilsForEntrepreneursState
                                             style: GoogleFonts.poppins(
                                                 fontSize: 19,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(4290229943)),
+                                                color: man == false
+                                                    ? sub_heading_light
+                                                    : sub_heading_dark),
                                           ),
                                           SizedBox(
                                             width: 30,
@@ -422,7 +444,7 @@ class _FeedDetilsForEntrepreneursState
                                                         MaterialPageRoute(
                                                             builder: (_) =>
                                                                 SeeMore(
-                                                                  seemore: man[
+                                                                  seemore: can[
                                                                       "date"],
                                                                 )));
                                                   }),
@@ -444,7 +466,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 40,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),
@@ -455,11 +479,12 @@ class _FeedDetilsForEntrepreneursState
                                         left: 25.0, top: 0, right: 25),
                                     child: Text(
                                       feed["summury"],
-                                      style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "good",
-                                          color: Colors.indigo),
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 20,
+                                          color: man == false
+                                              ? feed_details_sub_light
+                                              : feed_details_sub_dark,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
@@ -475,7 +500,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 40,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),
@@ -586,7 +613,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 40,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),
@@ -595,13 +624,13 @@ class _FeedDetilsForEntrepreneursState
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 20.0, top: 0, right: 25),
-                                    child: Text(
-                                      feed["target_audience"],
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 20,
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    child: Text(feed["target_audience"],
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 20,
+                                            color: man == false
+                                                ? feed_details_sub_light
+                                                : feed_details_sub_dark,
+                                            fontWeight: FontWeight.w500)),
                                   ),
                                 ),
                                 SizedBox(
@@ -618,7 +647,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 40,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),
@@ -632,24 +663,10 @@ class _FeedDetilsForEntrepreneursState
                                         Text(feed["value_propotion"],
                                             style: GoogleFonts.poppins(
                                                 fontSize: 20,
-                                                color: Colors.indigo,
-                                                fontWeight: FontWeight.bold)),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        feed["currency"] == null
-                                            ? Text("",
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 20,
-                                                    color: Colors.indigo,
-                                                    fontWeight:
-                                                        FontWeight.bold))
-                                            : Text(feed["currency"] ?? "",
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 20,
-                                                    color: Colors.indigo,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                color: man == false
+                                                    ? feed_details_sub_light
+                                                    : feed_details_sub_dark,
+                                                fontWeight: FontWeight.w500)),
                                       ],
                                     ),
                                   ),
@@ -668,7 +685,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 40,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),
@@ -681,8 +700,10 @@ class _FeedDetilsForEntrepreneursState
                                       feed["revenue_model"],
                                       style: GoogleFonts.poppins(
                                           fontSize: 20,
-                                          color: Colors.indigo,
-                                          fontWeight: FontWeight.bold),
+                                          color: man == false
+                                              ? feed_details_sub_light
+                                              : feed_details_sub_dark,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
@@ -700,7 +721,9 @@ class _FeedDetilsForEntrepreneursState
                                           fontSize: 43,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: "good",
-                                          color: Color(4283848280)),
+                                          color: man == false
+                                              ? feed_details_title_light
+                                              : feed_details_title_dark),
                                     ),
                                   ),
                                 ),

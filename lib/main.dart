@@ -14,9 +14,7 @@ import 'package:flutter/services.dart';
 import 'onboarding/onboarding.dart';
 import 'auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void _enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -34,9 +32,7 @@ void main() async {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,5 +81,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
- 

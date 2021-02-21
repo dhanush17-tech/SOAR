@@ -1,6 +1,5 @@
 import 'package:SOAR/main.dart';
 import 'package:SOAR/screens/chat/chat_home.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:SOAR/screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,23 +83,6 @@ class _TextScreenState extends State<TextScreen>
     print(name);
     _usertype();
 
-    final fbm = FirebaseMessaging();
-    fbm.requestNotificationPermissions();
-    fbm.configure(
-      onMessage: (msg) {
-        print(msg);
-        return;
-      },
-      onLaunch: (msg) {
-        print(msg);
-        return;
-      },
-      onResume: (msg) {
-        print(msg);
-        return;
-      },
-    );
-    fbm.subscribeToTopic('Users');
   }
 
   @override
@@ -149,7 +131,7 @@ class _TextScreenState extends State<TextScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Row(
+                    child: Row( 
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
@@ -239,15 +221,19 @@ class _TextScreenState extends State<TextScreen>
                               MaterialPageRoute(builder: (_) => VideoCon()));
                         },
                         child: Container(
-                            padding: EdgeInsets.all(3),
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(4278228470),
-                            ),
-                            child: Image.asset("assets/camera.png",
-                                color: Color(0xFFE6EDFA))),
+                          width: 35,
+                          height: 35,
+                          padding: EdgeInsets.only(
+                              top: 7, left: 8, bottom: 7, right: 6),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.indigo,
+                          ),
+                          child: Image.asset(
+                            "assets/video.png",
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),

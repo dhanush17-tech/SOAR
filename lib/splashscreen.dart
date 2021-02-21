@@ -33,13 +33,13 @@ class _RootState extends State<Root> {
   void initState() {
     // TODO: implement initState
     this._function();
-    super.initState();
     getFlagInfo();
     getTimerWid();
     setData();
+    super.initState();
   }
 
-  String password ="keys";
+  String password = "keys";
 
   Future loadpass() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -170,8 +170,8 @@ class _RootState extends State<Root> {
                   height: 260,
                   child: Image(
                     image: AssetImage('assets/soar.png'),
-                    width: 300,
-                    height: 200,
+                    width: 270,
+                    height: 250,
                   )),
               SizedBox(
                 height: 15,

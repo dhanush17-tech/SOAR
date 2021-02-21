@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:SOAR/screens/feed.dart';
 import 'package:SOAR/screens/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class UserSearch extends StatefulWidget {
   @override
@@ -36,13 +38,31 @@ class _UserSearchState extends State<UserSearch> {
     // TODO: implement initState
     super.initState();
     _fetchUserinfoForSettingsPage();
+    getman();
+
     _searchController = TextEditingController();
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: Column(children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
@@ -147,6 +167,9 @@ class _UserSearchState extends State<UserSearch> {
                                           width: 30,
                                         ),
                                         Material(
+                                            color: man == false
+                                                ? image_background_light
+                                                : image_background_dark,
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             elevation: 20,
@@ -156,7 +179,9 @@ class _UserSearchState extends State<UserSearch> {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  color: Color(4278272638),
+                                                  color: man == false
+                                                      ? image_background_light
+                                                      : image_background_dark,
                                                   image: document["location"] ==
                                                           null
                                                       ? DecorationImage(
@@ -197,7 +222,9 @@ class _UserSearchState extends State<UserSearch> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 23,
-                                                          color: Colors.black,
+                                                          color: man == false
+                                                              ? light_text_heading
+                                                              : dark_text_heading,
                                                         ))),
                                               ),
                                             ),

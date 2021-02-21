@@ -27,8 +27,8 @@ Color chat_name_dark = Colors.white;
 
 Color feed_details_title_dark = Colors.white;
 
-Color feed_details_title_light = Color(4283848280);
-
+Color feed_details_title_light = Color  (4283848280);
+  
 Color feed_details_sub_light = Colors.black;
 
 Color feed_details_sub_dark = Color(4278228470);

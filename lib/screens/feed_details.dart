@@ -446,7 +446,7 @@ class _FeedDetailsState extends State<FeedDetails> {
                                   left: 25.0, top: 0, right: 25),
                               child: Text(
                                 feed["summury"],
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontSize: 20,
                                     color: man == false
                                         ? feed_details_sub_light

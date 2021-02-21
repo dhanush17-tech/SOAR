@@ -1,12 +1,12 @@
 import 'dart:ui';
-
-import 'package:SOAR/auth/login.dart';
 import 'package:SOAR/screens/chat/text_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'feed.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -40,8 +40,26 @@ class _SearchState extends State<Search> {
     // TODO: implement initState
     super.initState();
     _fetchUserinfoForSettingsPage();
+    getman();
     _searchController = TextEditingController();
   }
+
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        man = ca;
+      });
+    });
+  }
+
+  bool man;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +67,7 @@ class _SearchState extends State<Search> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return new Scaffold(
-        backgroundColor: Color(0xFFE6EDFA),
+        backgroundColor: man == false ? light_background : dark_background,
         body: Column(children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
@@ -169,6 +187,9 @@ class _SearchState extends State<Search> {
                                                 width: 30,
                                               ),
                                               Material(
+                                                  color: man == false
+                                                      ? image_background_light
+                                                      : image_background_dark,
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                   elevation: 20,
@@ -179,10 +200,10 @@ class _SearchState extends State<Search> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
-                                                        color:
-                                                            Color(4278272638),
-                                                        image: document[
-                                                                    "location"] ==
+                                                        color: man == false
+                                                            ? image_background_light
+                                                            : image_background_dark,
+                                                        image: document["location"] ==
                                                                 null
                                                             ? DecorationImage(
                                                                 image: AssetImage(
@@ -228,8 +249,10 @@ class _SearchState extends State<Search> {
                                                                     FontWeight
                                                                         .bold,
                                                                 fontSize: 23,
-                                                                color: Colors
-                                                                    .black,
+                                                                color: man ==
+                                                                        false
+                                                                    ? light_text_heading
+                                                                    : dark_text_heading,
                                                               ))),
                                                     ),
                                                   ),
