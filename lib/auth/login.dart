@@ -544,7 +544,7 @@ class _LoginscreenState extends State<Loginscreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = MediaQuery.of(context).viewInsets.bottom;
+      final bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       key: _scaffoldKey,

@@ -74,6 +74,8 @@ class _SeeMoreState extends State<SeeMore> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
+
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
@@ -198,118 +200,117 @@ class _SeeMoreState extends State<SeeMore> {
                           ),
                           SizedBox(height: 10),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.72,
+                            height: MediaQuery.of(context).size.height * 0.75,
                             child: SingleChildScrollView(
+                              reverse: true,
                               scrollDirection: Axis.vertical,
-                              child: Column(
-                                children: [
-                                  StreamBuilder(
-                                      stream: Firestore.instance
-                                          .collection("Feed")
-                                          .document(widget.seemore.toString())
-                                          .collection("comments")
-                                          .orderBy("date", descending: false)
-                                          .snapshots(),
-                                      builder: (ctx, snapshot) {
-                                        return snapshot.data != null
-                                            ? Column(
-                                                children: [
-                                                  ListView.separated(
-                                                      separatorBuilder: (ctx,
-                                                              i) =>
-                                                          SizedBox(height: 20),
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      itemCount: snapshot.data
-                                                          .documents.length,
-                                                      itemBuilder: (ctx, i) {
-                                                        DocumentSnapshot
-                                                            comment = snapshot
-                                                                .data
-                                                                .documents[i];
-                                                        return StreamBuilder(
-                                                          stream: Firestore
-                                                              .instance
-                                                              .collection(
-                                                                  "Users")
-                                                              .document(comment[
-                                                                  "uid"])
-                                                              .snapshots(),
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              AsyncSnapshot
-                                                                  snapshot) {
-                                                            var can =
-                                                                snapshot.data;
-                                                            return snapshot
-                                                                        .data ==
-                                                                    null
-                                                                ? Container()
-                                                                : Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        can["location"] ==
-                                                                                null
-                                                                            ? GestureDetector(
-                                                                                onTap: () {
-                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
-                                                                                },
-                                                                                child: CircleAvatar(
-                                                                                  backgroundImage: AssetImage(
-                                                                                    "assets/unknown.png",
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: bottom * 0.34),
+                                child: Column(
+                                  children: [
+                                    StreamBuilder(
+                                        stream: Firestore.instance
+                                            .collection("Feed")
+                                            .document(widget.seemore.toString())
+                                            .collection("comments")
+                                            .orderBy("date", descending: false)
+                                            .snapshots(),
+                                        builder: (ctx, snapshot) {
+                                          return snapshot.data != null
+                                              ? Column(
+                                                  children: [
+                                                    ListView.separated(
+                                                        separatorBuilder:
+                                                            (ctx, i) =>
+                                                                SizedBox(
+                                                                    height: 20),
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            NeverScrollableScrollPhysics(),
+                                                        itemCount: snapshot.data
+                                                            .documents.length,
+                                                        itemBuilder: (ctx, i) {
+                                                          DocumentSnapshot
+                                                              comment = snapshot
+                                                                  .data
+                                                                  .documents[i];
+                                                          return StreamBuilder(
+                                                            stream: Firestore
+                                                                .instance
+                                                                .collection(
+                                                                    "Users")
+                                                                .document(
+                                                                    comment[
+                                                                        "uid"])
+                                                                .snapshots(),
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot
+                                                                    snapshot) {
+                                                              var can =
+                                                                  snapshot.data;
+                                                              return snapshot
+                                                                          .data ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          can["location"] == null
+                                                                              ? GestureDetector(
+                                                                                  onTap: () {
+                                                                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
+                                                                                  },
+                                                                                  child: CircleAvatar(
+                                                                                    backgroundImage: AssetImage(
+                                                                                      "assets/unknown.png",
+                                                                                    ),
+                                                                                    backgroundColor: Color(4278272638),
+                                                                                    radius: 25,
                                                                                   ),
-                                                                                  backgroundColor: Color(4278272638),
-                                                                                  radius: 25,
+                                                                                )
+                                                                              : GestureDetector(
+                                                                                  onTap: () {
+                                                                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
+                                                                                  },
+                                                                                  child: CircleAvatar(
+                                                                                    backgroundImage: NetworkImage(can["location"]),
+                                                                                    backgroundColor: Color(4278272638),
+                                                                                    radius: 25,
+                                                                                  ),
                                                                                 ),
-                                                                              )
-                                                                            : GestureDetector(
-                                                                                onTap: () {
-                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
-                                                                                },
-                                                                                child: CircleAvatar(
-                                                                                  backgroundImage: NetworkImage(can["location"]),
-                                                                                  backgroundColor: Color(4278272638),
-                                                                                  radius: 25,
-                                                                                ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(top: 5),
+                                                                            child:
+                                                                                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                              Text(
+                                                                                can["name"],
+                                                                                style: TextStyle(color: man == false ? sub_heading_light : sub_heading_dark, fontWeight: FontWeight.bold),
                                                                               ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                        Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(top: 5),
-                                                                          child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Text(
-                                                                                  can["name"],
-                                                                                  style: TextStyle(color: man == false ? sub_heading_light : sub_heading_dark, fontWeight: FontWeight.bold),
-                                                                                ),
-                                                                                Text(comment["comment"], style: TextStyle(color: Color(4278228470).withOpacity(0.7), fontFamily: "good", fontSize: 20)),
-                                                                              ]),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  );
-                                                          },
-                                                        );
-                                                      }),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                ],
-                                              )
-                                            : Container();
-                                      }),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
+                                                                              Text(comment["comment"], style: TextStyle(color: Color(4278228470).withOpacity(0.7), fontFamily: "good", fontSize: 20)),
+                                                                            ]),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                            },
+                                                          );
+                                                        }),
+                                                  ],
+                                                )
+                                              : Container();
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
                           )
@@ -438,6 +439,7 @@ class _SeeMoreState extends State<SeeMore> {
                           ),
                           SizedBox(height: 10),
                           Container(
+                            height: MediaQuery.of(context).size.height - 100,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: Column(
@@ -479,7 +481,7 @@ class _SeeMoreState extends State<SeeMore> {
                                                                   context,
                                                               AsyncSnapshot
                                                                   snapshot) {
-                                                            var man =
+                                                            var can =
                                                                 snapshot.data;
                                                             return snapshot
                                                                         .data ==
@@ -491,11 +493,11 @@ class _SeeMoreState extends State<SeeMore> {
                                                                             8.0),
                                                                     child: Row(
                                                                       children: [
-                                                                        man["location"] ==
+                                                                        can["location"] ==
                                                                                 null
                                                                             ? GestureDetector(
                                                                                 onTap: () {
-                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: man["uid"])));
+                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
                                                                                 },
                                                                                 child: CircleAvatar(
                                                                                   backgroundImage: AssetImage(
@@ -507,10 +509,10 @@ class _SeeMoreState extends State<SeeMore> {
                                                                               )
                                                                             : GestureDetector(
                                                                                 onTap: () {
-                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: man["uid"])));
+                                                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile(uidforprofile: can["uid"])));
                                                                                 },
                                                                                 child: CircleAvatar(
-                                                                                  backgroundImage: NetworkImage(man["location"]),
+                                                                                  backgroundImage: NetworkImage(can["location"]),
                                                                                   backgroundColor: Color(4278272638),
                                                                                   radius: 25,
                                                                                 ),
@@ -526,8 +528,8 @@ class _SeeMoreState extends State<SeeMore> {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text(
-                                                                                  man["name"],
-                                                                                  style: TextStyle(color: feed_details_title_dark, fontWeight: FontWeight.bold),
+                                                                                  can["name"],
+                                                                                  style: TextStyle(color: man == false ? sub_heading_light : sub_heading_dark, fontWeight: FontWeight.bold),
                                                                                 ),
                                                                                 Text(comment["comment"], style: TextStyle(color: Color(4278228470).withOpacity(0.7), fontFamily: "good", fontSize: 20)),
                                                                               ]),
