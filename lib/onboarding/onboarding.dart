@@ -1,17 +1,5 @@
 import 'dart:math';
-
 import 'package:SOAR/auth/login.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/community/community_dark_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/community/community_light_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/community/community_text_column.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/education/education_dark_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/education/education_light_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/education/education_text_column.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/onboarding_page.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/work/work_dark_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/work/work_light_card_content.dart';
-import 'package:SOAR/onboarding/screens/onboarding/pages/work/work_text_column.dart';
-
 import 'package:SOAR/onboarding/widgets/header.dart';
 import 'package:SOAR/onboarding/widgets/next_page_button.dart';
 import 'package:SOAR/onboarding/widgets/onboarding_page_indicator.dart';
@@ -20,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'constants.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 
 class Onboarding extends StatefulWidget {
   final double screenHeight;
@@ -65,7 +54,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
       end: widget.screenHeight,
     ).animate(CurvedAnimation(
       parent: _rippleAnimationController,
-      curve: Curves.ease ,
+      curve: Curves.ease,
     ));
 
     _setPageIndicatorAnimation();
@@ -108,7 +97,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   "Assistance in finding the perfect investor for an entrepreneur.",
-                  style: GoogleFonts.poppins(color: kWhite,fontSize: 15.5),
+                  style: GoogleFonts.poppins(color: kWhite, fontSize: 15.5),
                 ),
               ),
             ],
@@ -120,7 +109,10 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
           child: Column(
             children: [
               const SizedBox(height: 00),
-              Image.asset("assets/slide2.png",scale: 1,),
+              Image.asset(
+                "assets/slide2.png",
+                scale: 1,
+              ),
               const SizedBox(height: 0),
               Align(
                 alignment: Alignment.bottomLeft,
@@ -132,12 +124,12 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: 00), 
+              const SizedBox(height: 00),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   "Express your ideas and novelties to an investor in real time video conferencing.",
-                  style: GoogleFonts.poppins(color: kWhite,fontSize: 15.5 ),
+                  style: GoogleFonts.poppins(color: kWhite, fontSize: 15.5),
                 ),
               ),
             ],
@@ -156,7 +148,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
                 child: Text(
                   "Mentorship and Support",
                   style: GoogleFonts.poppins(
-                    height: 1,
+                      height: 1,
                       fontSize: 30,
                       color: Color(0xFF4985FD),
                       fontWeight: FontWeight.bold),
@@ -279,6 +271,13 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4278190106),
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
+    setState(() {});
     return Scaffold(
       backgroundColor: Color(4278190106),
       body: Stack(

@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:SOAR/start.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 
 import 'login.dart';
 
@@ -32,6 +33,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _googlesigninKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4278256230),
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       key: _scaffoldKey,

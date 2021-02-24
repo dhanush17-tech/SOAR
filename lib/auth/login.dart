@@ -17,6 +17,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 
 enum AniProps { offset }
 
@@ -544,8 +545,13 @@ class _LoginscreenState extends State<Loginscreen> {
 
   @override
   Widget build(BuildContext context) {
-      final bottom = MediaQuery.of(context).viewInsets.bottom;
-
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4278256230),
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
