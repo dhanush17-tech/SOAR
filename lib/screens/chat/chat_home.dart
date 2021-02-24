@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 alignment: Alignment.topLeft,
                                 child: GradientText(
                                   text: "Connections",
-                                  colors: [Colors.blue[400], Colors.blue[700]],
+                                  colors: [Colors.blue, Colors.blueAccent],
                                   style: GoogleFonts.poppins(
                                     fontSize: 35,
                                     fontWeight: FontWeight.w600,
@@ -146,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       color: Colors.indigo,
                                     ),
                                     child: Image.asset(
-                                    "assets/video.png",
+                                      "assets/video.png",
                                       color: Colors.white,
                                     ),
                                   ),

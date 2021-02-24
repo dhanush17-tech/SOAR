@@ -9,6 +9,8 @@ import 'package:SOAR/screens/feed.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
+import 'dart:ui';
+import 'package:flutter/src/services/system_chrome.dart';
 
 class Man extends StatelessWidget {
   @override
@@ -139,6 +141,12 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(4278256230),
+      systemNavigationBarIconBrightness:
+          Brightness.dark, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+    ));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,

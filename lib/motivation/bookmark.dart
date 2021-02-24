@@ -51,7 +51,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
                 padding: const EdgeInsets.only(left: 18, top: 18),
                 child: GradientText(
                   text: "Bookmarks",
-                  colors: [Colors.indigo, Colors.blue],
+                                      colors: [Colors.blue, Colors.blueAccent],
                   style: GoogleFonts.poppins(
                     fontSize: 35,
                     fontWeight: FontWeight.w600,

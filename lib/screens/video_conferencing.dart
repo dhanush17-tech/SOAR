@@ -11,7 +11,8 @@ import 'package:jitsi_meet/room_name_constraint.dart';
 import 'feed.dart';
 import 'package:jitsi_meet/room_name_constraint_type.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:SOAR/main_constraints.dart';
 
 void main() => runApp(VideoCon());
 
@@ -47,6 +48,7 @@ class _VideoConState extends State<VideoCon> {
   void initState() {
     super.initState();
     man();
+    getman();
     JitsiMeet.addListener(JitsiMeetingListener(
         onConferenceWillJoin: _onConferenceWillJoin,
         onConferenceJoined: _onConferenceJoined,
@@ -62,9 +64,27 @@ class _VideoConState extends State<VideoCon> {
     JitsiMeet.removeAllListeners();
   }
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        can = ca;
+      });
+    });
+  }
+
+  bool can;
+
   @override
-  Widget build(BuildContext context) { SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -77,10 +97,7 @@ class _VideoConState extends State<VideoCon> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Color(0xFFE6EDFA), Color(0xFFE6EDFA)],
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft),
+                  color: can == false ? light_background : dark_background,
                 ),
               ),
               Hero(
@@ -105,21 +122,19 @@ class _VideoConState extends State<VideoCon> {
                         shape: BoxShape.circle,
                         color: Colors.indigo,
                       ),
-                      child: Icon(Icons.arrow_back_rounded,
-                          color: Colors.white)),
+                      child:
+                          Icon(Icons.arrow_back_rounded, color: Colors.white)),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.only(top: 100, left: 8, right: 8),
                 child: Column(
                   children: <Widget>[
                     Align(
                       alignment: Alignment.center,
                       child: GradientText(
                         text: 'Start or  \n join a call',
-                        colors: [
-                          Colors.indigo, Colors.blue
-                        ],
+                        colors: [Colors.blue, Colors.blueAccent],
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                             color: Colors.white,
@@ -170,34 +185,41 @@ class _VideoConState extends State<VideoCon> {
                       ),
                     ),
                     SizedBox(height: 50),
-                    GestureDetector(
-                      onTap: () {
-                        if (_man.currentState.validate()) {
-                          setState(() {
-                            _joinMeeting();
-                          });
-                        }
-                      },
-                      child: Material(
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(colors:  [Colors.indigo, Color(4278228470)])
-                          ),
-                          height: 55,
-                          width: 350,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 0),
-                            child: Text(
-                              'Join Meeting',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "good",
-                                  color: Colors.white,
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w300),
+                    Padding(
+                      padding: const EdgeInsets.only(),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_man.currentState.validate()) {
+                            setState(() {
+                              _joinMeeting();
+                            });
+                          }
+                        },
+                        child: Material(
+                          elevation: 10,
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(colors: [
+                                  Colors.indigo,
+                                  Color(4278228470)
+                                ])),
+                            height: 55,
+                            width: 350,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 0,
+                              ),
+                              child: Text(
+                                'Join Meeting',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "good",
+                                    color: Colors.white,
+                                    fontSize: 50,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ),
                         ),

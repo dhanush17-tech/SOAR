@@ -100,7 +100,7 @@ class _FeedDetilsForEntrepreneursState
               .document(widget.documnetid)
               .snapshots(),
           builder: (context, snap) {
-            if (!snap.hasData) return Text('Loading... data');
+            if (!snap.hasData) return Text('');
             return snap.data == null
                 ? Container()
                 : ListView.builder(

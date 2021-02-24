@@ -301,7 +301,6 @@ class _ItemWidget extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          physics: NeverScrollableScrollPhysics(),
           child: Container(
             width: isSelected ? 130 : 50,
             padding: EdgeInsets.symmetric(horizontal: 8),

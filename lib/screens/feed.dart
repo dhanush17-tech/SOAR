@@ -51,6 +51,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
 
     print(DateTime.now());
     setState(() {});
+    setState(() {});
   }
 
   bool shimmer_show = true;
@@ -525,8 +526,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                             "dssd+$i",
                                                                         child:
                                                                             Material(
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Colors
+                                                                              .white
+                                                                              .withOpacity(0.25),
                                                                           borderRadius:
                                                                               BorderRadius.only(
                                                                             topLeft:
@@ -538,7 +540,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                                                                             bottomLeft:
                                                                                 Radius.circular(20),
                                                                           ),
-                                                                          elevation: 20,
+                                                                          elevation:
+                                                                              20,
                                                                           child: Container(
                                                                               height: 220,
                                                                               decoration: BoxDecoration(

@@ -282,7 +282,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   SizedBox(width: 10),
                                   GradientText(
                                     text: "Profile",
-                                    colors: [Colors.indigo, Colors.blue],
+                                      colors: [Colors.blue, Colors.blueAccent],
                                     style: GoogleFonts.poppins(
                                       fontSize: 35,
                                       fontWeight: FontWeight.w600,
@@ -1177,10 +1177,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     ),
                                     child: GradientText(
                                       text: " Pitches",
-                                      colors: [
-                                        Colors.blue[400],
-                                        Colors.blue[700]
-                                      ],
+                                                                        colors: [Colors.blue, Colors.blueAccent],
+
                                       style: TextStyle(
                                           fontSize: 55,
                                           fontFamily: "good",
@@ -1200,7 +1198,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                           .snapshots(),
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData)
-                                          return Text('Loading... data');
+                                          return Text('');
                                         return snapshot.data != null
                                             ? ListView.separated(
                                                 reverse: true,

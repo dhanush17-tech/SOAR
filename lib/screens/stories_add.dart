@@ -281,7 +281,7 @@ class _StoriesAddState extends State<StoriesAdd> {
                         padding: const EdgeInsets.only(left: 20, top: 10),
                         child: GradientText(
                           text: "Add Story",
-                          colors: [Colors.indigo, Colors.blue],
+                                      colors: [Colors.blue, Colors.blueAccent],
                           style: GoogleFonts.poppins(
                             fontSize: 35,
                             fontWeight: FontWeight.w600,

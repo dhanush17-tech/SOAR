@@ -126,14 +126,6 @@ class _StoriesState extends State<Stories> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0xFFE6EDFA),
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
@@ -151,7 +143,7 @@ class _StoriesState extends State<Stories> {
                     alignment: Alignment.topLeft,
                     child: GradientText(
                       text: "Stories",
-                      colors: [Colors.blue[400], Colors.blue[700]],
+                                      colors: [Colors.blue, Colors.blueAccent],
                       style: GoogleFonts.poppins(
                         fontSize: 35,
                         fontWeight: FontWeight.w600,
@@ -354,7 +346,7 @@ class _StoriesState extends State<Stories> {
                                                                         .done) {
                                                                   //print('project snapshot data is: ${snap.data}');
                                                                   return Text(
-                                                                    "loading",
+                                                                    "",
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             0),
@@ -363,7 +355,7 @@ class _StoriesState extends State<Stories> {
                                                                   if (snapshot
                                                                       .hasError) {
                                                                     return Text(
-                                                                        "loading",
+                                                                        "",
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 0));
