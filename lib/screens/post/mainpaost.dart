@@ -101,7 +101,7 @@ class _MainPostState extends State<MainPost> {
             child: screenProgress,
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.7099,
+            height: MediaQuery.of(context).size.height - 220,
             child: Stack(
               children: [
                 PreloadPageView.builder(

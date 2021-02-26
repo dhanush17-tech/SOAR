@@ -543,7 +543,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ),
                                     )
                                   : Container();
-                            })
+                            }),
+                    SizedBox(
+                      height: 100,
+                    )
                   ],
                 ),
               ),
