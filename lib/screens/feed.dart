@@ -226,7 +226,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                             child: Image.asset(
                               "assets/hot.png",
                               color: Colors.white,
-                              scale: 7.01,
+                              scale: 7,
                             ),
                           ),
                         ),
