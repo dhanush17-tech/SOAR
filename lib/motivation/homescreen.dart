@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.585,
+                          left: MediaQuery.of(context).size.width * 0.58,
                           top: 30),
                       child: GestureDetector(
                         onTap: () {
@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   : dark_text_heading,
                             ),
                             SizedBox(
-                              width: 5,
+                              width: 2,
                             ),
                             Text(
                               "Privacy policy",
@@ -392,12 +392,6 @@ class _HomeScreenState extends State<HomeScreen>
   bool man;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     setState(() {});
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -612,19 +606,20 @@ class _HomeScreenState extends State<HomeScreen>
                                           child: Column(
                                             children: [
                                               carouselSlider = CarouselSlider(
-                                                  height: 200,
-                                                  viewportFraction: 0.9,
-                                                  initialPage: 0,
-                                                  enlargeCenterPage: true,
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      Duration(seconds: 3),
-                                                  autoPlayInterval:
-                                                      Duration(seconds: 3),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  onPageChanged: (index) {},
+                                                  options: CarouselOptions(
+                                                    height: 200,
+                                                    viewportFraction: 0.9,
+                                                    initialPage: 0,
+                                                    enlargeCenterPage: true,
+                                                    autoPlay: true,
+                                                    enableInfiniteScroll: true,
+                                                    autoPlayAnimationDuration:
+                                                        Duration(seconds: 3),
+                                                    autoPlayInterval:
+                                                        Duration(seconds: 3),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                  ),
                                                   items: trending_list
                                                       .map((imgUrl) {
                                                     return trending_list

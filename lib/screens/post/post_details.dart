@@ -64,7 +64,6 @@ class _PostDetailsState extends State<PostDetails> {
         [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
         backgroundColor: man == false ? light_background : dark_background,
         body: SingleChildScrollView(
           reverse: true,

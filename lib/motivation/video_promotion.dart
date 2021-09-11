@@ -74,12 +74,6 @@ class _PromoVideoState extends State<PromoVideo> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(4280032553),
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-    ));
     double _panelHeightOpen;
     double _panelHeightClosed = MediaQuery.of(context).size.height * .22;
     _panelHeightOpen = MediaQuery.of(context).size.height * .7;
@@ -104,7 +98,7 @@ class _PromoVideoState extends State<PromoVideo> {
 
         // the fab
       ],
-    )); 
+    ));
   }
 
   int index = 1;

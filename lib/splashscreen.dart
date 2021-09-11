@@ -141,15 +141,8 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(4278256230),
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

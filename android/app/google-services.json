@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "466912315257-734gep3qdcpr8km7al4h6j16o7sbonof.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.SOAR",
+            "certificate_hash": "27bc3e893d8d0db06c918fffb899703da5ef5592"
+          }
+        },
+        {
           "client_id": "466912315257-ln0ance7986i9vsjot8kb0r80c7oe3to.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -26,7 +34,7 @@
           "client_type": 3
         }
       ],
-      "api_key": [                                        
+      "api_key": [
         {
           "current_key": "AIzaSyD1yEnO7y-UZui0uu9kE8H5X-VHqUwzY1c"
         }

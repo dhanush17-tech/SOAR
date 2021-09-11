@@ -4,9 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/services/system_chrome.dart';
 
-
-
-
 class ForgetPassword extends StatefulWidget {
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
@@ -19,12 +16,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   @override
   Widget build(BuildContext context) {
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(4278256230),
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(

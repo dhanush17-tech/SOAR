@@ -271,12 +271,6 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(4278190106),
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     setState(() {});
     return Scaffold(
       backgroundColor: Color(4278190106),

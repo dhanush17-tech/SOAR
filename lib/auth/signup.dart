@@ -33,17 +33,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _googlesigninKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(4278256230),
-      systemNavigationBarIconBrightness:
-          Brightness.dark, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-    ));
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
         reverse: true,
         child: Padding(

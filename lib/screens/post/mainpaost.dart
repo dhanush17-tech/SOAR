@@ -59,6 +59,8 @@ class _MainPostState extends State<MainPost> {
 
   bool man;
 
+  PreloadPageController controller;
+
   List can = [PostImage(), PostDetails(), Questionnaire(), Page2(), Page3()];
 
   GlobalKey<FormState> cool = GlobalKey<FormState>();
@@ -66,7 +68,6 @@ class _MainPostState extends State<MainPost> {
   Widget build(BuildContext context) {
     rebuildAllChildren(context);
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: man == false ? light_background : dark_background,
       body: Column(
         children: [
@@ -240,5 +241,3 @@ class _MainPostState extends State<MainPost> {
 
   int pagee;
 }
-
-PreloadPageController controller;

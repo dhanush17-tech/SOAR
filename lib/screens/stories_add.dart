@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
+import 'package:SOAR/main_constraints.dart';
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 import 'package:SOAR/screens/stories.dart';
 import 'package:fade/fade.dart';
@@ -11,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'feed.dart';
@@ -236,6 +238,7 @@ class _StoriesAddState extends State<StoriesAdd> {
     imagepic();
     _nowuserdetails();
     pri();
+    getman();
   }
 
   pri() {
@@ -254,6 +257,23 @@ class _StoriesAddState extends State<StoriesAdd> {
 
   bool issubmitted = false;
 
+  Future loadpass() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(
+      "keys",
+    );
+  }
+
+  getman() {
+    loadpass().then((ca) {
+      setState(() {
+        isdarktheme = ca;
+      });
+    });
+  }
+
+  bool isdarktheme = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -264,7 +284,7 @@ class _StoriesAddState extends State<StoriesAdd> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Color(0xFFE6EDFA),
+        color: isdarktheme == false ? light_background : dark_background,
         child: SafeArea(
           child: Stack(
             children: [
@@ -281,7 +301,7 @@ class _StoriesAddState extends State<StoriesAdd> {
                         padding: const EdgeInsets.only(left: 20, top: 10),
                         child: GradientText(
                           text: "Add Story",
-                                      colors: [Colors.blue, Colors.blueAccent],
+                          colors: [Colors.blue, Colors.blueAccent],
                           style: GoogleFonts.poppins(
                             fontSize: 35,
                             fontWeight: FontWeight.w600,
@@ -506,14 +526,16 @@ class _StoriesAddState extends State<StoriesAdd> {
                                   }
                                 : null
                             : null,
-                        color: Colors.white.withOpacity(0.23),
+                        color: Colors.white.withOpacity(0.2),
                         textColor: Color(4278228470),
                         child: Container(
                           alignment: Alignment.center,
                           height: 55,
                           child: Text(
                             "Proceed",
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white.withOpacity(.8)),
                           ),
                         ),
                       ),

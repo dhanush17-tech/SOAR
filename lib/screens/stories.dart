@@ -143,7 +143,7 @@ class _StoriesState extends State<Stories> {
                     alignment: Alignment.topLeft,
                     child: GradientText(
                       text: "Stories",
-                                      colors: [Colors.blue, Colors.blueAccent],
+                      colors: [Colors.blue, Colors.blueAccent],
                       style: GoogleFonts.poppins(
                         fontSize: 35,
                         fontWeight: FontWeight.w600,
@@ -217,17 +217,18 @@ class _StoriesState extends State<Stories> {
                           children: <Widget>[
                             if (imgList.length != 0)
                               carouselSlider = CarouselSlider(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.7,
-                                  initialPage: 0,
-                                  enlargeCenterPage: true,
-                                  autoPlay: true,
-                                  enableInfiniteScroll: false,
-                                  autoPlayAnimationDuration:
-                                      Duration(seconds: 5),
-                                  autoPlayInterval: Duration(seconds: 10),
-                                  scrollDirection: Axis.horizontal,
-                                  onPageChanged: (index) {},
+                                  options: CarouselOptions(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.7,
+                                    initialPage: 0,
+                                    enlargeCenterPage: true,
+                                    autoPlay: true,
+                                    enableInfiniteScroll: false,
+                                    autoPlayAnimationDuration:
+                                        Duration(seconds: 5),
+                                    autoPlayInterval: Duration(seconds: 10),
+                                    scrollDirection: Axis.horizontal,
+                                  ),
                                   items: imgList.map((imgUrl) {
                                     print(imgUrl);
                                     var index = imgList.indexOf(imgUrl);

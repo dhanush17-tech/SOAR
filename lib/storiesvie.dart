@@ -87,6 +87,7 @@ class _MoreStoriesState extends State<MoreStories> {
                     print(duration[index].round());
 
                     return StoryItem.pageVideo(e,
+                        ismute: false,
                         duration:
                             Duration(milliseconds: duration[index].round()),
                         controller: storyController);
@@ -101,7 +102,7 @@ class _MoreStoriesState extends State<MoreStories> {
               onVerticalSwipeComplete: (DirectionalFocusAction) {
                 Navigator.pop(context);
               },
-              progressPosition: ProgressPosition.top,
+              progressPosition: ProgressPosition.top,     
               repeat: false,
               controller: storyController,
             )

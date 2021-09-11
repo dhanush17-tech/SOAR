@@ -39,10 +39,9 @@ class _QuestionnaireState extends State<Questionnaire> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
       backgroundColor: man == false ? light_background : dark_background,
       body: SingleChildScrollView(
-           physics: BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         reverse: MediaQuery.of(context).viewInsets.bottom != 0 ? true : false,
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8),
